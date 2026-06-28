@@ -216,8 +216,21 @@ export function useGame() {
       settings: currentGame.settings,
     };
   });
+
 }
-  return {
+
+  function updateSetsToWin(setsToWin: number) {
+  setGame((currentGame) => ({
+    ...currentGame,
+    settings: {
+      ...currentGame.settings,
+      setsToWin,
+    },
+  }));
+}
+
+return {
+    updateSetsToWin,
     game,
     server,
     defaultProfiles,

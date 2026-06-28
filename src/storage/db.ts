@@ -4,6 +4,7 @@ import type { PlayerProfile } from "../types/game";
 export type AppSettings = {
   id: "settings";
   theme: "dark" | "light";
+  setsToWin: number;
 };
 
 class TTScoreboardDatabase extends Dexie {

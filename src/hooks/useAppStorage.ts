@@ -16,8 +16,8 @@ type UseAppStorageArgs = {
 
 export function useAppStorage({ defaultProfiles }: UseAppStorageArgs) {
   const [theme, setThemeState] = useState<Theme>("dark");
+  const [setsToWin, setSetsToWinState] = useState(3);
   const [profiles, setProfiles] = useState<PlayerProfile[]>(defaultProfiles);
-  const [isStorageLoaded, setIsStorageLoaded] = useState(false);
 
   useEffect(() => {
     async function loadStoredData() {
@@ -25,6 +25,7 @@ export function useAppStorage({ defaultProfiles }: UseAppStorageArgs) {
 
       if (storedSettings) {
         setThemeState(storedSettings.theme);
+        setSetsToWinState(storedSettings.setsToWin ?? 3);
       }
 
       const storedProfiles = await loadProfiles();
@@ -34,8 +35,6 @@ export function useAppStorage({ defaultProfiles }: UseAppStorageArgs) {
       } else {
         await ensureDefaultProfiles(defaultProfiles);
       }
-
-      setIsStorageLoaded(true);
     }
 
     void loadStoredData();
@@ -47,6 +46,17 @@ export function useAppStorage({ defaultProfiles }: UseAppStorageArgs) {
     void saveSettings({
       id: "settings",
       theme: nextTheme,
+      setsToWin,
+    });
+  }
+
+  function setSetsToWin(nextSetsToWin: number) {
+    setSetsToWinState(nextSetsToWin);
+
+    void saveSettings({
+      id: "settings",
+      theme,
+      setsToWin: nextSetsToWin,
     });
   }
 
@@ -58,8 +68,9 @@ export function useAppStorage({ defaultProfiles }: UseAppStorageArgs) {
   return {
     theme,
     setTheme,
+    setsToWin,
+    setSetsToWin,
     profiles,
     addProfile,
-    isStorageLoaded,
   };
 }

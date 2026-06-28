@@ -26,11 +26,12 @@ export default function App() {
     continueAfterResult,
     undo,
     resetGame,
+    updateSetsToWin,
     selectProfile,
     createProfile,
   } = gameController;
 
-  const { theme, setTheme, profiles, addProfile } = useAppStorage({
+  const { theme, setTheme, setsToWin, setSetsToWin, profiles, addProfile } = useAppStorage({
     defaultProfiles,
   });
 
@@ -41,6 +42,10 @@ export default function App() {
   useEffect(() => {
     setProfiles(profiles);
   }, [profiles, setProfiles]);
+
+  useEffect(() => {
+  updateSetsToWin(setsToWin);
+}, [setsToWin, updateSetsToWin]);
 
   function handleSelectProfile(playerId: PlayerId, profile: PlayerProfile) {
     selectProfile(playerId, profile);
@@ -112,12 +117,14 @@ export default function App() {
       )}
 
       {settingsOpen && (
-        <SettingsDialog
-          theme={theme}
-          onThemeChange={setTheme}
-          onResetGame={resetGame}
-          onClose={() => setSettingsOpen(false)}
-        />
+  <SettingsDialog
+  theme={theme}
+  setsToWin={setsToWin}
+  onThemeChange={setTheme}
+  onSetsToWinChange={setSetsToWin}
+  onResetGame={resetGame}
+  onClose={() => setSettingsOpen(false)}
+/>
       )}
 
       {profileDialogPlayer && profileDialogPlayerState && (
