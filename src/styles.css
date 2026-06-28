@@ -478,3 +478,19 @@ select {
     padding: 20px;
   }
 }
+
+.dangerButton {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 14px 18px;
+  border: 2px solid #ff4040;
+  border-radius: 14px;
+  background: white;
+  color: #c80000;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.dangerButton:hover {
+  background: #fff0f0;
+}

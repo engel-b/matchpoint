@@ -3,10 +3,27 @@ type Theme = "dark" | "light";
 type Props = {
   theme: Theme;
   onThemeChange: (theme: Theme) => void;
+  onResetGame: () => void;
   onClose: () => void;
 };
 
-export function SettingsDialog({ theme, onThemeChange, onClose }: Props) {
+export function SettingsDialog({
+  theme,
+  onThemeChange,
+  onResetGame,
+  onClose,
+}: Props) {
+  function handleResetGame() {
+    const confirmed = window.confirm("Aktuelles Spiel wirklich abbrechen?");
+
+    if (!confirmed) {
+      return;
+    }
+
+    onResetGame();
+    onClose();
+  }
+
   return (
     <div className="dialogBackdrop" onClick={onClose}>
       <div className="dialog" onClick={(event) => event.stopPropagation()}>
@@ -23,6 +40,10 @@ export function SettingsDialog({ theme, onThemeChange, onClose }: Props) {
             <option value="light">Light</option>
           </select>
         </label>
+
+        <button className="dangerButton" onClick={handleResetGame}>
+          Spiel abbrechen
+        </button>
 
         <button className="closeButton" onClick={onClose}>
           Schließen
