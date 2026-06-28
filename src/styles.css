@@ -1,0 +1,480 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.app {
+  min-height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.app--dark {
+  background: #000;
+  color: #fff;
+}
+
+.app--light {
+  background: #f4f4f4;
+  color: #111;
+}
+
+/* -------------------------------------------------- */
+/* Topbar                                              */
+/* -------------------------------------------------- */
+
+.topbar {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 12px;
+  z-index: 20;
+}
+
+.iconButton {
+  width: 52px;
+  height: 52px;
+
+  border-radius: 999px;
+
+  border: 2px solid currentColor;
+
+  background: transparent;
+  color: inherit;
+
+  font-size: 28px;
+
+  cursor: pointer;
+}
+
+.iconButton:hover {
+  opacity: .85;
+}
+
+/* -------------------------------------------------- */
+/* Scoreboard                                          */
+/* -------------------------------------------------- */
+
+.scoreLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+.scorePanel {
+  position: relative;
+
+  border: 0;
+
+  background: transparent;
+
+  color: inherit;
+
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.scorePanel:active {
+  transform: scale(.995);
+}
+
+.scorePanel--red .scoreValue {
+  color: #ff4040;
+}
+
+.scorePanel--blue .scoreValue {
+  color: #3390ff;
+}
+
+/* -------------------------------------------------- */
+/* Spielername                                         */
+/* -------------------------------------------------- */
+
+.playerName {
+  position: absolute;
+
+  top: 72px;
+  left: 0;
+  right: 0;
+
+  width: fit-content;
+  max-width: calc(100% - 160px);
+
+  margin: 0 auto;
+
+  border: 0;
+  border-radius: 999px;
+
+  background: transparent;
+
+  color: inherit;
+
+  padding: 6px 18px;
+
+  cursor: pointer;
+
+  text-align: center;
+
+  font-size: clamp(32px, 5vw, 72px);
+  font-weight: 700;
+
+  transition: background .15s;
+}
+
+.playerName:hover {
+  background: rgb(255 255 255 / .08);
+}
+
+.playerName:active {
+  background: rgb(255 255 255 / .15);
+}
+
+/* -------------------------------------------------- */
+/* Punktzahl                                           */
+/* -------------------------------------------------- */
+
+.scoreValue {
+  position: relative;
+
+  font-size: clamp(140px, 28vw, 420px);
+  line-height: .9;
+  font-weight: 900;
+
+  padding-bottom: 34px;
+}
+
+.scoreValue--service::after {
+  content: "";
+
+  position: absolute;
+
+  left: 4%;
+  right: 4%;
+  bottom: 0;
+
+  height: 14px;
+
+  background: currentColor;
+
+  border-radius: 999px;
+
+  box-shadow: 0 0 18px currentColor;
+
+  animation: servicePulse 1.3s infinite;
+}
+
+@keyframes servicePulse {
+
+  0% {
+    opacity: .45;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: .45;
+  }
+}
+
+/* -------------------------------------------------- */
+/* Satzanzeige                                         */
+/* -------------------------------------------------- */
+
+.setDots {
+  position: absolute;
+
+  bottom: 48px;
+
+  display: flex;
+
+  gap: 18px;
+}
+
+.setDot {
+  width: 28px;
+  height: 28px;
+
+  border-radius: 999px;
+
+  border: 3px solid currentColor;
+
+  opacity: .35;
+}
+
+.setDot--active {
+  background: currentColor;
+  opacity: 1;
+}
+
+/* -------------------------------------------------- */
+/* Dialoge                                             */
+/* -------------------------------------------------- */
+
+.dialogBackdrop {
+  position: fixed;
+  inset: 0;
+
+  display: grid;
+  place-items: center;
+
+  background: rgb(0 0 0 / .65);
+
+  z-index: 100;
+}
+
+.dialog {
+  width: min(480px, calc(100vw - 32px));
+
+  border-radius: 22px;
+
+  background: white;
+  color: #111;
+
+  padding: 28px;
+
+  box-shadow: 0 24px 80px rgb(0 0 0 / .45);
+}
+
+.dialog h2 {
+  margin: 0 0 24px 0;
+}
+
+.settingRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 16px;
+
+  margin-bottom: 24px;
+}
+
+.settingRow select {
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+
+/* -------------------------------------------------- */
+/* Profilauswahl                                       */
+/* -------------------------------------------------- */
+
+.profileList {
+  display: grid;
+  gap: 12px;
+
+  margin-bottom: 24px;
+}
+
+.profileButton {
+  width: 100%;
+
+  padding: 14px 18px;
+
+  border: 2px solid #ddd;
+  border-radius: 14px;
+
+  background: white;
+
+  color: #111;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition: .15s;
+}
+
+.profileButton:hover {
+  background: #f6f6f6;
+}
+
+.profileButton--active {
+  border-color: #111;
+  background: #efefef;
+  font-weight: 700;
+}
+
+.newPlayerBox {
+  display: grid;
+  gap: 12px;
+
+  margin-bottom: 24px;
+}
+
+.newPlayerBox label {
+  font-weight: 700;
+}
+
+.newPlayerBox input {
+  width: 100%;
+
+  padding: 14px 16px;
+
+  border: 2px solid #ddd;
+  border-radius: 14px;
+}
+
+.newPlayerBox input:focus {
+  outline: none;
+  border-color: #3390ff;
+}
+
+/* -------------------------------------------------- */
+/* Buttons                                             */
+/* -------------------------------------------------- */
+
+.closeButton,
+.secondaryButton {
+  width: 100%;
+
+  padding: 14px 18px;
+
+  border-radius: 14px;
+
+  cursor: pointer;
+
+  font-weight: 700;
+}
+
+.closeButton {
+  border: 0;
+
+  background: #111;
+  color: white;
+}
+
+.closeButton:hover {
+  opacity: .9;
+}
+
+.secondaryButton {
+  margin-top: 12px;
+
+  border: 2px solid #111;
+
+  background: white;
+  color: #111;
+}
+
+/* -------------------------------------------------- */
+/* Gewinner Overlay                                    */
+/* -------------------------------------------------- */
+
+.roundWinnerOverlay {
+  position: fixed;
+  inset: 0;
+
+  border: 0;
+
+  background: rgb(0 0 0 / .93);
+
+  color: white;
+
+  display: grid;
+  place-content: center;
+
+  gap: 24px;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  z-index: 200;
+}
+
+.roundWinnerOverlay div {
+  font-size: clamp(42px, 7vw, 88px);
+  font-weight: 900;
+}
+
+.roundWinnerOverlay small {
+  font-size: clamp(18px, 2.5vw, 30px);
+  opacity: .75;
+}
+
+/* -------------------------------------------------- */
+/* Responsive                                          */
+/* -------------------------------------------------- */
+
+@media (max-width: 700px) {
+
+  .scoreLayout {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .playerName {
+    top: 28px;
+
+    max-width: calc(100% - 80px);
+
+    font-size: clamp(24px, 6vw, 42px);
+  }
+
+  .scoreValue {
+    font-size: clamp(96px, 30vw, 200px);
+  }
+
+  .scoreValue--service::after {
+    height: 10px;
+  }
+
+  .setDots {
+    bottom: 26px;
+    gap: 14px;
+  }
+
+  .setDot {
+    width: 22px;
+    height: 22px;
+  }
+
+  .topbar {
+    top: 12px;
+    right: 12px;
+  }
+
+  .iconButton {
+    width: 46px;
+    height: 46px;
+
+    font-size: 24px;
+  }
+
+  .dialog {
+    width: calc(100vw - 24px);
+    padding: 20px;
+  }
+}
