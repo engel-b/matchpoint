@@ -494,3 +494,51 @@ select {
 .dangerButton:hover {
   background: #fff0f0;
 }
+
+.updatePrompt {
+  position: fixed;
+  left: 24px;
+  right: 24px;
+  bottom: 24px;
+  z-index: 300;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+
+  padding: 16px 18px;
+  border-radius: 18px;
+
+  background: white;
+  color: #111;
+
+  box-shadow: 0 18px 60px rgb(0 0 0 / 0.45);
+}
+
+.updatePrompt div {
+  display: grid;
+  gap: 4px;
+}
+
+.updatePrompt span {
+  opacity: 0.75;
+}
+
+.updatePrompt button {
+  border: 0;
+  border-radius: 999px;
+  background: #111;
+  color: white;
+  padding: 12px 18px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .updatePrompt {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+}

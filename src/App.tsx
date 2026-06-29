@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FullscreenButton } from "./components/FullscreenButton";
 import { ScorePanel } from "./components/ScorePanel";
+import { UpdatePrompt } from "./components/UpdatePrompt";
 import { PlayerDialog } from "./dialogs/PlayerDialog";
 import { SettingsDialog } from "./dialogs/SettingsDialog";
 import { useAppStorage } from "./hooks/useAppStorage";
@@ -178,6 +179,7 @@ function handleCreateProfile(playerId: PlayerId, name: string) {
           onClose={() => setProfileDialogPlayer(null)}
         />
       )}
+      <UpdatePrompt />
     </main>
   );
 }

@@ -4,10 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
     "icons": "tsx scripts/build-icons.ts",
+    
+    "predev": "npm run icons",
+    "dev": "vite",
+    
     "prebuild": "npm run icons",
     "build": "tsc -b && vite build",
+    
     "lint": "eslint .",
     "preview": "vite preview"
   },

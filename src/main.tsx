@@ -1,10 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { registerSW } from "virtual:pwa-register";
 import App from "./App";
 import "./styles.css";
-import { registerSW } from "virtual:pwa-register";
 
-registerSW({ immediate: true });
+const updateSW = registerSW({
+  immediate: true,
+  onNeedRefresh() {
+    window.dispatchEvent(new Event("matchpoint:update-available"));
+  },
+});
+
+window.addEventListener("matchpoint:update-confirmed", () => {
+  void updateSW(true);
+});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
