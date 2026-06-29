@@ -1,31 +1,48 @@
 import { useEffect, useState } from "react";
-import type { PlayerProfile } from "../types/game";
+import type { GameSettings, PlayerProfile } from "../types/game";
 import {
   ensureDefaultProfiles,
+  loadAppState,
   loadProfiles,
-  loadSettings,
+  saveAppState,
   saveProfile,
-  saveSettings,
 } from "../storage/appStorage";
 
 export type Theme = "dark" | "light";
 
-type UseAppStorageArgs = {
-  defaultProfiles: PlayerProfile[];
+type SelectedProfileIds = {
+  player1: string;
+  player2: string;
 };
 
-export function useAppStorage({ defaultProfiles }: UseAppStorageArgs) {
+type UseAppStorageArgs = {
+  defaultProfiles: PlayerProfile[];
+  defaultGameSettings: GameSettings;
+  defaultSelectedProfileIds: SelectedProfileIds;
+};
+
+export function useAppStorage({
+  defaultProfiles,
+  defaultGameSettings,
+  defaultSelectedProfileIds,
+}: UseAppStorageArgs) {
   const [theme, setThemeState] = useState<Theme>("dark");
-  const [setsToWin, setSetsToWinState] = useState(3);
   const [profiles, setProfiles] = useState<PlayerProfile[]>(defaultProfiles);
+  const [storedGameSettings, setStoredGameSettings] =
+    useState<GameSettings>(defaultGameSettings);
+  const [selectedProfileIds, setSelectedProfileIdsState] =
+    useState<SelectedProfileIds>(defaultSelectedProfileIds);
 
   useEffect(() => {
     async function loadStoredData() {
-      const storedSettings = await loadSettings();
+      const storedAppState = await loadAppState();
 
-      if (storedSettings) {
-        setThemeState(storedSettings.theme);
-        setSetsToWinState(storedSettings.setsToWin ?? 3);
+      if (storedAppState) {
+        setThemeState(storedAppState.theme);
+        setStoredGameSettings(storedAppState.gameSettings);
+        setSelectedProfileIdsState(
+          storedAppState.selectedProfileIds ?? defaultSelectedProfileIds
+        );
       }
 
       const storedProfiles = await loadProfiles();
@@ -38,26 +55,39 @@ export function useAppStorage({ defaultProfiles }: UseAppStorageArgs) {
     }
 
     void loadStoredData();
-  }, [defaultProfiles]);
+  }, [defaultProfiles, defaultSelectedProfileIds]);
 
-  function setTheme(nextTheme: Theme) {
-    setThemeState(nextTheme);
+  function persistAppState(nextState: {
+    theme?: Theme;
+    gameSettings?: GameSettings;
+    selectedProfileIds?: SelectedProfileIds;
+  }) {
+    const nextTheme = nextState.theme ?? theme;
+    const nextGameSettings = nextState.gameSettings ?? storedGameSettings;
+    const nextSelectedProfileIds =
+      nextState.selectedProfileIds ?? selectedProfileIds;
 
-    void saveSettings({
-      id: "settings",
+    void saveAppState({
+      id: "app-state",
       theme: nextTheme,
-      setsToWin,
+      gameSettings: nextGameSettings,
+      selectedProfileIds: nextSelectedProfileIds,
     });
   }
 
-  function setSetsToWin(nextSetsToWin: number) {
-    setSetsToWinState(nextSetsToWin);
+  function setTheme(nextTheme: Theme) {
+    setThemeState(nextTheme);
+    persistAppState({ theme: nextTheme });
+  }
 
-    void saveSettings({
-      id: "settings",
-      theme,
-      setsToWin: nextSetsToWin,
-    });
+  function saveGameSettings(nextGameSettings: GameSettings) {
+    setStoredGameSettings(nextGameSettings);
+    persistAppState({ gameSettings: nextGameSettings });
+  }
+
+  function saveSelectedProfileIds(nextSelectedProfileIds: SelectedProfileIds) {
+    setSelectedProfileIdsState(nextSelectedProfileIds);
+    persistAppState({ selectedProfileIds: nextSelectedProfileIds });
   }
 
   function addProfile(profile: PlayerProfile) {
@@ -68,9 +98,11 @@ export function useAppStorage({ defaultProfiles }: UseAppStorageArgs) {
   return {
     theme,
     setTheme,
-    setsToWin,
-    setSetsToWin,
     profiles,
     addProfile,
+    storedGameSettings,
+    saveGameSettings,
+    selectedProfileIds,
+    saveSelectedProfileIds,
   };
 }

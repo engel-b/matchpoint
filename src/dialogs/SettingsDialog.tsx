@@ -1,19 +1,20 @@
 import type { Theme } from "../hooks/useAppStorage";
+import type { GameSettings } from "../types/game";
 
 type Props = {
   theme: Theme;
-  setsToWin: number;
+  gameSettings: GameSettings;
   onThemeChange: (theme: Theme) => void;
-  onSetsToWinChange: (setsToWin: number) => void;
+  onGameSettingsChange: (settings: GameSettings) => void;
   onResetGame: () => void;
   onClose: () => void;
 };
 
 export function SettingsDialog({
   theme,
-  setsToWin,
+  gameSettings,
   onThemeChange,
-  onSetsToWinChange,
+  onGameSettingsChange,
   onResetGame,
   onClose,
 }: Props) {
@@ -47,8 +48,13 @@ export function SettingsDialog({
           <span>Spielmodus</span>
 
           <select
-            value={setsToWin}
-            onChange={(event) => onSetsToWinChange(Number(event.target.value))}
+            value={gameSettings.setsToWin}
+            onChange={(event) =>
+              onGameSettingsChange({
+                ...gameSettings,
+                setsToWin: Number(event.target.value),
+              })
+            }
           >
             <option value={1}>Einzelrunde</option>
             <option value={2}>Best of 3</option>

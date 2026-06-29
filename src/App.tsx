@@ -26,14 +26,29 @@ export default function App() {
     continueAfterResult,
     undo,
     resetGame,
-    updateSetsToWin,
+    updateGameSettings,
+    applySelectedProfiles,
     selectProfile,
     createProfile,
   } = gameController;
 
-  const { theme, setTheme, setsToWin, setSetsToWin, profiles, addProfile } = useAppStorage({
-    defaultProfiles,
-  });
+  const {
+  theme,
+  setTheme,
+  profiles,
+  addProfile,
+  storedGameSettings,
+  saveGameSettings,
+  selectedProfileIds,
+  saveSelectedProfileIds,
+} = useAppStorage({
+  defaultProfiles,
+  defaultGameSettings: game.settings,
+  defaultSelectedProfileIds: {
+    player1: game.player1.profileId,
+    player2: game.player2.profileId,
+  },
+});
 
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [profileDialogPlayer, setProfileDialogPlayer] =
@@ -44,25 +59,51 @@ export default function App() {
   }, [profiles, setProfiles]);
 
   useEffect(() => {
-  updateSetsToWin(setsToWin);
-}, [setsToWin, updateSetsToWin]);
+  updateGameSettings(storedGameSettings);
+}, [storedGameSettings]);
 
-  function handleSelectProfile(playerId: PlayerId, profile: PlayerProfile) {
-    selectProfile(playerId, profile);
-    setProfileDialogPlayer(null);
-  }
+useEffect(() => {
+  applySelectedProfiles(profiles, selectedProfileIds);
+}, [profiles, selectedProfileIds, applySelectedProfiles]);
 
-  function handleCreateProfile(playerId: PlayerId, name: string) {
-    const profile: PlayerProfile = {
-      id: crypto.randomUUID(),
-      name,
-      createdAt: new Date().toISOString(),
-    };
+function handleSelectProfile(playerId: PlayerId, profile: PlayerProfile) {
+  selectProfile(playerId, profile);
 
-    addProfile(profile);
-    createProfile(playerId, profile);
-    setProfileDialogPlayer(null);
-  }
+  saveSelectedProfileIds({
+    player1:
+      playerId === "player1" ? profile.id : game.player1.profileId,
+    player2:
+      playerId === "player2" ? profile.id : game.player2.profileId,
+  });
+
+  setProfileDialogPlayer(null);
+}
+
+ 
+  function handleGameSettingsChange(nextSettings: typeof game.settings) {
+  updateGameSettings(nextSettings);
+  saveGameSettings(nextSettings);
+}
+
+function handleCreateProfile(playerId: PlayerId, name: string) {
+  const profile: PlayerProfile = {
+    id: crypto.randomUUID(),
+    name,
+    createdAt: new Date().toISOString(),
+  };
+
+  addProfile(profile);
+  createProfile(playerId, profile);
+
+  saveSelectedProfileIds({
+    player1:
+      playerId === "player1" ? profile.id : game.player1.profileId,
+    player2:
+      playerId === "player2" ? profile.id : game.player2.profileId,
+  });
+
+  setProfileDialogPlayer(null);
+}
 
   const profileDialogPlayerState =
     profileDialogPlayer === "player1"
@@ -119,9 +160,9 @@ export default function App() {
       {settingsOpen && (
   <SettingsDialog
   theme={theme}
-  setsToWin={setsToWin}
+  gameSettings={game.settings}
   onThemeChange={setTheme}
-  onSetsToWinChange={setSetsToWin}
+  onGameSettingsChange={handleGameSettingsChange}
   onResetGame={resetGame}
   onClose={() => setSettingsOpen(false)}
 />

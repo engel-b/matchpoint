@@ -1,4 +1,4 @@
-import { db, type AppSettings } from "./db";
+import { db, type StoredAppState } from "./db";
 import type { PlayerProfile } from "../types/game";
 
 export async function loadProfiles(): Promise<PlayerProfile[]> {
@@ -17,10 +17,10 @@ export async function ensureDefaultProfiles(
   }
 }
 
-export async function loadSettings(): Promise<AppSettings | undefined> {
-  return db.settings.get("settings");
+export async function loadAppState(): Promise<StoredAppState | undefined> {
+  return db.appState.get("app-state");
 }
 
-export async function saveSettings(settings: AppSettings): Promise<void> {
-  await db.settings.put(settings);
+export async function saveAppState(state: StoredAppState): Promise<void> {
+  await db.appState.put(state);
 }

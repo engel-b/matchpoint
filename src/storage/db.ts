@@ -1,22 +1,27 @@
 import Dexie, { type Table } from "dexie";
-import type { PlayerProfile } from "../types/game";
+import type { GameSettings, PlayerProfile } from "../types/game";
+import type { Theme } from "../hooks/useAppStorage";
 
-export type AppSettings = {
-  id: "settings";
-  theme: "dark" | "light";
-  setsToWin: number;
+export type StoredAppState = {
+  id: "app-state";
+  theme: Theme;
+  gameSettings: GameSettings;
+  selectedProfileIds: {
+    player1: string;
+    player2: string;
+  };
 };
 
 class TTScoreboardDatabase extends Dexie {
   profiles!: Table<PlayerProfile, string>;
-  settings!: Table<AppSettings, string>;
+  appState!: Table<StoredAppState, string>;
 
   constructor() {
     super("tt-scoreboard");
 
-    this.version(1).stores({
+    this.version(2).stores({
       profiles: "id, name, createdAt",
-      settings: "id",
+      appState: "id",
     });
   }
 }

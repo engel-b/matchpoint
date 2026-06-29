@@ -229,7 +229,50 @@ export function useGame() {
   }));
 }
 
+function updateGameSettings(settings: GameState["settings"]) {
+  setGame((currentGame) => ({
+    ...currentGame,
+    settings,
+  }));
+}
+
+function applySelectedProfiles(
+  profiles: PlayerProfile[],
+  selectedProfileIds: {
+    player1: string;
+    player2: string;
+  }
+) {
+  const selectedPlayer1 = profiles.find(
+    (profile) => profile.id === selectedProfileIds.player1
+  );
+
+  const selectedPlayer2 = profiles.find(
+    (profile) => profile.id === selectedProfileIds.player2
+  );
+
+  setGame((currentGame) => ({
+    ...currentGame,
+    player1: selectedPlayer1
+      ? {
+          ...currentGame.player1,
+          profileId: selectedPlayer1.id,
+          name: selectedPlayer1.name,
+        }
+      : currentGame.player1,
+    player2: selectedPlayer2
+      ? {
+          ...currentGame.player2,
+          profileId: selectedPlayer2.id,
+          name: selectedPlayer2.name,
+        }
+      : currentGame.player2,
+  }));
+}
+
 return {
+  applySelectedProfiles,
+  updateGameSettings,
     updateSetsToWin,
     game,
     server,
