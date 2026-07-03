@@ -1,0 +1,55 @@
+{
+  "common": {
+    "close": "Schließen",
+    "undo": "Rückgängig"
+  },
+  "fullscreen": {
+    "open": "Vollbild öffnen",
+    "close": "Vollbild verlassen"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "language": "Sprache",
+    "theme": "Theme",
+    "dark": "Dunkel",
+    "light": "Hell",
+    "gameMode": "Spielmodus",
+    "singleRound": "Einzelrunde",
+    "bestOf3": "Best of 3",
+    "bestOf5": "Best of 5",
+    "bestOf7": "Best of 7",
+    "cancelGame": "Spiel abbrechen",
+    "confirmCancelGame": "Aktuelles Spiel wirklich abbrechen?"
+  },
+  "game": {
+    "wonRound": "{{player}} hat die Runde gewonnen.",
+    "wonMatch": "{{player}} hat das Spiel gewonnen.",
+    "changeSidesContinue": "Seiten wechseln · Tippen zum Fortfahren",
+    "tapForNewGame": "Tippen für neues Spiel"
+  },
+  "player": {
+    "select": "Spieler auswählen",
+    "new": "Neuer Spieler",
+    "namePlaceholder": "Name eingeben",
+    "add": "Hinzufügen"
+  },
+  "update": {
+    "available": "Neue Version verfügbar",
+    "description": "Aktualisieren, um die neueste Version zu verwenden.",
+    "button": "Aktualisieren"
+  },
+  "history": {
+    "title": "Historie",
+    "loading": "Historie wird geladen ...",
+    "empty": "Noch keine Spiele gespeichert."
+  },
+  "controls": {
+    "title": "Remote-Tasten",
+    "player1Point": "Punkt Spieler 1",
+    "player2Point": "Punkt Spieler 2",
+    "learn": "Lernen",
+    "clear": "Löschen",
+    "pressKey": "Taste drücken ..."
+  },
+  "statistics": {}
+}

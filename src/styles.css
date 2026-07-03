@@ -1,0 +1,830 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.app {
+  min-height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.app--dark {
+  background: #000;
+  color: #fff;
+}
+
+.app--light {
+  background: #f4f4f4;
+  color: #111;
+}
+
+/* -------------------------------------------------- */
+/* Topbar                                              */
+/* -------------------------------------------------- */
+
+.topbar {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 12px;
+  z-index: 20;
+}
+
+.iconButton {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid currentColor;
+  border-radius: 999px;
+
+  background: transparent;
+  color: inherit;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s,
+    transform 0.1s,
+    opacity 0.15s;
+}
+
+.iconButton svg {
+  width: 26px;
+  height: 26px;
+
+  stroke-width: 2.25;
+}
+
+.iconButton:hover {
+  background: rgb(255 255 255 / 0.08);
+}
+
+.iconButton:active {
+  transform: scale(0.95);
+}
+
+.iconButton:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* -------------------------------------------------- */
+/* Scoreboard                                          */
+/* -------------------------------------------------- */
+
+.scoreLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+.scorePanel {
+  position: relative;
+
+  border: 0;
+
+  background: transparent;
+
+  color: inherit;
+
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.scorePanel:active {
+  transform: scale(0.995);
+}
+
+.scorePanel--red .scoreValue {
+  color: #ff4040;
+}
+
+.scorePanel--blue .scoreValue {
+  color: #3390ff;
+}
+
+/* -------------------------------------------------- */
+/* Spielername                                         */
+/* -------------------------------------------------- */
+
+.playerName {
+  position: absolute;
+
+  top: 72px;
+  left: 0;
+  right: 0;
+
+  width: fit-content;
+  max-width: calc(100% - 160px);
+
+  margin: 0 auto;
+
+  border: 0;
+  border-radius: 999px;
+
+  background: transparent;
+
+  color: inherit;
+
+  padding: 6px 18px;
+
+  cursor: pointer;
+
+  text-align: center;
+
+  font-size: clamp(32px, 5vw, 72px);
+  font-weight: 700;
+
+  transition: background 0.15s;
+}
+
+.playerName:hover {
+  background: rgb(255 255 255 / 0.08);
+}
+
+.playerName:active {
+  background: rgb(255 255 255 / 0.15);
+}
+
+/* -------------------------------------------------- */
+/* Punktzahl                                           */
+/* -------------------------------------------------- */
+
+.scoreValue {
+  position: relative;
+
+  font-size: clamp(140px, 28vw, 420px);
+  line-height: 0.9;
+  font-weight: 900;
+
+  padding-bottom: 34px;
+}
+
+.scoreValue--service::after {
+  content: "";
+
+  position: absolute;
+
+  left: 4%;
+  right: 4%;
+  bottom: 0;
+
+  height: 14px;
+
+  background: currentColor;
+
+  border-radius: 999px;
+
+  box-shadow: 0 0 18px currentColor;
+
+  animation: servicePulse 1.3s infinite;
+}
+
+@keyframes servicePulse {
+  0% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.45;
+  }
+}
+
+/* -------------------------------------------------- */
+/* Satzanzeige                                         */
+/* -------------------------------------------------- */
+
+.setDots {
+  position: absolute;
+
+  bottom: 48px;
+
+  display: flex;
+
+  gap: 18px;
+}
+
+.setDot {
+  width: 28px;
+  height: 28px;
+
+  border-radius: 999px;
+
+  border: 3px solid currentColor;
+
+  opacity: 0.35;
+}
+
+.setDot--active {
+  background: currentColor;
+  opacity: 1;
+}
+
+/* -------------------------------------------------- */
+/* Dialoge                                             */
+/* -------------------------------------------------- */
+
+.dialogBackdrop {
+  position: fixed;
+  inset: 0;
+
+  display: grid;
+  place-items: center;
+
+  background: rgb(0 0 0 / 0.65);
+
+  z-index: 100;
+}
+
+.dialog {
+  width: min(480px, calc(100vw - 32px));
+
+  border-radius: 22px;
+
+  background: white;
+  color: #111;
+
+  padding: 28px;
+
+  box-shadow: 0 24px 80px rgb(0 0 0 / 0.45);
+}
+
+.dialog h2 {
+  margin: 0 0 24px 0;
+}
+
+.settingRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 16px;
+
+  margin-bottom: 24px;
+}
+
+.settingRow select {
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+
+/* -------------------------------------------------- */
+/* Profilauswahl                                       */
+/* -------------------------------------------------- */
+
+.profileList {
+  display: grid;
+  gap: 12px;
+
+  margin-bottom: 24px;
+}
+
+.profileButton {
+  width: 100%;
+
+  padding: 14px 18px;
+
+  border: 2px solid #ddd;
+  border-radius: 14px;
+
+  background: white;
+
+  color: #111;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition: 0.15s;
+}
+
+.profileButton:hover {
+  background: #f6f6f6;
+}
+
+.profileButton--active {
+  border-color: #111;
+  background: #efefef;
+  font-weight: 700;
+}
+
+.newPlayerBox {
+  display: grid;
+  gap: 12px;
+
+  margin-bottom: 24px;
+}
+
+.newPlayerBox label {
+  font-weight: 700;
+}
+
+.newPlayerBox input {
+  width: 100%;
+
+  padding: 14px 16px;
+
+  border: 2px solid #ddd;
+  border-radius: 14px;
+}
+
+.newPlayerBox input:focus {
+  outline: none;
+  border-color: #3390ff;
+}
+
+/* -------------------------------------------------- */
+/* Buttons                                             */
+/* -------------------------------------------------- */
+
+.closeButton,
+.secondaryButton {
+  width: 100%;
+
+  padding: 14px 18px;
+
+  border-radius: 14px;
+
+  cursor: pointer;
+
+  font-weight: 700;
+}
+
+.closeButton {
+  border: 0;
+
+  background: #111;
+  color: white;
+}
+
+.closeButton:hover {
+  opacity: 0.9;
+}
+
+.secondaryButton {
+  margin-top: 12px;
+
+  border: 2px solid #111;
+
+  background: white;
+  color: #111;
+}
+
+/* -------------------------------------------------- */
+/* Gewinner Overlay                                    */
+/* -------------------------------------------------- */
+
+.roundWinnerOverlay {
+  position: fixed;
+  inset: 0;
+
+  border: 0;
+
+  background: rgb(0 0 0 / 0.93);
+
+  color: white;
+
+  display: grid;
+  place-content: center;
+
+  gap: 24px;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  z-index: 200;
+}
+
+.roundWinnerOverlay div {
+  font-size: clamp(42px, 7vw, 88px);
+  font-weight: 900;
+}
+
+.roundWinnerOverlay small {
+  font-size: clamp(18px, 2.5vw, 30px);
+  opacity: 0.75;
+}
+
+/* -------------------------------------------------- */
+/* Zusätzliche Buttons / Hinweise                      */
+/* -------------------------------------------------- */
+
+.dangerButton {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 14px 18px;
+  border: 2px solid #ff4040;
+  border-radius: 14px;
+  background: white;
+  color: #c80000;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.dangerButton:hover {
+  background: #fff0f0;
+}
+
+.updatePrompt {
+  position: fixed;
+  left: 24px;
+  right: 24px;
+  bottom: 24px;
+  z-index: 300;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+
+  padding: 16px 18px;
+  border-radius: 18px;
+
+  background: white;
+  color: #111;
+
+  box-shadow: 0 18px 60px rgb(0 0 0 / 0.45);
+}
+
+.updatePrompt div {
+  display: grid;
+  gap: 4px;
+}
+
+.updatePrompt span {
+  opacity: 0.75;
+}
+
+.updatePrompt button {
+  border: 0;
+  border-radius: 999px;
+  background: #111;
+  color: white;
+  padding: 12px 18px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.versionInfo {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 24px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #f4f4f4;
+  color: #111;
+}
+
+.versionInfo strong {
+  font-size: 18px;
+}
+
+.versionInfo span {
+  opacity: 0.75;
+  font-size: 14px;
+}
+
+.historyDialog {
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+}
+
+.emptyText {
+  opacity: 0.7;
+}
+
+.matchList {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.matchCard {
+  padding: 16px;
+  border-radius: 16px;
+  background: #f4f4f4;
+  color: #111;
+}
+
+.matchPlayers {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.matchPlayers strong:last-child {
+  text-align: right;
+}
+
+.matchWinner {
+  font-weight: 900;
+}
+
+.matchScore {
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.matchSets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.matchSet {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: white;
+  font-weight: 700;
+}
+
+.matchDate {
+  display: block;
+  margin-top: 12px;
+  font-size: 14px;
+  opacity: 0.65;
+}
+
+.settingsSection {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.settingsSection h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.keyBindingRow {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #f4f4f4;
+  color: #111;
+}
+
+.keyBindingRow div:first-child {
+  display: grid;
+  gap: 4px;
+}
+
+.keyBindingRow span {
+  opacity: 0.75;
+  font-size: 14px;
+}
+
+.keyBindingActions {
+  display: flex;
+  gap: 8px;
+}
+
+.keyBindingActions button {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 2px solid #111;
+  background: white;
+  color: #111;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.keyBindingActions button:hover {
+  background: #f0f0f0;
+}
+
+/* -------------------------------------------------- */
+/* Responsive                                          */
+/* -------------------------------------------------- */
+
+/* Kleine Tablets / große Smartphones */
+@media (max-width: 799px) {
+  .topbar {
+    top: 10px;
+    right: 10px;
+    gap: 8px;
+  }
+
+  .iconButton {
+    width: 42px;
+    height: 42px;
+    font-size: 22px;
+  }
+
+  .playerName {
+    top: 24px;
+    max-width: calc(100% - 90px);
+    font-size: clamp(22px, 5vw, 38px);
+  }
+
+  .scoreValue {
+    font-size: clamp(110px, 24vw, 220px);
+    padding-bottom: 28px;
+  }
+
+  .scoreValue--service::after {
+    height: 10px;
+    box-shadow: 0 0 14px currentColor;
+  }
+
+  .setDots {
+    bottom: 24px;
+    gap: 12px;
+  }
+
+  .setDot {
+    width: 20px;
+    height: 20px;
+  }
+
+  .dialog {
+    width: calc(100vw - 24px);
+    padding: 20px;
+  }
+}
+
+/* Smartphones im Hochformat */
+@media (max-width: 480px) {
+  .scoreLayout {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .scorePanel {
+    min-height: 50vh;
+    justify-content: flex-start;
+    padding-top: 54px;
+    padding-bottom: 44px;
+  }
+
+  .playerName {
+    top: 10px;
+    max-width: calc(100% - 112px);
+    padding: 2px 10px;
+    font-size: clamp(18px, 6vw, 28px);
+    line-height: 1.1;
+  }
+
+  .scoreValue {
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: clamp(72px, 28vw, 132px);
+    line-height: 0.85;
+    padding-bottom: 18px;
+  }
+
+  .scoreValue--service::after {
+    height: 7px;
+    bottom: 0;
+    box-shadow: 0 0 10px currentColor;
+  }
+
+  .setDots {
+    bottom: 12px;
+    gap: 8px;
+  }
+
+  .setDot {
+    width: 16px;
+    height: 16px;
+    border-width: 2px;
+  }
+
+  .roundWinnerOverlay {
+    padding: 20px;
+  }
+
+  .roundWinnerOverlay div {
+    font-size: clamp(34px, 11vw, 56px);
+  }
+
+  .roundWinnerOverlay small {
+    font-size: clamp(16px, 5vw, 24px);
+  }
+
+  .updatePrompt {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+}
+
+/* Smartphones im Querformat */
+@media (max-height: 480px) and (orientation: landscape) {
+  .scoreLayout {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+  }
+
+  .scorePanel {
+    min-height: 100vh;
+    justify-content: center;
+    padding-top: 44px;
+    padding-bottom: 34px;
+  }
+
+  .playerName {
+    top: 8px;
+    max-width: calc(100% - 110px);
+    padding: 2px 10px;
+    font-size: clamp(18px, 4vh, 28px);
+    line-height: 1.05;
+  }
+
+  .scoreValue {
+    font-size: clamp(72px, 34vh, 150px);
+    line-height: 0.82;
+    padding-bottom: 16px;
+  }
+
+  .scoreValue--service::after {
+    height: 7px;
+    box-shadow: 0 0 10px currentColor;
+  }
+
+  .setDots {
+    bottom: 8px;
+    gap: 8px;
+  }
+
+  .setDot {
+    width: 15px;
+    height: 15px;
+    border-width: 2px;
+  }
+
+  .topbar {
+    top: 8px;
+    right: 8px;
+    gap: 6px;
+  }
+
+  .iconButton {
+    width: 36px;
+    height: 36px;
+  }
+
+  .iconButton svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.hidDebugPanel {
+  position: fixed;
+  left: 12px;
+  bottom: 12px;
+  z-index: 999;
+  background: white;
+  color: black;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+}

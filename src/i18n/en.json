@@ -1,0 +1,55 @@
+{
+  "common": {
+    "close": "Close",
+    "undo": "Undo"
+  },
+  "fullscreen": {
+    "open": "Open fullscreen",
+    "close": "Exit fullscreen"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "dark": "Dark",
+    "light": "Light",
+    "gameMode": "Game mode",
+    "singleRound": "Single round",
+    "bestOf3": "Best of 3",
+    "bestOf5": "Best of 5",
+    "bestOf7": "Best of 7",
+    "cancelGame": "Cancel game",
+    "confirmCancelGame": "Really cancel the current game?"
+  },
+  "game": {
+    "wonRound": "{{player}} won the round.",
+    "wonMatch": "{{player}} won the match.",
+    "changeSidesContinue": "Change sides · Tap to continue",
+    "tapForNewGame": "Tap for new game"
+  },
+  "player": {
+    "select": "Select player",
+    "new": "New player",
+    "namePlaceholder": "Enter name",
+    "add": "Add"
+  },
+  "update": {
+    "available": "New version available",
+    "description": "Update to use the latest version.",
+    "button": "Update"
+  },
+  "history": {
+    "title": "History",
+    "loading": "Loading history ...",
+    "empty": "No matches saved yet."
+  },
+  "controls": {
+    "title": "Remote buttons",
+    "player1Point": "Point player 1",
+    "player2Point": "Point player 2",
+    "learn": "Learn",
+    "clear": "Clear",
+    "pressKey": "Press key ..."
+  },
+  "statistics": {}
+}
