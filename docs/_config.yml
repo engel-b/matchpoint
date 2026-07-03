@@ -1,6 +1,0 @@
-title: MatchPoint
-description: Offline table tennis scoreboard as a Progressive Web App
-theme: minima
-
-plugins:
-  - jekyll-seo-tag
