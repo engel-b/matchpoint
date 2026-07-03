@@ -8,10 +8,10 @@ hero:
   actions:
     - theme: brand
       text: Open App
-      link: https://DEINE-APP-URL/
+      link: https://matchpoint.familie-engel.info/
     - theme: alt
       text: View on GitHub
-      link: https://github.com/engel-b/matchpoint-pwa
+      link: https://github.com/engel-b/matchpoint
 
 features:
   - icon: 🏓

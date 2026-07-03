@@ -26,3 +26,6 @@ dist-ssr
 # generated images
 public/*.png
 public/*.svg
+
+# vitepress cache
+docs/.vitepress/cache/*

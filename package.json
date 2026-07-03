@@ -7,7 +7,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "icons": "tsx scripts/build-icons.ts",
-    "predev": "npm run icons",
+    "predev": "npm run icons && npm run format",
     "dev": "vite",
     "prebuild": "npm run icons",
     "build": "tsc -b && vite build",
