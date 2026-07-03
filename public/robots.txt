@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://matchpoint.familie-engel.info/sitemap.xml
