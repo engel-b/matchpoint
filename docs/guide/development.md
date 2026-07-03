@@ -1,24 +1,24 @@
 # Development
 
-Install dependencies:
+Anhängigkeiten installieren:
 
 ```bash
 npm install
 ```
 
-Start development server:
+Lokal ausführen:
 
 ```bash
 npm run dev
 ```
 
-Build the app:
+App bauen:
 
 ```bash
 npm run build
 ```
 
-Generate PWA icons:
+PWA-Icons generieren:
 
 ```bash
 npm run icons

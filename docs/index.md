@@ -3,39 +3,44 @@ layout: home
 
 hero:
   name: MatchPoint
-  text: Modern table tennis scoreboard
-  tagline: Offline-first PWA with player profiles, match history and Bluetooth HID remote support.
+  text: Modernes Tischtennis-Scoreboard
+  tagline: Offlinefähige Progressive Web App mit Spielerprofilen, Spielhistorie und Unterstützung für Bluetooth-HID-Fernbedienungen.
   actions:
     - theme: brand
-      text: Open App
+      text: App starten
       link: https://matchpoint.familie-engel.info/
     - theme: alt
-      text: View on GitHub
+      text: GitHub
       link: https://github.com/engel-b/matchpoint
 
 features:
   - icon: 🏓
-    title: Table Tennis Scoring
-    details: Score matches using common table tennis rules including deuce and configurable match formats.
+    title: Offizielle Tischtennisregeln
+    details: Zählt Punkte, Sätze und Spiele nach den offiziellen Tischtennisregeln – inklusive Verlängerung und konfigurierbarer Spielmodi.
+
   - icon: 📱
     title: Progressive Web App
-    details: Install MatchPoint on your tablet or phone and use it offline.
+    details: Installiere MatchPoint auf dem Tablet oder Smartphone und nutze die App vollständig offline.
+
   - icon: 🎮
-    title: Bluetooth Remote
-    details: Learn custom Bluetooth HID buttons for player points and undo.
+    title: Bluetooth-Fernbedienung
+    details: Unterstützt Bluetooth-HID-Taster. Die Tasten können direkt in der App individuell angelernt werden.
+
   - icon: 👥
-    title: Player Profiles
-    details: Store players locally and quickly select them before a match.
+    title: Spielerprofile
+    details: Verwalte Spieler lokal auf dem Gerät und wähle sie vor jedem Spiel mit wenigen Fingertipps aus.
+
   - icon: 📜
-    title: Match History
-    details: Keep a local history of completed matches.
-  - icon: 💾
-    title: Local First
-    details: All data stays on your device using IndexedDB.
+    title: Spielhistorie
+    details: Alle abgeschlossenen Spiele werden lokal gespeichert und können jederzeit eingesehen werden.
+
+  - icon: 🔒
+    title: Datenschutz
+    details: Alle Daten bleiben auf deinem Gerät. Es werden keine Benutzerkonten benötigt und keine Daten in eine Cloud übertragen.
 ---
 
-## Why MatchPoint?
+# Warum MatchPoint?
 
-MatchPoint was built for players who want a clean, readable and offline-capable table tennis scoreboard without accounts, subscriptions or cloud dependencies.
+MatchPoint entstand aus dem Wunsch nach einem modernen, übersichtlichen und vollständig offlinefähigen Tischtennis-Scoreboard.
 
-It is designed for tablets near the table and can be controlled with simple Bluetooth HID buttons.
+Der Fokus liegt auf einer großen, gut lesbaren Anzeige, einer intuitiven Bedienung sowie der Möglichkeit, Punkte komfortabel über Bluetooth-HID-Taster zu zählen. Die Anwendung wurde speziell für Tablets entwickelt, funktioniert aber ebenso auf Smartphones und Desktop-Geräten.
