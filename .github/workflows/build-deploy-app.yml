@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - "docs/**"
+      - "README.md"
+      - ".github/workflows/build-deploy-docs.yml"
     tags:
       - "v*"
 
