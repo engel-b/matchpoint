@@ -17,7 +17,6 @@ export default defineConfig({
           { text: "Start", link: "/" },
           { text: "Anleitung", link: "/guide/development" },
           { text: "App öffnen", link: "https://matchpoint.familie-engel.info/" },
-          { text: "GitHub", link: "https://github.com/engel-b/matchpoint" },
         ],
 
         sidebar: [
@@ -44,7 +43,6 @@ export default defineConfig({
           { text: "Home", link: "/en/" },
           { text: "Guide", link: "/en/guide/development" },
           { text: "Open App", link: "https://matchpoint.familie-engel.info/" },
-          { text: "GitHub", link: "https://github.com/engel-b/matchpoint" },
         ],
 
         sidebar: [
