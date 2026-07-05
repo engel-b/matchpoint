@@ -29,10 +29,10 @@ export function useGame() {
         : "";
 
   const resultText = game.matchWinner
-    ? t("player.wonMatch", { player: resultWinnerName })
-    : t("player.wonRound", { player: resultWinnerName });
+    ? t("game.wonMatch", { player: resultWinnerName })
+    : t("game.wonRound", { player: resultWinnerName });
 
-  const resultHint = game.matchWinner ? t("tapForNewGame") : t("changeSidesContinue");
+  const resultHint = game.matchWinner ? t("game.tapForNewGame") : t("game.changeSidesContinue");
 
   const defaultProfiles = createInitialGameState().profiles;
 
