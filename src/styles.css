@@ -419,20 +419,24 @@ select {
 
   border: 0;
 
-  background: rgb(0 0 0 / 0.93);
-
-  color: white;
-
   display: grid;
   place-content: center;
-
   gap: 24px;
 
   text-align: center;
-
   cursor: pointer;
 
   z-index: 200;
+}
+
+.app--dark .roundWinnerOverlay {
+  background: rgb(0 0 0 / 0.93);
+  color: white;
+}
+
+.app--light .roundWinnerOverlay {
+  background: rgb(244 244 244 / 0.96);
+  color: #111;
 }
 
 .roundWinnerOverlay div {
