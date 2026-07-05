@@ -14,6 +14,13 @@ i18n.use(initReactI18next).init({
   interpolation: {
     escapeValue: false,
   },
+  debug: import.meta.env.DEV,
+
+  saveMissing: import.meta.env.DEV,
+
+  missingKeyHandler: (lng, ns, key) => {
+    console.warn(`[i18n] Missing translation: ${key} (${lng})`);
+  },
 });
 
 export default i18n;
