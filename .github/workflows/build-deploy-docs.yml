@@ -1,4 +1,4 @@
-name: Deploy GitHub Pages
+name: Build and Deploy Pages
 
 on:
   push:
@@ -23,6 +23,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:

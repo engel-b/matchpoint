@@ -3,8 +3,13 @@ layout: home
 
 hero:
   name: MatchPoint
-  text: Modernes Tischtennis-Scoreboard
-  tagline: Offlinefähige Progressive Web App mit Spielerprofilen, Spielhistorie und Unterstützung für Bluetooth-HID-Fernbedienungen.
+  text: Moderne Tischtennis-Spielstandserfassung
+  tagline: Open-Source, offline-first und kostenlos – die Progressive Web App für die Tischtennis-Spielstandserfassung mit lokaler Datenspeicherung und konfigurierbaren Eingabegeräten.
+
+  image:
+    src: /logo.svg
+    alt: MatchPoint Logo
+
   actions:
     - theme: brand
       text: App starten
@@ -18,13 +23,21 @@ features:
     title: Offizielle Tischtennisregeln
     details: Zählt Punkte, Sätze und Spiele nach den offiziellen Tischtennisregeln – inklusive Verlängerung und konfigurierbarer Spielmodi.
 
-  - icon: 📱
-    title: Progressive Web App
-    details: Installiere MatchPoint auf dem Tablet oder Smartphone und nutze die App vollständig offline.
+  - icon: 📲
+    title: Installierbar
+    details: Als Progressive Web App auf Smartphone, Tablet oder Desktop installierbar und vollständig offline nutzbar.
 
-  - icon: 🎮
-    title: Bluetooth-Fernbedienung
-    details: Unterstützt Bluetooth-HID-Taster. Die Tasten können direkt in der App individuell angelernt werden.
+  - icon: 💰
+    title: Kostenfrei
+    details: MatchPoint ist kostenlos nutzbar – ohne Werbung, Abonnement oder versteckte Kosten.
+
+  - icon: 🔓
+    title: Open Source
+    details: Der Quellcode ist öffentlich auf GitHub verfügbar. Beiträge und Verbesserungsvorschläge sind willkommen.
+
+  - icon: 📱
+    title: Fernsteuerung
+    details: Unterstützt Tastatureingaben. Es können alle Geräte genutzt werden, die Standard Tastatur-Events senden, inkl. USB/Bluetooth Tastaturen, HID-Remotes, Page Turners oder programmierbare Keypads.
 
   - icon: 👥
     title: Spielerprofile
@@ -34,13 +47,21 @@ features:
     title: Spielhistorie
     details: Alle abgeschlossenen Spiele werden lokal gespeichert und können jederzeit eingesehen werden.
 
-  - icon: 🔒
+  - icon: 💾
     title: Datenschutz
-    details: Alle Daten bleiben auf deinem Gerät. Es werden keine Benutzerkonten benötigt und keine Daten in eine Cloud übertragen.
+    details: Alle Daten bleiben auf deinem Gerät. Es werden keine Benutzerkonten benötigt und keine Daten an Dritte übertragen.
 ---
 
 # Warum MatchPoint?
 
-MatchPoint entstand aus dem Wunsch nach einem modernen, übersichtlichen und vollständig offlinefähigen Tischtennis-Scoreboard.
+MatchPoint bringt eine moderne Tischtennis-Spielstandserfassung auf jedes Gerät – vom Smartphone bis zum Tablet. Als Progressive Web App ist es kostenlos, offline nutzbar und in wenigen Sekunden installiert.
 
-Der Fokus liegt auf einer großen, gut lesbaren Anzeige, einer intuitiven Bedienung sowie der Möglichkeit, Punkte komfortabel über Bluetooth-HID-Taster zu zählen. Die Anwendung wurde speziell für Tablets entwickelt, funktioniert aber ebenso auf Smartphones und Desktop-Geräten.
+Die Anwendung läuft vollständig lokal, benötigt keine Cloud und unterstützt frei konfigurierbare Eingabegeräte. Damit eignet sie sich sowohl für den privaten Einsatz als auch für Training, Vereinsabende und kleine Turniere.
+
+Der Fokus liegt auf einer schnellen und intuitiven Bedienung, einer großen, gut lesbaren Anzeige und der Unterstützung frei konfigurierbarer Eingabegeräte. So bleibt die Konzentration dort, wo sie hingehört: am Tisch.
+
+# Los geht's
+
+Bereit für das erste Spiel?
+
+📖 [Installation](guide/installation.md) oder 🚀 [App öffnen](https://matchpoint.familie-engel.info)

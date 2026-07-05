@@ -1,74 +1,129 @@
 import { defineConfig } from "vitepress";
+import { withMermaid } from "vitepress-plugin-mermaid";
 
-export default defineConfig({
-  title: "MatchPoint",
-  description: "Modernes Tischtennis-Scoreboard als PWA",
-  base: "/matchpoint/",
+export default withMermaid(
+  defineConfig({
+    title: "MatchPoint",
+    description: "Modernes Tischtennis-Scoreboard als PWA",
+    base: "/matchpoint/",
 
-  locales: {
-    root: {
-      label: "Deutsch",
-      lang: "de-DE",
-      title: "MatchPoint",
-      description: "Modernes Tischtennis-Scoreboard als PWA",
+    lastUpdated: true,
 
-      themeConfig: {
-        nav: [
-          { text: "Start", link: "/" },
-          { text: "Anleitung", link: "/guide/development" },
-          { text: "App öffnen", link: "https://matchpoint.familie-engel.info/" },
-          { text: "GitHub", link: "https://github.com/engel-b/matchpoint" },
-        ],
+    locales: {
+      root: {
+        label: "Deutsch",
+        lang: "de-DE",
+        title: "MatchPoint",
+        description: "Modernes Tischtennis-Scoreboard als PWA",
 
-        sidebar: [
-          {
-            text: "Anleitung",
-            items: [
-              { text: "Entwicklung", link: "/guide/development" },
-              { text: "Deployment", link: "/guide/deployment" },
-              { text: "Bluetooth-Tasten", link: "/guide/bluetooth" },
-            ],
+        themeConfig: {
+          lastUpdated: {
+            text: "Zuletzt aktualisiert",
+            formatOptions: {
+              dateStyle: "short",
+              timeStyle: "short",
+            },
           },
-        ],
+
+          nav: [
+            { text: "Start", link: "/" },
+            { text: "Erste Schritte", link: "/guide/" },
+            { text: "Entwicklung", link: "/dev/" },
+            { text: "App öffnen", link: "https://matchpoint.familie-engel.info/" },
+          ],
+
+          search: {
+            provider: "local",
+          },
+
+          sidebar: [
+            {
+              text: "Erste Schritte",
+              items: [
+                { text: "Installation", link: "/guide/installation" },
+                { text: "Spiel bedienen", link: "/guide/gameplay" },
+                { text: "Eingabegeräte", link: "/guide/input-devices" },
+                { text: "FAQ", link: "/guide/4-faq" },
+              ],
+            },
+            {
+              text: "Entwicklung",
+              items: [
+                { text: "Entwicklungsumgebung", link: "/dev/ide" },
+                { text: "Architektur", link: "/dev/architecture" },
+                { text: "Deployment", link: "/dev/deployment" },
+                { text: "Releases", link: "/dev/releases" },
+                { text: "Mitwirken", link: "/dev/contribution" },
+              ],
+            },
+          ],
+
+          docFooter: {
+            prev: "Vorherige Seite",
+            next: "Nächste Seite",
+          },
+
+          footer: {
+            message:
+              'Released under the <a href="https://github.com/engel-b/matchpoint/blob/main/LICENSE" target="_blank">MIT License</a>.',
+            copyright:
+              'Copyright © 2026 <a href="https://bjoern.familie-engel.info" target="_blank">Björn Engel</a> & <a href="https://github.com/engel-b/matchpoint" target="_blank">MatchPoint Contributors</a>',
+          },
+          outline: {
+            level: [2, 3],
+            label: "Auf dieser Seite",
+          },
+        },
+      },
+
+      en: {
+        label: "English",
+        lang: "en-US",
+        title: "MatchPoint",
+        description: "Modern table tennis scoreboard as a PWA",
+
+        themeConfig: {
+          nav: [
+            { text: "Home", link: "/en/" },
+            { text: "Getting started", link: "/en/guide/" },
+            { text: "Development", link: "/en/dev/" },
+            { text: "Open App", link: "https://matchpoint.familie-engel.info/" },
+          ],
+
+          sidebar: [
+            {
+              text: "Getting started",
+              items: [
+                { text: "Installation", link: "/en/guide/installation" },
+                { text: "Gameplay", link: "/en/guide/gameplay" },
+                { text: "Input Devices", link: "/en/guide/input-devices" },
+                { text: "FAQ", link: "/en/guide/faq" },
+              ],
+            },
+            {
+              text: "Development",
+              items: [
+                { text: "Development Setup", link: "/en/dev/ide" },
+                { text: "Architecture", link: "/en/dev/architecture" },
+                { text: "Deployment", link: "/en/dev/deployment" },
+                { text: "Releases", link: "/en/dev/releases" },
+                { text: "Contributing", link: "/en/dev/contribution" },
+              ],
+            },
+          ],
+        },
       },
     },
 
-    en: {
-      label: "English",
-      lang: "en-US",
-      title: "MatchPoint",
-      description: "Modern table tennis scoreboard as a PWA",
+    themeConfig: {
+      siteTitle: "MatchPoint 🏓",
 
-      themeConfig: {
-        nav: [
-          { text: "Home", link: "/en/" },
-          { text: "Guide", link: "/en/guide/development" },
-          { text: "Open App", link: "https://matchpoint.familie-engel.info/" },
-          { text: "GitHub", link: "https://github.com/engel-b/matchpoint" },
-        ],
-
-        sidebar: [
-          {
-            text: "Guide",
-            items: [
-              { text: "Development", link: "/en/guide/development" },
-              { text: "Deployment", link: "/en/guide/deployment" },
-              { text: "Bluetooth Buttons", link: "/en/guide/bluetooth" },
-            ],
-          },
-        ],
-      },
+      socialLinks: [
+        {
+          icon: "github",
+          link: "https://github.com/engel-b/matchpoint",
+        },
+      ],
     },
-  },
-
-  themeConfig: {
-    siteTitle: "MatchPoint 🏓",
-
-    socialLinks: [
-      {
-        icon: "github",
-        link: "https://github.com/engel-b/matchpoint",
-      },
-    ],
-  },
-});
+  })
+);
