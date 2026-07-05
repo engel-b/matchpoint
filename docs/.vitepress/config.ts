@@ -7,6 +7,8 @@ export default withMermaid(
     description: "Modernes Tischtennis-Scoreboard als PWA",
     base: "/matchpoint/",
 
+    lastUpdated: true,
+
     locales: {
       root: {
         label: "Deutsch",
@@ -15,12 +17,24 @@ export default withMermaid(
         description: "Modernes Tischtennis-Scoreboard als PWA",
 
         themeConfig: {
+          lastUpdated: {
+            text: "Zuletzt aktualisiert",
+            formatOptions: {
+              dateStyle: "short",
+              timeStyle: "short",
+            },
+          },
+
           nav: [
             { text: "Start", link: "/" },
             { text: "Erste Schritte", link: "/guide/" },
             { text: "Entwicklung", link: "/dev/" },
             { text: "App öffnen", link: "https://matchpoint.familie-engel.info/" },
           ],
+
+          search: {
+            provider: "local",
+          },
 
           sidebar: [
             {
@@ -43,6 +57,22 @@ export default withMermaid(
               ],
             },
           ],
+
+          docFooter: {
+            prev: "Vorherige Seite",
+            next: "Nächste Seite",
+          },
+
+          footer: {
+            message:
+              'Released under the <a href="https://github.com/engel-b/matchpoint/blob/main/LICENSE" target="_blank">MIT License</a>.',
+            copyright:
+              'Copyright © 2026 <a href="https://bjoern.familie-engel.info" target="_blank">Björn Engel</a> & <a href="https://github.com/engel-b/matchpoint" target="_blank">MatchPoint Contributors</a>',
+          },
+          outline: {
+            level: [2, 3],
+            label: "Auf dieser Seite",
+          },
         },
       },
 

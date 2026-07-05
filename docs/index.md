@@ -3,7 +3,7 @@ layout: home
 
 hero:
   name: MatchPoint
-  text: Modernes Tischtennis-Spielstandserfassung
+  text: Moderne Tischtennis-Spielstandserfassung
   tagline: Open-Source, offline-first und kostenlos – die Progressive Web App für die Tischtennis-Spielstandserfassung mit lokaler Datenspeicherung und konfigurierbaren Eingabegeräten.
 
   image:
@@ -49,7 +49,7 @@ features:
 
   - icon: 💾
     title: Datenschutz
-    details: Alle Daten bleiben auf deinem Gerät. Es werden keine Benutzerkonten benötigt und keine Daten in eine Cloud übertragen.
+    details: Alle Daten bleiben auf deinem Gerät. Es werden keine Benutzerkonten benötigt und keine Daten an Dritte übertragen.
 ---
 
 # Warum MatchPoint?
@@ -59,3 +59,9 @@ MatchPoint bringt eine moderne Tischtennis-Spielstandserfassung auf jedes Gerät
 Die Anwendung läuft vollständig lokal, benötigt keine Cloud und unterstützt frei konfigurierbare Eingabegeräte. Damit eignet sie sich sowohl für den privaten Einsatz als auch für Training, Vereinsabende und kleine Turniere.
 
 Der Fokus liegt auf einer schnellen und intuitiven Bedienung, einer großen, gut lesbaren Anzeige und der Unterstützung frei konfigurierbarer Eingabegeräte. So bleibt die Konzentration dort, wo sie hingehört: am Tisch.
+
+# Los geht's
+
+Bereit für das erste Spiel?
+
+📖 [Installation](guide/1-installation.md) oder 🚀 [App öffnen](https://matchpoint.familie-engel.info)
