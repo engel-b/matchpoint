@@ -131,11 +131,11 @@ Dadurch wird sichergestellt, dass Nutzer nach einem Deployment zeitnah die neue 
 
 Für das Deployment werden folgende GitHub Secrets benötigt:
 
-| Secret | Beschreibung |
-|---|---|
-| `AWS_DEPLOY_ROLE_ARN` | ARN der IAM-Rolle für GitHub Actions |
-| `AWS_S3_BUCKET` | Name des S3-Buckets |
-| `AWS_CLOUDFRONT_DISTRIBUTION_ID` | ID der CloudFront Distribution |
+| Secret                           | Beschreibung                         |
+| -------------------------------- | ------------------------------------ |
+| `AWS_DEPLOY_ROLE_ARN`            | ARN der IAM-Rolle für GitHub Actions |
+| `AWS_S3_BUCKET`                  | Name des S3-Buckets                  |
+| `AWS_CLOUDFRONT_DISTRIBUTION_ID` | ID der CloudFront Distribution       |
 
 ---
 
