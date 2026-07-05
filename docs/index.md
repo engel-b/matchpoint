@@ -64,4 +64,4 @@ Der Fokus liegt auf einer schnellen und intuitiven Bedienung, einer großen, gut
 
 Bereit für das erste Spiel?
 
-📖 [Installation](guide/1-installation.md) oder 🚀 [App öffnen](https://matchpoint.familie-engel.info)
+📖 [Installation](guide/installation.md) oder 🚀 [App öffnen](https://matchpoint.familie-engel.info)
