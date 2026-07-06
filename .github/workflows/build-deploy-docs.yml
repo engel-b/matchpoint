@@ -21,7 +21,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy-docs:
+  build-docs:
     runs-on: ubuntu-latest
 
     steps:
@@ -44,8 +44,8 @@ jobs:
         with:
           path: docs/.vitepress/dist
 
-  deploy:
-    needs: build
+  deploy-docs:
+    needs: build-docs
     runs-on: ubuntu-latest
 
     environment:
