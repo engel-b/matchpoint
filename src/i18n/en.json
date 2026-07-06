@@ -1,7 +1,8 @@
 {
   "common": {
     "close": "Close",
-    "undo": "Undo"
+    "undo": "Undo",
+    "back": "Back"
   },
   "fullscreen": {
     "open": "Open fullscreen",
@@ -9,6 +10,17 @@
   },
   "settings": {
     "title": "Settings",
+    "general": "General",
+    "generalDescription": "Language, theme and game mode",
+    "players": "Player Management",
+    "playersDescription": "Manage player profiles",
+    "playersHint": "Player management will be added in a future version. Player assignment still works directly by tapping the player names on the scoreboard.",
+    "controlsDescription": "Assign keys for external input devices",
+    "dangerZone": "Danger Zone",
+    "dangerZoneDescription": "Cancel the current match or reset local data",
+    "cancelGameDescription": "Resets the current match. Player profiles and settings are kept.",
+    "resetLocalData": "Delete local data",
+    "resetLocalDataDescription": "Removes all locally stored player profiles, settings, key bindings and match history.",
     "language": "Language",
     "theme": "Theme",
     "dark": "Dark",
