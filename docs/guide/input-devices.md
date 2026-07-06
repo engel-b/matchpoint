@@ -89,7 +89,7 @@ Es werden keine Daten übertragen oder ausgewertet.
 
 ## Erprobte Eingabegeräte
 
-Die folgenden Geräte wurden mit MatchPoint getestet. Da MatchPoint auf Standard-Tastatureingaben setzt, können grundsätzlich auch viele andere Geräte verwendet werden.
+Die folgenden Geräte wurden mit MatchPoint getestet. Da MatchPoint auf Standard-Tastatureingaben setzt, können grundsätzlich auch viele andere Geräte verwendet werden. Hier wurden 2 Geräte getestet, die als Bluetooth-Tastatur am Tablet angemeldet und dann mitels Klettband an der Tischtennisplatte montiert wurden.
 
 ### Bluetooth Fernbedienung für TikTok/YouTube
 

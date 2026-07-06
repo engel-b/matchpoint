@@ -97,15 +97,48 @@ Die Auswahl bleibt für zukünftige Spiele erhalten.
 
 ## Einstellungen
 
-Über das Zahnrad-Symbol können unter anderem folgende Einstellungen vorgenommen werden:
+Über das Zahnrad-Symbol oben rechts gelangst du zu den Einstellungen von MatchPoint.
 
-- Sprache
-- Design (Hell / Dunkel)
-- Spielmodus
-- Tastenzuordnung
-- Spiel zurücksetzen
+Die Einstellungen sind in mehrere Bereiche gegliedert:
 
-Alle Änderungen werden automatisch gespeichert.
+### Allgemein
+
+Hier können allgemeine Einstellungen der Anwendung vorgenommen werden:
+
+- Sprache der Benutzeroberfläche
+- Hell-/Dunkel-Design
+- Spielmodus (Best of 1, 3, 5 oder 7)
+
+Änderungen werden automatisch lokal gespeichert und stehen beim nächsten Start der App wieder zur Verfügung.
+
+### Spielerverwaltung
+
+Dieser Bereich wird zukünftig die Verwaltung der lokalen Spielerprofile enthalten.
+
+Die Auswahl der Spieler für ein Spiel erfolgt weiterhin direkt über die Spielernamen auf dem Scoreboard.
+
+### Tastensteuerung
+
+Hier können externe Eingabegeräte konfiguriert werden.
+
+Für jede Aktion kann eine oder mehrere Tasten angelernt oder wieder entfernt werden:
+
+- Punkt für Spieler 1
+- Punkt für Spieler 2
+- Letzten Punkt zurücknehmen
+
+Unterstützt werden alle Geräte, die Standard-Tastaturereignisse senden, beispielsweise USB- und Bluetooth-Tastaturen, HID-Remotes, Page-Turner oder programmierbare Keypads.
+
+### Danger Zone
+
+In der **Danger Zone** können außerdem das aktuelle Spiel abgebrochen oder alle lokal gespeicherten Daten gelöscht werden.
+
+Folgende Funktionen stehen zur Verfügung:
+
+- **Aktuelles Spiel abbrechen** – beendet das laufende Spiel und setzt den Spielstand zurück. Spielerprofile und Einstellungen bleiben erhalten.
+- **Lokale Daten löschen** – entfernt sämtliche lokal gespeicherten Daten einschließlich Spielerprofile, Spielhistorie, Einstellungen und Tastenzuordnungen. Das Löschen der lokaler Daten kann nicht rückgängig gemacht werden.
+
+Beide Aktionen müssen vor der Ausführung ausdrücklich bestätigt werden.
 
 ---
 
