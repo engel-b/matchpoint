@@ -12,7 +12,7 @@ on:
       - "package-lock.json"
 
 jobs:
-  check:
+  check-docs:
     runs-on: ubuntu-latest
 
     steps:
