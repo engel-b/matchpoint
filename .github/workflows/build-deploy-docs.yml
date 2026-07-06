@@ -7,6 +7,9 @@ on:
     paths:
       - "docs/**"
       - ".github/workflows/build-deploy-docs.yml"
+      - ".github/workflows/pr-check-docs.yml"
+      - "package.json"
+      - "package-lock.json"
 
 permissions:
   contents: read
