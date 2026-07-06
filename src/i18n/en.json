@@ -31,7 +31,8 @@
     "bestOf5": "Best of 5",
     "bestOf7": "Best of 7",
     "cancelGame": "Cancel game",
-    "confirmCancelGame": "Really cancel the current game?"
+    "confirmCancelGame": "Really cancel the current game?",
+    "confirmResetLocalData": "Really delete all locally stored data? This action cannot be undone."
   },
   "game": {
     "wonRound": "{{player}} won the round.",

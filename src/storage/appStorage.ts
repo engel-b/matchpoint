@@ -23,3 +23,7 @@ export async function loadAppState(): Promise<StoredAppState | undefined> {
 export async function saveAppState(state: StoredAppState): Promise<void> {
   await db.appState.put(state);
 }
+
+export async function deleteAllLocalData() {
+  await db.delete();
+}

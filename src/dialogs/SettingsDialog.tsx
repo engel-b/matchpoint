@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { appVersion, commitSha } from "../version";
+
+import type { Language, Theme } from "../hooks/useAppStorage";
 import type { ControlAction, KeyBindings } from "../types/controls";
 import type { GameSettings } from "../types/game";
-import type { Language, Theme } from "../hooks/useAppStorage";
-import { appVersion, commitSha } from "../version";
 
 type SettingsView = "overview" | "general" | "players" | "controls" | "danger";
 
@@ -20,6 +21,7 @@ type Props = {
   onStartKeyCapture: (action: ControlAction) => void;
   onClearKeyBinding: (action: ControlAction) => void;
   onResetGame: () => void;
+  onDeleteLocalData: () => void;
   onClose: () => void;
 };
 
@@ -35,6 +37,7 @@ export function SettingsDialog({
   onStartKeyCapture,
   onClearKeyBinding,
   onResetGame,
+  onDeleteLocalData,
   onClose,
 }: Props) {
   const { t } = useTranslation();
@@ -231,7 +234,7 @@ export function SettingsDialog({
                   <span>{t("settings.resetLocalDataDescription")}</span>
                 </div>
 
-                <button className="dangerButton" disabled>
+                <button className="dangerButton" onClick={onDeleteLocalData}>
                   {t("settings.resetLocalData")}
                 </button>
               </div>

@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { FullscreenButton } from "./components/FullscreenButton";
-/** import { HidDebugPanel } from "./components/HidDebugPanel"; */
 import { ScorePanel } from "./components/ScorePanel";
 import { UpdatePrompt } from "./components/UpdatePrompt";
 import { MatchHistoryDialog } from "./dialogs/MatchHistoryDialog";
@@ -13,6 +12,7 @@ import { useAppStorage } from "./hooks/useAppStorage";
 import { useGame } from "./hooks/useGame";
 import { useKeyboardControls } from "./hooks/useKeyboardControls";
 import { useKeyCapture } from "./hooks/useKeyCapture";
+import { deleteAllLocalData } from "./storage/appStorage";
 import { saveMatch } from "./storage/matchStorage";
 
 import type { ControlAction, KeyBindings } from "./types/controls";
@@ -152,6 +152,16 @@ export default function App() {
     });
   }
 
+  async function handleDeleteLocalData() {
+    const confirmed = window.confirm(t("settings.confirmResetLocalData"));
+
+    if (!confirmed) return;
+
+    await deleteAllLocalData();
+
+    window.location.reload();
+  }
+
   const profileDialogPlayerState =
     profileDialogPlayer === "player1"
       ? game.player1
@@ -229,6 +239,7 @@ export default function App() {
           onStartKeyCapture={startCapture}
           onClearKeyBinding={clearKeyBinding}
           onResetGame={resetGame}
+          onDeleteLocalData={handleDeleteLocalData}
           onClose={() => setSettingsOpen(false)}
         />
       )}
@@ -243,7 +254,6 @@ export default function App() {
           onClose={() => setProfileDialogPlayer(null)}
         />
       )}
-      {/** <HidDebugPanel /> */}
       <UpdatePrompt />
     </main>
   );
