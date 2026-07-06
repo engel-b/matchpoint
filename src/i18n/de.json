@@ -1,7 +1,8 @@
 {
   "common": {
     "close": "Schließen",
-    "undo": "Rückgängig"
+    "undo": "Rückgängig",
+    "back": "Zurück"
   },
   "fullscreen": {
     "open": "Vollbild öffnen",
@@ -9,6 +10,8 @@
   },
   "settings": {
     "title": "Einstellungen",
+    "general": "Allgemein",
+    "generalDescription": "Sprache, Design und Spielmodus",
     "language": "Sprache",
     "theme": "Theme",
     "dark": "Dunkel",
@@ -18,8 +21,17 @@
     "bestOf3": "Best of 3",
     "bestOf5": "Best of 5",
     "bestOf7": "Best of 7",
+    "players": "Spielerverwaltung",
+    "playersDescription": "Spielerprofile verwalten",
+    "playersHint": "Die Spielerverwaltung wird in einer späteren Version ergänzt. Die Spielerzuordnung erfolgt weiterhin direkt über die Spielernamen auf dem Scoreboard.",
+    "controlsDescription": "Tasten für externe Eingabegeräte zuordnen",
+    "dangerZone": "Danger Zone",
+    "dangerZoneDescription": "Spiel abbrechen oder lokale Daten zurücksetzen",
     "cancelGame": "Spiel abbrechen",
-    "confirmCancelGame": "Aktuelles Spiel wirklich abbrechen?"
+    "cancelGameDescription": "Setzt das aktuelle Spiel zurück. Spielerprofile und Einstellungen bleiben erhalten.",
+    "confirmCancelGame": "Aktuelles Spiel wirklich abbrechen?",
+    "resetLocalData": "Lokale Daten löschen",
+    "resetLocalDataDescription": "Entfernt alle lokal gespeicherten Spielerprofile, Einstellungen, Tastenzuordnungen und die Spielhistorie."
   },
   "game": {
     "wonRound": "{{player}} hat die Runde gewonnen.",

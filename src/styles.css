@@ -26,19 +26,42 @@ select {
 }
 
 .app {
+  --danger: #c80000;
+  --danger-soft: #fff0f0;
+  --red-player: #ff4040;
+  --blue-player: #3390ff;
+
   min-height: 100%;
   position: relative;
   overflow: hidden;
+  background: var(--app-background);
+  color: var(--text);
 }
 
 .app--dark {
-  background: #000;
-  color: #fff;
+  --app-background: #000;
+  --surface: #1c1c1c;
+  --surface-soft: #2a2a2a;
+  --surface-strong: #111;
+  --text: #fff;
+  --text-inverted: #111;
+  --border: #444;
+  --overlay: rgb(0 0 0 / 0.65);
+  --winner-overlay: rgb(0 0 0 / 0.93);
+  --shadow: rgb(0 0 0 / 0.55);
 }
 
 .app--light {
-  background: #f4f4f4;
-  color: #111;
+  --app-background: #f4f4f4;
+  --surface: #fff;
+  --surface-soft: #f4f4f4;
+  --surface-strong: #111;
+  --text: #111;
+  --text-inverted: #fff;
+  --border: #ddd;
+  --overlay: rgb(0 0 0 / 0.45);
+  --winner-overlay: rgb(244 244 244 / 0.96);
+  --shadow: rgb(0 0 0 / 0.3);
 }
 
 /* -------------------------------------------------- */
@@ -79,12 +102,15 @@ select {
 .iconButton svg {
   width: 26px;
   height: 26px;
-
   stroke-width: 2.25;
 }
 
 .iconButton:hover {
   background: rgb(255 255 255 / 0.08);
+}
+
+.app--light .iconButton:hover {
+  background: rgb(0 0 0 / 0.06);
 }
 
 .iconButton:active {
@@ -110,9 +136,7 @@ select {
   position: relative;
 
   border: 0;
-
   background: transparent;
-
   color: inherit;
 
   cursor: pointer;
@@ -131,11 +155,11 @@ select {
 }
 
 .scorePanel--red .scoreValue {
-  color: #ff4040;
+  color: var(--red-player);
 }
 
 .scorePanel--blue .scoreValue {
-  color: #3390ff;
+  color: var(--blue-player);
 }
 
 /* -------------------------------------------------- */
@@ -158,13 +182,11 @@ select {
   border-radius: 999px;
 
   background: transparent;
-
   color: inherit;
 
   padding: 6px 18px;
 
   cursor: pointer;
-
   text-align: center;
 
   font-size: clamp(32px, 5vw, 72px);
@@ -177,8 +199,16 @@ select {
   background: rgb(255 255 255 / 0.08);
 }
 
+.app--light .playerName:hover {
+  background: rgb(0 0 0 / 0.06);
+}
+
 .playerName:active {
   background: rgb(255 255 255 / 0.15);
+}
+
+.app--light .playerName:active {
+  background: rgb(0 0 0 / 0.1);
 }
 
 /* -------------------------------------------------- */
@@ -207,7 +237,6 @@ select {
   height: 14px;
 
   background: currentColor;
-
   border-radius: 999px;
 
   box-shadow: 0 0 18px currentColor;
@@ -235,11 +264,9 @@ select {
 
 .setDots {
   position: absolute;
-
   bottom: 48px;
 
   display: flex;
-
   gap: 18px;
 }
 
@@ -248,7 +275,6 @@ select {
   height: 28px;
 
   border-radius: 999px;
-
   border: 3px solid currentColor;
 
   opacity: 0.35;
@@ -270,26 +296,37 @@ select {
   display: grid;
   place-items: center;
 
-  background: rgb(0 0 0 / 0.65);
+  background: var(--overlay);
 
   z-index: 100;
 }
 
 .dialog {
   width: min(480px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+
+  display: flex;
+  flex-direction: column;
 
   border-radius: 22px;
 
-  background: white;
-  color: #111;
+  background: var(--surface);
+  color: var(--text);
 
   padding: 28px;
 
-  box-shadow: 0 24px 80px rgb(0 0 0 / 0.45);
+  box-shadow: 0 24px 80px var(--shadow);
 }
 
 .dialog h2 {
-  margin: 0 0 24px 0;
+  margin: 0 0 24px;
+}
+
+.dialogContent {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 24px;
+  padding-right: 2px;
 }
 
 .settingRow {
@@ -305,6 +342,130 @@ select {
 .settingRow select {
   padding: 8px 12px;
   border-radius: 10px;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* -------------------------------------------------- */
+/* Settings Dialog                                     */
+/* -------------------------------------------------- */
+
+.settingsDialog {
+  width: min(520px, calc(100vw - 32px));
+}
+
+.settingsHeader {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+
+  margin-bottom: 24px;
+}
+
+.settingsHeader h2 {
+  margin: 0;
+  text-align: center;
+}
+
+.settingsBackButton {
+  width: 40px;
+  height: 40px;
+
+  border: 0;
+  border-radius: 999px;
+
+  background: transparent;
+  color: inherit;
+
+  cursor: pointer;
+  font-size: 24px;
+
+  transition:
+    background 0.15s,
+    transform 0.1s;
+}
+
+.settingsBackButton:hover {
+  background: rgb(255 255 255 / 0.08);
+}
+
+.app--light .settingsBackButton:hover {
+  background: rgb(0 0 0 / 0.06);
+}
+
+.settingsBackButton:active {
+  transform: scale(0.95);
+}
+
+.settingsNavButton {
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 18px;
+
+  margin-bottom: 14px;
+  padding: 18px;
+
+  border: 0;
+  border-radius: 16px;
+
+  background: var(--surface-soft);
+  color: var(--text);
+
+  cursor: pointer;
+
+  transition:
+    transform 0.12s,
+    background 0.15s;
+}
+
+.settingsNavButton:hover {
+  transform: translateY(-1px);
+}
+
+.settingsNavButton span:first-child {
+  display: grid;
+  gap: 4px;
+  text-align: left;
+}
+
+.settingsNavButton strong {
+  font-size: 17px;
+}
+
+.settingsNavButton small {
+  opacity: 0.7;
+  line-height: 1.35;
+}
+
+.settingsNavButton > span:last-child {
+  font-size: 28px;
+  opacity: 0.55;
+}
+
+.settingsNavButton--danger {
+  color: var(--danger);
+}
+
+.settingsHint {
+  margin: 0;
+  opacity: 0.75;
+  line-height: 1.5;
+}
+
+.settingsSection {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.settingsSection h3 {
+  margin: 0;
+  font-size: 18px;
 }
 
 /* -------------------------------------------------- */
@@ -323,12 +484,11 @@ select {
 
   padding: 14px 18px;
 
-  border: 2px solid #ddd;
+  border: 2px solid var(--border);
   border-radius: 14px;
 
-  background: white;
-
-  color: #111;
+  background: var(--surface);
+  color: var(--text);
 
   text-align: left;
 
@@ -338,12 +498,12 @@ select {
 }
 
 .profileButton:hover {
-  background: #f6f6f6;
+  background: var(--surface-soft);
 }
 
 .profileButton--active {
-  border-color: #111;
-  background: #efefef;
+  border-color: currentColor;
+  background: var(--surface-soft);
   font-weight: 700;
 }
 
@@ -363,13 +523,16 @@ select {
 
   padding: 14px 16px;
 
-  border: 2px solid #ddd;
+  border: 2px solid var(--border);
   border-radius: 14px;
+
+  background: var(--surface);
+  color: var(--text);
 }
 
 .newPlayerBox input:focus {
   outline: none;
-  border-color: #3390ff;
+  border-color: var(--blue-player);
 }
 
 /* -------------------------------------------------- */
@@ -392,8 +555,8 @@ select {
 .closeButton {
   border: 0;
 
-  background: #111;
-  color: white;
+  background: var(--surface-strong);
+  color: var(--text-inverted);
 }
 
 .closeButton:hover {
@@ -403,10 +566,38 @@ select {
 .secondaryButton {
   margin-top: 12px;
 
-  border: 2px solid #111;
+  border: 2px solid currentColor;
 
-  background: white;
-  color: #111;
+  background: transparent;
+  color: inherit;
+}
+
+.secondaryButton:hover {
+  background: var(--surface-soft);
+}
+
+.dangerButton {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 14px 18px;
+
+  border: 2px solid var(--danger);
+  border-radius: 14px;
+
+  background: var(--surface);
+  color: var(--danger);
+
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.dangerButton:hover {
+  background: var(--danger-soft);
+}
+
+.dangerButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 /* -------------------------------------------------- */
@@ -423,20 +614,13 @@ select {
   place-content: center;
   gap: 24px;
 
+  background: var(--winner-overlay);
+  color: var(--text);
+
   text-align: center;
   cursor: pointer;
 
   z-index: 200;
-}
-
-.app--dark .roundWinnerOverlay {
-  background: rgb(0 0 0 / 0.93);
-  color: white;
-}
-
-.app--light .roundWinnerOverlay {
-  background: rgb(244 244 244 / 0.96);
-  color: #111;
 }
 
 .roundWinnerOverlay div {
@@ -450,24 +634,8 @@ select {
 }
 
 /* -------------------------------------------------- */
-/* Zusätzliche Buttons / Hinweise                      */
+/* Update Prompt                                       */
 /* -------------------------------------------------- */
-
-.dangerButton {
-  width: 100%;
-  margin-bottom: 12px;
-  padding: 14px 18px;
-  border: 2px solid #ff4040;
-  border-radius: 14px;
-  background: white;
-  color: #c80000;
-  cursor: pointer;
-  font-weight: 800;
-}
-
-.dangerButton:hover {
-  background: #fff0f0;
-}
 
 .updatePrompt {
   position: fixed;
@@ -484,10 +652,10 @@ select {
   padding: 16px 18px;
   border-radius: 18px;
 
-  background: white;
-  color: #111;
+  background: var(--surface);
+  color: var(--text);
 
-  box-shadow: 0 18px 60px rgb(0 0 0 / 0.45);
+  box-shadow: 0 18px 60px var(--shadow);
 }
 
 .updatePrompt div {
@@ -502,12 +670,16 @@ select {
 .updatePrompt button {
   border: 0;
   border-radius: 999px;
-  background: #111;
-  color: white;
+  background: var(--surface-strong);
+  color: var(--text-inverted);
   padding: 12px 18px;
   font-weight: 800;
   cursor: pointer;
 }
+
+/* -------------------------------------------------- */
+/* Version                                             */
+/* -------------------------------------------------- */
 
 .versionInfo {
   display: grid;
@@ -515,8 +687,8 @@ select {
   margin-bottom: 24px;
   padding: 14px 16px;
   border-radius: 14px;
-  background: #f4f4f4;
-  color: #111;
+  background: var(--surface-soft);
+  color: var(--text);
 }
 
 .versionInfo strong {
@@ -527,6 +699,10 @@ select {
   opacity: 0.75;
   font-size: 14px;
 }
+
+/* -------------------------------------------------- */
+/* Historie                                            */
+/* -------------------------------------------------- */
 
 .historyDialog {
   max-height: calc(100vh - 48px);
@@ -546,8 +722,8 @@ select {
 .matchCard {
   padding: 16px;
   border-radius: 16px;
-  background: #f4f4f4;
-  color: #111;
+  background: var(--surface-soft);
+  color: var(--text);
 }
 
 .matchPlayers {
@@ -580,7 +756,7 @@ select {
 .matchSet {
   padding: 4px 8px;
   border-radius: 999px;
-  background: white;
+  background: var(--surface);
   font-weight: 700;
 }
 
@@ -591,24 +767,18 @@ select {
   opacity: 0.65;
 }
 
-.settingsSection {
-  display: grid;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.settingsSection h3 {
-  margin: 0;
-  font-size: 18px;
-}
+/* -------------------------------------------------- */
+/* Tastenzuordnung                                     */
+/* -------------------------------------------------- */
 
 .keyBindingRow {
   display: grid;
   gap: 10px;
   padding: 14px;
+  margin-bottom: 12px;
   border-radius: 14px;
-  background: #f4f4f4;
-  color: #111;
+  background: var(--surface-soft);
+  color: var(--text);
 }
 
 .keyBindingRow div:first-child {
@@ -630,15 +800,43 @@ select {
   flex: 1;
   padding: 10px 12px;
   border-radius: 999px;
-  border: 2px solid #111;
-  background: white;
-  color: #111;
+  border: 2px solid currentColor;
+  background: transparent;
+  color: inherit;
   cursor: pointer;
   font-weight: 700;
 }
 
 .keyBindingActions button:hover {
-  background: #f0f0f0;
+  background: var(--surface);
+}
+
+/* -------------------------------------------------- */
+/* Danger Zone                                         */
+/* -------------------------------------------------- */
+
+.dangerZone {
+  display: grid;
+  gap: 12px;
+
+  margin-bottom: 24px;
+  padding: 16px;
+
+  border: 2px solid rgb(200 0 0 / 0.35);
+  border-radius: 16px;
+
+  background: rgb(200 0 0 / 0.05);
+}
+
+.dangerZone strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--danger);
+}
+
+.dangerZone span {
+  opacity: 0.75;
+  line-height: 1.4;
 }
 
 /* -------------------------------------------------- */
@@ -657,6 +855,11 @@ select {
     width: 42px;
     height: 42px;
     font-size: 22px;
+  }
+
+  .iconButton svg {
+    width: 22px;
+    height: 22px;
   }
 
   .playerName {
@@ -819,16 +1022,4 @@ select {
     width: 20px;
     height: 20px;
   }
-}
-
-.hidDebugPanel {
-  position: fixed;
-  left: 12px;
-  bottom: 12px;
-  z-index: 999;
-  background: white;
-  color: black;
-  padding: 10px 12px;
-  border-radius: 10px;
-  font-size: 14px;
 }

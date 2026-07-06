@@ -4,11 +4,6 @@ on:
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - "docs/**"
-      - "README.md"
-      - ".github/workflows/build-deploy-docs.yml"
-      - ".github/workflows/pr-check-docs.yml"
 
 jobs:
   check-app:
