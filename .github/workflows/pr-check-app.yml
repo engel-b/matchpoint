@@ -11,7 +11,7 @@ on:
       - ".github/workflows/pr-check-docs.yml"
 
 jobs:
-  check:
+  check-app:
     runs-on: ubuntu-latest
 
     steps:
