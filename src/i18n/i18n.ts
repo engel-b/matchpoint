@@ -18,7 +18,7 @@ i18n.use(initReactI18next).init({
 
   saveMissing: import.meta.env.DEV,
 
-  missingKeyHandler: (lng, ns, key) => {
+  missingKeyHandler: (lng, key) => {
     console.warn(`[i18n] Missing translation: ${key} (${lng})`);
   },
 });
