@@ -89,11 +89,11 @@ Es werden keine Daten übertragen oder ausgewertet.
 
 ## Erprobte Eingabegeräte
 
-Die folgenden Geräte wurden mit MatchPoint getestet. Da MatchPoint auf Standard-Tastatureingaben setzt, können grundsätzlich auch viele andere Geräte verwendet werden.
+Die folgenden Geräte wurden mit MatchPoint getestet. Da MatchPoint auf Standard-Tastatureingaben setzt, können grundsätzlich auch viele andere Geräte verwendet werden. Hier wurden 2 Geräte getestet, die als Bluetooth-Tastatur am Tablet angemeldet und dann mitels Klettband an der Tischtennisplatte montiert wurden.
 
-### Bluetooth Control für TikTok
+### Bluetooth Fernbedienung für TikTok/YouTube
 
-Dieses Bluetooth-HID-Gerät verfügt über zwei Tasten und unterstützt drei Betriebsmodi:
+[Diese Bluetooth Fernbedienung](https://amzn.to/4aBvbvI) verfügt über zwei Tasten und unterstützt drei Betriebsmodi:
 
 - Audio lauter / leiser
 - Seite hoch / runter
@@ -109,9 +109,9 @@ Dieses Bluetooth-HID-Gerät verfügt über zwei Tasten und unterstützt drei Bet
 
 ⚠️ Die beiden Seitenwechsel-Modi senden auf den getesteten Geräten keine Standard-Tastaturevents und können deshalb von MatchPoint derzeit nicht verwendet werden.
 
-### PCsensor 3-Tasten-Makro-Keyboard
+### PCsensor 3-Tasten-Mini-Keyboard (MK321BT)
 
-Das PCsensor-Makro-Keyboard verfügt über drei mechanische Tasten und kann – abhängig von der Variante – mehrere Tastenbelegungen speichern.
+Das [PCsensor 3-Tasten-Mini-Keyboard](https://amzn.to/3R0TeO6) verfügt über drei mechanische Tasten und kann – abhängig von der Variante – mehrere Tastenbelegungen speichern.
 
 Erhältlich ist das Gerät als
 
@@ -119,7 +119,7 @@ Erhältlich ist das Gerät als
 - Bluetooth-Version
 - 2,4-GHz-Version
 
-In der Werkseinstellung senden die drei Tasten die Zeichen **A**, **B** und **C**. Über die Herstellersoftware können die Belegungen individuell angepasst werden.
+In der Werkseinstellung senden die drei Tasten die Zeichen **A**, **B** und **C**. Über die [Herstellersoftware](https://pcsensor.com/download/) können die Belegungen individuell angepasst werden.
 
 **Erfahrungen**
 
@@ -127,7 +127,7 @@ In der Werkseinstellung senden die drei Tasten die Zeichen **A**, **B** und **C*
 
 ✅ Durch frei belegbare Tasten eignet sich das Gerät hervorragend zur Bedienung der App.
 
-⚠️ Die Bluetooth-Kopplung ist etwas umständlich, da die mitgelieferte Dokumentation nur die wichtigsten Schritte beschreibt.
+⚠️ Die Bluetooth-Kopplung ist etwas umständlich, da die mitgelieferte Dokumentation die wichtigsten Schritte nur rudimentär beschreibt.
 
 💡 Die Verarbeitung ist insgesamt gut. Lediglich die Unterkante könnte sauberer entgratet sein – ein kurzer Einsatz mit feinem Schleifpapier sorgt hier für einen angenehmeren Eindruck.
 

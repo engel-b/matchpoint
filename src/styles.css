@@ -545,22 +545,22 @@ select {
 
   padding: 14px 18px;
 
+  border: 2px solid currentColor;
   border-radius: 14px;
+
+  background: transparent;
+  color: inherit;
 
   cursor: pointer;
 
   font-weight: 700;
+
+  transition: background 0.15s;
 }
 
-.closeButton {
-  border: 0;
-
-  background: var(--surface-strong);
-  color: var(--text-inverted);
-}
-
-.closeButton:hover {
-  opacity: 0.9;
+.closeButton:hover,
+.secondaryButton:hover {
+  background: var(--surface-soft);
 }
 
 .secondaryButton {

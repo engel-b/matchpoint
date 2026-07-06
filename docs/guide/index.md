@@ -52,6 +52,11 @@ Dazu gehören unter anderem:
 
 Es werden keine Benutzerkonten benötigt und keine Daten an externe Server übertragen.
 
+Lokale Daten können bei Bedarf in den Einstellungen unter
+**Danger Zone → Lokale Daten löschen** vollständig entfernt werden.
+
+Dabei werden Spielerprofile, Spielhistorie, Einstellungen und Tastenzuordnungen gelöscht.
+
 ## Nächste Schritte
 
 - 📲 Installation

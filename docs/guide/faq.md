@@ -42,6 +42,16 @@ Es werden keine Daten an externe Server übertragen.
 
 ---
 
+## Wie kann ich alle lokalen Daten löschen?
+
+Öffne **Einstellungen → Danger Zone → Lokale Daten löschen**.
+
+Nach einer Bestätigung werden alle lokal gespeicherten Daten entfernt, darunter Spielerprofile, Spielhistorie, Einstellungen und Tastenzuordnungen.
+
+Diese Aktion kann nicht rückgängig gemacht werden.
+
+---
+
 ## Funktioniert MatchPoint ohne Internet?
 
 Ja.
