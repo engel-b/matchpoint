@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { appVersion, commitSha } from "../version";
-
 import type { Language, Theme } from "../hooks/useAppStorage";
 import type { ControlAction, KeyBindings } from "../types/controls";
 import type { GameSettings } from "../types/game";
@@ -60,12 +58,6 @@ export function SettingsDialog({
             <h2>{t("settings.title")}</h2>
 
             <div className="dialogContent">
-              <div className="versionInfo">
-                <strong>MatchPoint</strong>
-                <span>Version: {appVersion}</span>
-                <span>Build: {commitSha}</span>
-              </div>
-
               <SettingsNavigationButton
                 title={t("settings.general")}
                 description={t("settings.generalDescription")}

@@ -4,6 +4,13 @@
     "undo": "Undo",
     "back": "Back"
   },
+  "menu": {
+    "title": "Menu",
+    "newGame": "New game"
+  },
+  "about": {
+    "title": "About MatchPoint"
+  },
   "fullscreen": {
     "open": "Open fullscreen",
     "close": "Exit fullscreen"

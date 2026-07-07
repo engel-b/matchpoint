@@ -1,10 +1,11 @@
-import { History, Settings, Undo2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { AppMenu } from "./components/AppMenu";
 import { FullscreenButton } from "./components/FullscreenButton";
 import { ScorePanel } from "./components/ScorePanel";
 import { UpdatePrompt } from "./components/UpdatePrompt";
+import { AboutDialog } from "./dialogs/AboutDialog";
 import { MatchHistoryDialog } from "./dialogs/MatchHistoryDialog";
 import { PlayerDialog } from "./dialogs/PlayerDialog";
 import { SettingsDialog } from "./dialogs/SettingsDialog";
@@ -68,6 +69,7 @@ export default function App() {
 
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
   const [profileDialogPlayer, setProfileDialogPlayer] = useState<PlayerId | null>(null);
 
   const { capturingAction, startCapture } = useKeyCapture((action, key) => {
@@ -110,6 +112,13 @@ export default function App() {
   useEffect(() => {
     void i18n.changeLanguage(language);
   }, [language, i18n]);
+
+  function handleNewGame() {
+    const confirmed = window.confirm(t("settings.confirmCancelGame"));
+    if (!confirmed) return;
+
+    resetGame();
+  }
 
   function handleSelectProfile(playerId: PlayerId, profile: PlayerProfile) {
     selectProfile(playerId, profile);
@@ -172,34 +181,14 @@ export default function App() {
   return (
     <main className={`app app--${theme}`}>
       <div className="topbar">
-        <button
-          className="iconButton"
-          onClick={() => setHistoryOpen(true)}
-          aria-label={t("history.title")}
-          title={t("history.title")}
-        >
-          <History />
-        </button>
-
-        <button
-          className="iconButton"
-          onClick={undo}
-          aria-label={t("common.undo")}
-          title={t("common.undo")}
-        >
-          <Undo2 />
-        </button>
-
         <FullscreenButton />
-
-        <button
-          className="iconButton"
-          onClick={() => setSettingsOpen(true)}
-          aria-label={t("settings.title")}
-          title={t("settings.title")}
-        >
-          <Settings />
-        </button>
+        <AppMenu
+          onUndo={undo}
+          onOpenHistory={() => setHistoryOpen(true)}
+          onOpenSettings={() => setSettingsOpen(true)}
+          onNewGame={handleNewGame}
+          onOpenAbout={() => setAboutOpen(true)}
+        />
       </div>
       <section className="scoreLayout">
         <ScorePanel
@@ -243,7 +232,9 @@ export default function App() {
           onClose={() => setSettingsOpen(false)}
         />
       )}
+
       <MatchHistoryDialog isOpen={historyOpen} onClose={() => setHistoryOpen(false)} />
+
       {profileDialogPlayer && profileDialogPlayerState && (
         <PlayerDialog
           playerId={profileDialogPlayer}
@@ -254,6 +245,9 @@ export default function App() {
           onClose={() => setProfileDialogPlayer(null)}
         />
       )}
+
+      {aboutOpen && <AboutDialog onClose={() => setAboutOpen(false)} />}
+
       <UpdatePrompt />
     </main>
   );

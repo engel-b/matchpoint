@@ -8,7 +8,7 @@ import eslintConfigPrettier from "eslint-config-prettier";
 import importX from "eslint-plugin-import-x";
 
 export default defineConfig([
-  globalIgnores(["dist"]),
+  globalIgnores(["dist", "docs/.vitepress/cache", "docs/.vitepress/dist"]),
   {
     files: ["**/*.{ts,tsx}"],
     extends: [
