@@ -14,7 +14,7 @@ export default defineConfig({
         description: "Offline Tischtennis Scoreboard",
         theme_color: "#000000",
         background_color: "#000000",
-        display: "standalone",
+        display: "fullscreen",
         orientation: "any",
         start_url: "/",
         icons: [

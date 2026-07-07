@@ -2,18 +2,20 @@ import { Maximize, Minimize } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { isInstalledPwaAtStartup } from "../utils/pwa";
+
 import { IconButton } from "./IconButton";
 
 export function FullscreenButton() {
   const { t } = useTranslation();
-  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const [showButton] = useState(() => !isInstalledPwaAtStartup());
+  const [isFullscreen, setIsFullscreen] = useState(Boolean(document.fullscreenElement));
 
   useEffect(() => {
     function handleFullscreenChange() {
       setIsFullscreen(Boolean(document.fullscreenElement));
     }
-
-    handleFullscreenChange();
 
     document.addEventListener("fullscreenchange", handleFullscreenChange);
 
@@ -22,19 +24,23 @@ export function FullscreenButton() {
     };
   }, []);
 
+  if (!showButton) {
+    return null;
+  }
+
   async function toggleFullscreen() {
-    if (!document.fullscreenElement) {
-      await document.documentElement.requestFullscreen();
+    if (document.fullscreenElement) {
+      await document.exitFullscreen();
       return;
     }
 
-    await document.exitFullscreen();
+    await document.documentElement.requestFullscreen();
   }
 
   return (
     <IconButton
       label={isFullscreen ? t("fullscreen.close") : t("fullscreen.open")}
-      onClick={() => toggleFullscreen()}
+      onClick={() => void toggleFullscreen()}
     >
       {isFullscreen ? <Minimize /> : <Maximize />}
     </IconButton>

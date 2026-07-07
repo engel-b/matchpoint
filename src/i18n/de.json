@@ -4,6 +4,13 @@
     "undo": "Rückgängig",
     "back": "Zurück"
   },
+  "menu": {
+    "title": "Menü",
+    "newGame": "Neues Spiel"
+  },
+  "about": {
+    "title": "Über MatchPoint"
+  },
   "fullscreen": {
     "open": "Vollbild öffnen",
     "close": "Vollbild verlassen"
