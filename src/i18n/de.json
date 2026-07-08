@@ -61,7 +61,9 @@
   "history": {
     "title": "Historie",
     "loading": "Historie wird geladen ...",
-    "empty": "Noch keine Spiele gespeichert."
+    "empty": "Noch keine Spiele gespeichert.",
+    "matchDetails": "Spieldetails",
+    "setNumber": "Satz {{number}}"
   },
   "controls": {
     "title": "Remote-Tasten",
@@ -71,5 +73,15 @@
     "clear": "Löschen",
     "pressKey": "Taste drücken ..."
   },
-  "statistics": {}
+  "statistics": {
+    "title": "Spielerstatistik",
+    "matches": "Spiele",
+    "wins": "Siege",
+    "losses": "Niederlagen",
+    "winRate": "Siegquote",
+    "sets": "Sätze",
+    "setDifference": "Satzdifferenz",
+    "points": "Punkte",
+    "pointDifference": "Punktdifferenz"
+  }
 }

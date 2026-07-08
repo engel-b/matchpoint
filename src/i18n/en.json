@@ -61,7 +61,9 @@
   "history": {
     "title": "History",
     "loading": "Loading history ...",
-    "empty": "No matches saved yet."
+    "empty": "No matches saved yet.",
+    "matchDetails": "Match details",
+    "setNumber": "Set {{number}}"
   },
   "controls": {
     "title": "Remote buttons",
@@ -71,5 +73,15 @@
     "clear": "Clear",
     "pressKey": "Press key ..."
   },
-  "statistics": {}
+  "statistics": {
+    "title": "Player statistics",
+    "matches": "Matches",
+    "wins": "Wins",
+    "losses": "Losses",
+    "winRate": "Win rate",
+    "sets": "Sets",
+    "setDifference": "Set difference",
+    "points": "Points",
+    "pointDifference": "Point difference"
+  }
 }

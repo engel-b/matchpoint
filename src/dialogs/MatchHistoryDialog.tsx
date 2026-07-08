@@ -1,6 +1,11 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { PlayerStatisticsOverview } from "../components/PlayerStatisticsOverview";
 import { useMatchHistory } from "../hooks/useMatchHistory";
+import { calculatePlayerStatistics } from "../statistics/calculatePlayerStatistics";
+
+import { MatchDetailsDialog } from "./MatchDetailsDialog";
 
 import type { MatchResult } from "../types/match";
 
@@ -12,6 +17,8 @@ type Props = {
 export function MatchHistoryDialog({ isOpen, onClose }: Props) {
   const { t, i18n } = useTranslation();
   const { matches, isLoading } = useMatchHistory(isOpen);
+  const [selectedMatch, setSelectedMatch] = useState<MatchResult | null>(null);
+  const statistics = calculatePlayerStatistics(matches);
 
   if (!isOpen) return null;
 
@@ -20,29 +27,51 @@ export function MatchHistoryDialog({ isOpen, onClose }: Props) {
       <div className="dialog historyDialog" onClick={(event) => event.stopPropagation()}>
         <h2>{t("history.title")}</h2>
 
-        {isLoading && <p>{t("history.loading")}</p>}
+        <div className="dialogContent">
+          {isLoading && <p>{t("history.loading")}</p>}
 
-        {!isLoading && matches.length === 0 && <p className="emptyText">{t("history.empty")}</p>}
+          {!isLoading && matches.length === 0 && <p className="emptyText">{t("history.empty")}</p>}
 
-        <div className="matchList">
-          {matches.map((match) => (
-            <MatchCard key={match.id} match={match} locale={i18n.language} />
-          ))}
+          {!isLoading && matches.length > 0 && (
+            <>
+              <PlayerStatisticsOverview statistics={statistics} />
+
+              <div className="matchList">
+                {matches.map((match) => (
+                  <MatchCard
+                    key={match.id}
+                    match={match}
+                    locale={i18n.language}
+                    onClick={() => setSelectedMatch(match)}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </div>
 
         <button className="closeButton" onClick={onClose}>
           {t("common.close")}
         </button>
       </div>
+      {selectedMatch && (
+        <MatchDetailsDialog match={selectedMatch} onClose={() => setSelectedMatch(null)} />
+      )}
     </div>
   );
 }
 
-function MatchCard({ match, locale }: { match: MatchResult; locale: string }) {
+function MatchCard({
+  match,
+  locale,
+  onClick,
+}: {
+  match: MatchResult;
+  locale: string;
+  onClick: () => void;
+}) {
   const player1Sets = match.sets.filter((set) => set.winner === "player1").length;
-
   const player2Sets = match.sets.filter((set) => set.winner === "player2").length;
-
   const player1Won = player1Sets > player2Sets;
 
   const finishedAt = new Intl.DateTimeFormat(locale, {
@@ -51,7 +80,7 @@ function MatchCard({ match, locale }: { match: MatchResult; locale: string }) {
   }).format(new Date(match.finishedAt));
 
   return (
-    <article className="matchCard">
+    <article className="matchCard" onClick={onClick}>
       <div className="matchPlayers">
         <strong className={player1Won ? "matchWinner" : ""}>{match.player1Name}</strong>
 
