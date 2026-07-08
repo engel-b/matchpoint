@@ -1,14 +1,21 @@
 import { useTranslation } from "react-i18next";
 
+import { MatchStatistics } from "../statistics/MatchStatistics";
+
 import type { MatchResult } from "../types/match";
 
 type Props = {
   match: MatchResult;
+  matches: MatchResult[];
   onClose: () => void;
 };
 
-export function MatchDetailsDialog({ match, onClose }: Props) {
+export function MatchDetailsDialog({ match, matches, onClose }: Props) {
   const { t, i18n } = useTranslation();
+  const statistics = new MatchStatistics(matches);
+  const headToHead = statistics
+    .getHeadToHead(match.player1Id)
+    .find((entry) => entry.opponentId === match.player2Id);
 
   const finishedAt = new Intl.DateTimeFormat(i18n.language, {
     dateStyle: "medium",
@@ -30,6 +37,29 @@ export function MatchDetailsDialog({ match, onClose }: Props) {
           </div>
 
           <time className="matchDate">{finishedAt}</time>
+
+          {headToHead && (
+            <section className="headToHeadCard">
+              <h3>{t("statistics.headToHead")}</h3>
+
+              <div className="statisticsGrid">
+                <span>{t("statistics.wins")}</span>
+                <strong>
+                  {headToHead.wins}:{headToHead.losses}
+                </strong>
+
+                <span>{t("statistics.sets")}</span>
+                <strong>
+                  {headToHead.setsWon}:{headToHead.setsLost}
+                </strong>
+
+                <span>{t("statistics.points")}</span>
+                <strong>
+                  {headToHead.pointsWon}:{headToHead.pointsLost}
+                </strong>
+              </div>
+            </section>
+          )}
 
           <div className="matchDetailSets">
             {match.sets.map((set, index) => (

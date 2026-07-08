@@ -1,12 +1,15 @@
 import { useTranslation } from "react-i18next";
 
-import type { PlayerStatistics } from "../statistics/calculatePlayerStatistics";
+import { formatDifference } from "../statistics/helpers";
+
+import type { PlayerStatistics } from "../statistics/types";
 
 type Props = {
-  statistics: PlayerStatistics[];
+  players: PlayerStatistics[];
+  onPlayerClick?: (playerId: string) => void;
 };
 
-export function PlayerStatisticsOverview({ statistics }: Props) {
+export function PlayerStatisticsOverview({ players, onPlayerClick }: Props) {
   const { t, i18n } = useTranslation();
 
   const percentFormatter = new Intl.NumberFormat(i18n.language, {
@@ -16,44 +19,45 @@ export function PlayerStatisticsOverview({ statistics }: Props) {
 
   return (
     <section className="statisticsOverview" aria-label={t("statistics.title")}>
-      {statistics.map((playerStatistics) => (
-        <article className="statisticsCard" key={playerStatistics.playerId}>
-          <strong>{playerStatistics.playerName}</strong>
+      {players.map((player) => (
+        <article
+          className="statisticsCard"
+          key={player.playerId}
+          onClick={() => onPlayerClick?.(player.playerId)}
+        >
+          <strong>{player.playerName}</strong>
 
           <div className="statisticsGrid">
             <span>{t("statistics.matches")}</span>
-            <strong>{playerStatistics.matches}</strong>
+            <strong>{player.matches}</strong>
+
             <span>{t("statistics.wins")}</span>
-            <strong>{playerStatistics.wins}</strong>
+            <strong>{player.wins}</strong>
+
             <span>{t("statistics.losses")}</span>
-            <strong>{playerStatistics.losses}</strong>
+            <strong>{player.losses}</strong>
+
             <span>{t("statistics.winRate")}</span>
-            <strong>{percentFormatter.format(playerStatistics.winRate)}</strong>
+            <strong>{percentFormatter.format(player.winRate)}</strong>
+
             <span>{t("statistics.sets")}</span>
             <strong>
-              {playerStatistics.setsWon}:{playerStatistics.setsLost}
+              {player.setsWon}:{player.setsLost}
             </strong>
+
             <span>{t("statistics.setDifference")}</span>
-            <strong>
-              {formatDifference(playerStatistics.setsWon - playerStatistics.setsLost)}
-            </strong>
+            <strong>{formatDifference(player.setDifference)}</strong>
+
             <span>{t("statistics.points")}</span>
             <strong>
-              {playerStatistics.pointsWon}:{playerStatistics.pointsLost}
+              {player.pointsWon}:{player.pointsLost}
             </strong>
+
             <span>{t("statistics.pointDifference")}</span>
-            <strong>
-              {formatDifference(playerStatistics.pointsWon - playerStatistics.pointsLost)}
-            </strong>
+            <strong>{formatDifference(player.pointDifference)}</strong>
           </div>
         </article>
       ))}
     </section>
   );
-}
-
-function formatDifference(value: number): string {
-  if (value > 0) return `+${value}`;
-
-  return value.toString();
 }

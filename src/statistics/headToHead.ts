@@ -1,21 +1,13 @@
-import type { MatchResult } from "../types/match";
+import { compareHeadToHeadStatistics } from "./compare";
+import { calculateWinRate } from "./helpers";
+import { getOpponent, getPlayerSide } from "./matchHelpers";
 
-export type HeadToHeadStatistics = {
-  opponentId: string;
-  opponentName: string;
-  matches: number;
-  wins: number;
-  losses: number;
-  setsWon: number;
-  setsLost: number;
-  pointsWon: number;
-  pointsLost: number;
-  winRate: number;
-};
+import type { HeadToHeadStatistics } from "./types";
+import type { MatchResult } from "../types/match";
 
 type MutableHeadToHeadStatistics = Omit<HeadToHeadStatistics, "winRate">;
 
-export function calculateHeadToHeadStatistics(
+export function calculateHeadToHead(
   matches: MatchResult[],
   playerId: string
 ): HeadToHeadStatistics[] {
@@ -23,11 +15,10 @@ export function calculateHeadToHeadStatistics(
 
   for (const match of matches) {
     const playerSide = getPlayerSide(match, playerId);
-
     if (!playerSide) continue;
 
     const opponent = getOpponent(match, playerSide);
-    const statistics = getOrCreateStatistics(statisticsByOpponentId, opponent);
+    const statistics = getOrCreateHeadToHeadStatistics(statisticsByOpponentId, opponent);
 
     statistics.matches += 1;
 
@@ -44,11 +35,8 @@ export function calculateHeadToHeadStatistics(
     statistics.setsLost += opponentSets;
 
     for (const set of match.sets) {
-      const playerPoints = playerSide === "player1" ? set.player1 : set.player2;
-      const opponentPoints = playerSide === "player1" ? set.player2 : set.player1;
-
-      statistics.pointsWon += playerPoints;
-      statistics.pointsLost += opponentPoints;
+      statistics.pointsWon += playerSide === "player1" ? set.player1 : set.player2;
+      statistics.pointsLost += playerSide === "player1" ? set.player2 : set.player1;
     }
   }
 
@@ -60,31 +48,7 @@ export function calculateHeadToHeadStatistics(
     .sort(compareHeadToHeadStatistics);
 }
 
-function getPlayerSide(match: MatchResult, playerId: string): "player1" | "player2" | null {
-  if (match.player1Id === playerId) return "player1";
-  if (match.player2Id === playerId) return "player2";
-
-  return null;
-}
-
-function getOpponent(
-  match: MatchResult,
-  playerSide: "player1" | "player2"
-): { opponentId: string; opponentName: string } {
-  if (playerSide === "player1") {
-    return {
-      opponentId: match.player2Id,
-      opponentName: match.player2Name,
-    };
-  }
-
-  return {
-    opponentId: match.player1Id,
-    opponentName: match.player1Name,
-  };
-}
-
-function getOrCreateStatistics(
+function getOrCreateHeadToHeadStatistics(
   statisticsByOpponentId: Map<string, MutableHeadToHeadStatistics>,
   opponent: { opponentId: string; opponentName: string }
 ): MutableHeadToHeadStatistics {
@@ -110,20 +74,4 @@ function getOrCreateStatistics(
   statisticsByOpponentId.set(opponent.opponentId, statistics);
 
   return statistics;
-}
-
-function calculateWinRate(wins: number, matches: number): number {
-  if (matches === 0) return 0;
-
-  return wins / matches;
-}
-
-function compareHeadToHeadStatistics(
-  left: HeadToHeadStatistics,
-  right: HeadToHeadStatistics
-): number {
-  if (right.matches !== left.matches) return right.matches - left.matches;
-  if (right.wins !== left.wins) return right.wins - left.wins;
-
-  return left.opponentName.localeCompare(right.opponentName);
 }

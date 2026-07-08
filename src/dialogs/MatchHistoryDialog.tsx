@@ -3,9 +3,10 @@ import { useTranslation } from "react-i18next";
 
 import { PlayerStatisticsOverview } from "../components/PlayerStatisticsOverview";
 import { useMatchHistory } from "../hooks/useMatchHistory";
-import { calculatePlayerStatistics } from "../statistics/calculatePlayerStatistics";
+import { MatchStatistics } from "../statistics/MatchStatistics";
 
 import { MatchDetailsDialog } from "./MatchDetailsDialog";
+import { PlayerStatisticsDialog } from "./PlayerStatisticsDialog";
 
 import type { MatchResult } from "../types/match";
 
@@ -18,7 +19,10 @@ export function MatchHistoryDialog({ isOpen, onClose }: Props) {
   const { t, i18n } = useTranslation();
   const { matches, isLoading } = useMatchHistory(isOpen);
   const [selectedMatch, setSelectedMatch] = useState<MatchResult | null>(null);
-  const statistics = calculatePlayerStatistics(matches);
+  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
+
+  const statistics = new MatchStatistics(matches);
+  const selectedPlayer = selectedPlayerId ? statistics.getPlayer(selectedPlayerId) : null;
 
   if (!isOpen) return null;
 
@@ -34,7 +38,10 @@ export function MatchHistoryDialog({ isOpen, onClose }: Props) {
 
           {!isLoading && matches.length > 0 && (
             <>
-              <PlayerStatisticsOverview statistics={statistics} />
+              <PlayerStatisticsOverview
+                players={statistics.players}
+                onPlayerClick={setSelectedPlayerId}
+              />
 
               <div className="matchList">
                 {matches.map((match) => (
@@ -54,8 +61,19 @@ export function MatchHistoryDialog({ isOpen, onClose }: Props) {
           {t("common.close")}
         </button>
       </div>
+
       {selectedMatch && (
-        <MatchDetailsDialog match={selectedMatch} onClose={() => setSelectedMatch(null)} />
+        <MatchDetailsDialog
+          match={selectedMatch}
+          matches={matches}
+          onClose={() => setSelectedMatch(null)}
+        />
+      )}
+      {selectedPlayer && (
+        <PlayerStatisticsDialog
+          details={selectedPlayer}
+          onClose={() => setSelectedPlayerId(null)}
+        />
       )}
     </div>
   );

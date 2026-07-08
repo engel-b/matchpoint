@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { calculateHeadToHeadStatistics } from "./calculateHeadToHeadStatistics";
+import { MatchStatistics } from "./MatchStatistics";
 
 import type { MatchResult } from "../types/match";
 
@@ -44,13 +44,46 @@ const matches: MatchResult[] = [
   },
 ];
 
-describe("calculateHeadToHeadStatistics", () => {
-  it("returns an empty list when the player has no matches", () => {
-    expect(calculateHeadToHeadStatistics(matches, "unknown-player")).toEqual([]);
+describe("MatchStatistics", () => {
+  it("calculates player statistics", () => {
+    const statistics = new MatchStatistics(matches);
+
+    expect(statistics.players).toEqual([
+      {
+        playerId: "player-anna",
+        playerName: "Anna",
+        matches: 2,
+        wins: 1,
+        losses: 1,
+        setsWon: 4,
+        setsLost: 3,
+        pointsWon: 71,
+        pointsLost: 61,
+        winRate: 0.5,
+        setDifference: 1,
+        pointDifference: 10,
+      },
+      {
+        playerId: "player-bjoern",
+        playerName: "Björn",
+        matches: 2,
+        wins: 1,
+        losses: 1,
+        setsWon: 3,
+        setsLost: 4,
+        pointsWon: 61,
+        pointsLost: 71,
+        winRate: 0.5,
+        setDifference: -1,
+        pointDifference: -10,
+      },
+    ]);
   });
 
-  it("calculates statistics from the selected player perspective", () => {
-    expect(calculateHeadToHeadStatistics(matches, "player-bjoern")).toEqual([
+  it("calculates head-to-head statistics", () => {
+    const statistics = new MatchStatistics(matches);
+
+    expect(statistics.getHeadToHead("player-bjoern")).toEqual([
       {
         opponentId: "player-anna",
         opponentName: "Anna",
@@ -64,5 +97,11 @@ describe("calculateHeadToHeadStatistics", () => {
         winRate: 0.5,
       },
     ]);
+  });
+
+  it("returns an empty head-to-head list for unknown players", () => {
+    const statistics = new MatchStatistics(matches);
+
+    expect(statistics.getHeadToHead("unknown-player")).toEqual([]);
   });
 });

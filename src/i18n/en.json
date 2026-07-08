@@ -75,6 +75,8 @@
   },
   "statistics": {
     "title": "Player statistics",
+    "headToHead": "Head to head",
+    "noHeadToHead": "No head-to-head statistics yet",
     "matches": "Matches",
     "wins": "Wins",
     "losses": "Losses",
