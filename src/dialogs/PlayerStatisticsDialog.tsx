@@ -2,26 +2,29 @@ import { useTranslation } from "react-i18next";
 
 import { formatDifference } from "../statistics/helpers";
 
-import type { PlayerStatisticsDetails } from "../statistics/types";
+import type { PlayerStatistics } from "../statistics/PlayerStatistics";
 
 type Props = {
-  details: PlayerStatisticsDetails;
+  player: PlayerStatistics;
   onClose: () => void;
 };
 
-export function PlayerStatisticsDialog({ details, onClose }: Props) {
+export function PlayerStatisticsDialog({ player, onClose }: Props) {
   const { t, i18n } = useTranslation();
-  const { player, headToHead } = details;
 
   const percentFormatter = new Intl.NumberFormat(i18n.language, {
     style: "percent",
     maximumFractionDigits: 0,
   });
 
+  const dateFormatter = new Intl.DateTimeFormat(i18n.language, {
+    dateStyle: "medium",
+  });
+
   return (
     <div className="dialogBackdrop" onClick={onClose}>
       <div className="dialog playerStatisticsDialog" onClick={(event) => event.stopPropagation()}>
-        <h2>{player.playerName}</h2>
+        <h2>{player.name}</h2>
 
         <div className="dialogContent">
           <section className="statisticsCard">
@@ -59,9 +62,11 @@ export function PlayerStatisticsDialog({ details, onClose }: Props) {
           <section className="headToHeadList">
             <h3>{t("statistics.headToHead")}</h3>
 
-            {headToHead.length === 0 && <p className="emptyText">{t("statistics.noHeadToHead")}</p>}
+            {player.headToHead.length === 0 && (
+              <p className="emptyText">{t("statistics.noHeadToHead")}</p>
+            )}
 
-            {headToHead.map((entry) => (
+            {player.headToHead.map((entry) => (
               <article className="headToHeadEntry" key={entry.opponentId}>
                 <strong>{entry.opponentName}</strong>
 
@@ -70,6 +75,32 @@ export function PlayerStatisticsDialog({ details, onClose }: Props) {
                 </span>
               </article>
             ))}
+          </section>
+
+          <section className="recentMatchesList">
+            <h3>{t("statistics.recentMatches")}</h3>
+
+            {player.recentMatches.map((match) => {
+              const isPlayer1 = match.player1Id === player.id;
+              const won = match.winnerId === player.id;
+              const opponentName = isPlayer1 ? match.player2Name : match.player1Name;
+              const result = isPlayer1
+                ? `${match.player1Sets}:${match.player2Sets}`
+                : `${match.player2Sets}:${match.player1Sets}`;
+
+              return (
+                <article className="recentMatchEntry" key={match.id}>
+                  <div>
+                    <strong>
+                      {won ? "✓" : "✗"} {opponentName}
+                    </strong>
+                    <time>{dateFormatter.format(new Date(match.finishedAt))}</time>
+                  </div>
+
+                  <span>{result}</span>
+                </article>
+              );
+            })}
           </section>
         </div>
 

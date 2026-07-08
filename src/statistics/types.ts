@@ -30,3 +30,11 @@ export type PlayerStatisticsDetails = {
   player: PlayerStatistics;
   headToHead: HeadToHeadStatistics[];
 };
+
+export type RecentPlayerMatch = {
+  matchId: string;
+  opponentName: string;
+  setsWon: number;
+  setsLost: number;
+  won: boolean;
+};

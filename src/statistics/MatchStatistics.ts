@@ -1,12 +1,13 @@
 import { comparePlayerStatistics } from "./compare";
 import { calculateHeadToHead } from "./headToHead";
 import { calculateWinRate } from "./helpers";
+import { PlayerStatistics } from "./PlayerStatistics";
 
-import type { HeadToHeadStatistics, PlayerStatistics, PlayerStatisticsDetails } from "./types";
+import type { HeadToHeadStatistics, PlayerStatistics as PlayerStatisticsData } from "./types";
 import type { MatchResult } from "../types/match";
 
 type MutablePlayerStatistics = Omit<
-  PlayerStatistics,
+  PlayerStatisticsData,
   "winRate" | "setDifference" | "pointDifference"
 >;
 
@@ -18,7 +19,7 @@ export class MatchStatistics {
     this.build(matches);
   }
 
-  get players(): PlayerStatistics[] {
+  get players(): PlayerStatisticsData[] {
     return [...this.playersById.values()]
       .map((statistics) => ({
         ...statistics,
@@ -33,15 +34,16 @@ export class MatchStatistics {
     return calculateHeadToHead(this.matchesByPlayerId.get(playerId) ?? [], playerId);
   }
 
-  getPlayer(playerId: string): PlayerStatisticsDetails | null {
+  getPlayer(playerId: string): PlayerStatistics | null {
     const player = this.players.find((entry) => entry.playerId === playerId);
 
     if (!player) return null;
 
-    return {
+    return new PlayerStatistics(
       player,
-      headToHead: this.getHeadToHead(playerId),
-    };
+      this.getHeadToHead(playerId),
+      this.getRecentMatches(playerId)
+    );
   }
 
   private build(matches: MatchResult[]) {
@@ -108,5 +110,11 @@ export class MatchStatistics {
     const playerMatches = this.matchesByPlayerId.get(playerId) ?? [];
     playerMatches.push(match);
     this.matchesByPlayerId.set(playerId, playerMatches);
+  }
+
+  private getRecentMatches(playerId: string): MatchResult[] {
+    return [...(this.matchesByPlayerId.get(playerId) ?? [])].sort(
+      (left, right) => new Date(right.finishedAt).getTime() - new Date(left.finishedAt).getTime()
+    );
   }
 }

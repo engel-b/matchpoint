@@ -70,10 +70,7 @@ export function MatchHistoryDialog({ isOpen, onClose }: Props) {
         />
       )}
       {selectedPlayer && (
-        <PlayerStatisticsDialog
-          details={selectedPlayer}
-          onClose={() => setSelectedPlayerId(null)}
-        />
+        <PlayerStatisticsDialog player={selectedPlayer} onClose={() => setSelectedPlayerId(null)} />
       )}
     </div>
   );
