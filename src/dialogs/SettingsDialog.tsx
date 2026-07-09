@@ -63,7 +63,9 @@ export function SettingsDialog({
       <div className="dialog settingsDialog" onClick={(event) => event.stopPropagation()}>
         {view === "overview" && (
           <>
-            <h2>{t("settings.title")}</h2>
+            <header className="dialogHeader">
+              <h2>{t("settings.title")}</h2>
+            </header>
 
             <div className="dialogContent">
               <SettingsNavigationButton
@@ -92,9 +94,11 @@ export function SettingsDialog({
               />
             </div>
 
-            <button className="closeButton" onClick={onClose}>
-              {t("common.close")}
-            </button>
+            <footer className="dialogFooter">
+              <button type="button" className="closeButton" onClick={onClose}>
+                {t("common.close")}
+              </button>
+            </footer>
           </>
         )}
 

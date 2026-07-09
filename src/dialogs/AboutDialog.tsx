@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { appVersion, commitSha } from "../version";
 
 type Props = {
@@ -7,10 +9,13 @@ type Props = {
 const docsUrl = "https://engel-b.github.io/matchpoint/";
 
 export function AboutDialog({ onClose }: Props) {
+  const { t } = useTranslation();
   return (
     <div className="dialogBackdrop">
       <div className="dialog">
-        <h2>Über MatchPoint</h2>
+        <header className="dialogHeader">
+          <h2>{t("about.title")}</h2>
+        </header>
 
         <div className="dialogContent">
           <div className="versionInfo">
@@ -21,14 +26,16 @@ export function AboutDialog({ onClose }: Props) {
 
           <div className="versionInfo">
             <a className="secondaryButton" href={docsUrl} target="_blank" rel="noreferrer">
-              Dokumentation öffnen
+              {t("about.documentationLink")}
             </a>
           </div>
         </div>
 
-        <button type="button" className="closeButton" onClick={onClose}>
-          Schließen
-        </button>
+        <footer className="dialogFooter">
+          <button type="button" className="closeButton" onClick={onClose}>
+            {t("common.close")}
+          </button>
+        </footer>
       </div>
     </div>
   );
