@@ -38,7 +38,7 @@ export function PlayerDialog({
     <div className="dialogBackdrop" onClick={onClose}>
       <div className="dialog" onClick={(event) => event.stopPropagation()}>
         <header className="dialogHeader">
-          <h2>{t("selectPlayer.title")}</h2>
+          <h2>{t("player.select")}</h2>
         </header>
 
         <div className="profileList">
