@@ -10,6 +10,10 @@ export async function saveProfile(profile: PlayerProfile): Promise<void> {
   await db.profiles.put(profile);
 }
 
+export async function deleteProfile(profileId: string): Promise<void> {
+  await db.profiles.delete(profileId);
+}
+
 export async function ensureDefaultProfiles(profiles: PlayerProfile[]): Promise<void> {
   for (const profile of profiles) {
     await db.profiles.put(profile);

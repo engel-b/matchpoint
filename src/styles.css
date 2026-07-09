@@ -1249,3 +1249,41 @@ select {
 .recentMatchEntry span {
   font-weight: 800;
 }
+
+.playerManagement {
+  display: grid;
+  gap: 18px;
+}
+
+.managedPlayerList {
+  display: grid;
+  gap: 12px;
+}
+
+.managedPlayerRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+
+  padding: 12px;
+  border-radius: 14px;
+
+  background: var(--surface-soft);
+}
+
+.managedPlayerRow input {
+  min-width: 0;
+
+  padding: 12px 14px;
+
+  border: 2px solid var(--border);
+  border-radius: 12px;
+
+  background: var(--surface);
+  color: var(--text);
+}
+
+.managedPlayerRow .dangerButton {
+  width: auto;
+  margin: 0;
+}

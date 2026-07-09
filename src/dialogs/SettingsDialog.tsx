@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import type { Language, Theme } from "../hooks/useAppStorage";
 import type { ControlAction, KeyBindings } from "../types/controls";
-import type { GameSettings } from "../types/game";
+import type { PlayerProfile, GameSettings } from "../types/game";
 
 type SettingsView = "overview" | "general" | "players" | "controls" | "danger";
 
@@ -12,7 +12,11 @@ type Props = {
   language: Language;
   gameSettings: GameSettings;
   keyBindings: KeyBindings;
+  profiles: PlayerProfile[];
   capturingAction: ControlAction | null;
+  onCreateProfile: (name: string) => void;
+  onRenameProfile: (profileId: string, name: string) => void;
+  onDeleteProfile: (profileId: string) => void;
   onThemeChange: (theme: Theme) => void;
   onLanguageChange: (language: Language) => void;
   onGameSettingsChange: (settings: GameSettings) => void;
@@ -28,7 +32,11 @@ export function SettingsDialog({
   language,
   gameSettings,
   keyBindings,
+  profiles,
   capturingAction,
+  onCreateProfile,
+  onRenameProfile,
+  onDeleteProfile,
   onThemeChange,
   onLanguageChange,
   onGameSettingsChange,
@@ -154,7 +162,12 @@ export function SettingsDialog({
             <SettingsHeader title={t("settings.players")} onBack={() => setView("overview")} />
 
             <div className="dialogContent">
-              <p className="settingsHint">{t("settings.playersHint")}</p>
+              <PlayerManagement
+                profiles={profiles}
+                onCreateProfile={onCreateProfile}
+                onRenameProfile={onRenameProfile}
+                onDeleteProfile={onDeleteProfile}
+              />
             </div>
 
             <button className="secondaryButton" onClick={() => setView("overview")}>
@@ -324,6 +337,101 @@ function KeyBindingRow({
           {clearLabel}
         </button>
       </div>
+    </div>
+  );
+}
+
+function PlayerManagement({
+  profiles,
+  onCreateProfile,
+  onRenameProfile,
+  onDeleteProfile,
+}: {
+  profiles: PlayerProfile[];
+  onCreateProfile: (name: string) => void;
+  onRenameProfile: (profileId: string, name: string) => void;
+  onDeleteProfile: (profileId: string) => void;
+}) {
+  const { t } = useTranslation();
+  const [newPlayerName, setNewPlayerName] = useState("");
+
+  function handleCreateProfile() {
+    const name = newPlayerName.trim();
+
+    if (!name) return;
+
+    onCreateProfile(name);
+    setNewPlayerName("");
+  }
+
+  return (
+    <div className="playerManagement">
+      <p className="settingsHint">{t("settings.playersHint")}</p>
+
+      <div className="managedPlayerList">
+        {profiles.map((profile) => (
+          <ManagedPlayerRow
+            key={profile.id}
+            profile={profile}
+            onRenameProfile={onRenameProfile}
+            onDeleteProfile={onDeleteProfile}
+          />
+        ))}
+      </div>
+
+      <div className="newPlayerBox">
+        <label htmlFor="managed-new-player-name">{t("player.new")}</label>
+
+        <input
+          id="managed-new-player-name"
+          value={newPlayerName}
+          onChange={(event) => setNewPlayerName(event.target.value)}
+          placeholder={t("player.namePlaceholder")}
+        />
+
+        <button className="closeButton" onClick={handleCreateProfile}>
+          {t("player.add")}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function ManagedPlayerRow({
+  profile,
+  onRenameProfile,
+  onDeleteProfile,
+}: {
+  profile: PlayerProfile;
+  onRenameProfile: (profileId: string, name: string) => void;
+  onDeleteProfile: (profileId: string) => void;
+}) {
+  const { t } = useTranslation();
+  const [name, setName] = useState(profile.name);
+
+  function handleBlur() {
+    const nextName = name.trim();
+
+    if (!nextName || nextName === profile.name) {
+      setName(profile.name);
+      return;
+    }
+
+    onRenameProfile(profile.id, nextName);
+  }
+
+  return (
+    <div className="managedPlayerRow">
+      <input
+        value={name}
+        aria-label={t("player.name")}
+        onChange={(event) => setName(event.target.value)}
+        onBlur={handleBlur}
+      />
+
+      <button type="button" className="dangerButton" onClick={() => onDeleteProfile(profile.id)}>
+        {t("player.delete")}
+      </button>
     </div>
   );
 }

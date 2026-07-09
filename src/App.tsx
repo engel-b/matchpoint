@@ -52,6 +52,8 @@ export default function App() {
     setLanguage,
     profiles,
     addProfile,
+    updateProfile,
+    removeProfile,
     storedGameSettings,
     saveGameSettings,
     selectedProfileIds,
@@ -149,6 +151,58 @@ export default function App() {
     setProfileDialogPlayer(null);
   }
 
+  function handleCreateManagedProfile(name: string) {
+    const now = new Date().toISOString();
+
+    addProfile({
+      id: crypto.randomUUID(),
+      name,
+      createdAt: now,
+      updatedAt: now,
+    });
+  }
+
+  function handleRenameProfile(profileId: string, name: string) {
+    const profile = profiles.find((currentProfile) => currentProfile.id === profileId);
+
+    if (!profile) return;
+
+    updateProfile({
+      ...profile,
+      name,
+      updatedAt: new Date().toISOString(),
+    });
+  }
+
+  function handleDeleteProfile(profileId: string) {
+    if (profiles.length <= 2) {
+      window.alert(t("player.minimumProfiles"));
+      return;
+    }
+
+    const confirmed = window.confirm(t("player.confirmDelete"));
+
+    if (!confirmed) return;
+
+    const remainingProfiles = profiles.filter((profile) => profile.id !== profileId);
+    const fallbackProfile = remainingProfiles[0];
+
+    removeProfile(profileId);
+
+    if (selectedProfileIds.player1 === profileId || selectedProfileIds.player2 === profileId) {
+      saveSelectedProfileIds({
+        player1:
+          selectedProfileIds.player1 === profileId
+            ? fallbackProfile.id
+            : selectedProfileIds.player1,
+        player2:
+          selectedProfileIds.player2 === profileId
+            ? fallbackProfile.id
+            : selectedProfileIds.player2,
+      });
+    }
+  }
+
   function handleGameSettingsChange(nextSettings: GameSettings) {
     updateGameSettings(nextSettings);
     saveGameSettings(nextSettings);
@@ -221,7 +275,11 @@ export default function App() {
           language={language}
           gameSettings={game.settings}
           keyBindings={keyBindings}
+          profiles={profiles}
           capturingAction={capturingAction}
+          onCreateProfile={handleCreateManagedProfile}
+          onRenameProfile={handleRenameProfile}
+          onDeleteProfile={handleDeleteProfile}
           onThemeChange={setTheme}
           onLanguageChange={setLanguage}
           onGameSettingsChange={handleGameSettingsChange}
