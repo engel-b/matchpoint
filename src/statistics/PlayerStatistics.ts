@@ -2,6 +2,7 @@ import type {
   HeadToHeadStatistics,
   PlayerStatistics as PlayerStatisticsData,
   RecentPlayerMatch,
+  PlayerStreak,
 } from "./types";
 import type { MatchResult } from "../types/match";
 
@@ -88,6 +89,61 @@ export class PlayerStatistics {
         won: match.winnerId === this.id,
       };
     });
+  }
+
+  get currentStreak(): PlayerStreak {
+    if (this.recentMatchesList.length === 0) {
+      return { type: "none", count: 0 };
+    }
+
+    const firstMatchWon = this.recentMatchesList[0].winnerId === this.id;
+    let count = 0;
+
+    for (const match of this.recentMatchesList) {
+      const won = match.winnerId === this.id;
+
+      if (won !== firstMatchWon) break;
+
+      count += 1;
+    }
+
+    return {
+      type: firstMatchWon ? "win" : "loss",
+      count,
+    };
+  }
+
+  get longestWinningStreak(): number {
+    let longestStreak = 0;
+    let currentStreak = 0;
+
+    for (const match of [...this.recentMatchesList].reverse()) {
+      if (match.winnerId === this.id) {
+        currentStreak += 1;
+        longestStreak = Math.max(longestStreak, currentStreak);
+      } else {
+        currentStreak = 0;
+      }
+    }
+
+    return longestStreak;
+  }
+
+  get mostPlayedOpponent(): HeadToHeadStatistics | null {
+    if (this.opponents.length === 0) return null;
+
+    return this.opponents[0];
+  }
+
+  get bestOpponent(): HeadToHeadStatistics | null {
+    if (this.opponents.length === 0) return null;
+
+    return [...this.opponents].sort((left, right) => {
+      if (right.wins !== left.wins) return right.wins - left.wins;
+      if (right.winRate !== left.winRate) return right.winRate - left.winRate;
+
+      return left.opponentName.localeCompare(right.opponentName);
+    })[0];
   }
 
   toOverview(): PlayerStatisticsData {

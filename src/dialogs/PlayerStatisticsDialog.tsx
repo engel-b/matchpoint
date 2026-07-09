@@ -41,6 +41,18 @@ export function PlayerStatisticsDialog({ player, onClose }: Props) {
               <span>{t("statistics.winRate")}</span>
               <strong>{percentFormatter.format(player.winRate)}</strong>
 
+              <span>{t("statistics.currentStreak")}</span>
+              <strong>{formatStreak(player.currentStreak)}</strong>
+
+              <span>{t("statistics.longestWinningStreak")}</span>
+              <strong>{player.longestWinningStreak}</strong>
+
+              <span>{t("statistics.mostPlayedOpponent")}</span>
+              <strong>{player.mostPlayedOpponent?.opponentName ?? "-"}</strong>
+
+              <span>{t("statistics.bestOpponent")}</span>
+              <strong>{player.bestOpponent?.opponentName ?? "-"}</strong>
+
               <span>{t("statistics.sets")}</span>
               <strong>
                 {player.setsWon}:{player.setsLost}
@@ -110,4 +122,12 @@ export function PlayerStatisticsDialog({ player, onClose }: Props) {
       </div>
     </div>
   );
+}
+
+function formatStreak(streak: { type: "win" | "loss" | "none"; count: number }): string {
+  if (streak.type === "none") return "-";
+
+  const prefix = streak.type === "win" ? "+" : "-";
+
+  return `${prefix}${streak.count}`;
 }

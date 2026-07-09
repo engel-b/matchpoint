@@ -38,3 +38,8 @@ export type RecentPlayerMatch = {
   setsLost: number;
   won: boolean;
 };
+
+export type PlayerStreak = {
+  type: "win" | "loss" | "none";
+  count: number;
+};
