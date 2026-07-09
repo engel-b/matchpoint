@@ -1025,6 +1025,10 @@ select {
   }
 }
 
+/* -------------------------------------------------- */
+/* App Menu                                            */
+/* -------------------------------------------------- */
+
 .appMenu {
   position: relative;
 }
@@ -1033,9 +1037,9 @@ select {
   position: absolute;
   top: 60px;
   right: 0;
+  z-index: 30;
 
   min-width: 230px;
-
   display: grid;
   gap: 6px;
 
@@ -1075,4 +1079,165 @@ select {
 .appMenuButton svg {
   width: 22px;
   height: 22px;
+}
+
+/* -------------------------------------------------- */
+/* Match Details                                       */
+/* -------------------------------------------------- */
+
+.matchCard {
+  cursor: pointer;
+}
+
+.matchCard:hover {
+  background: var(--surface);
+}
+
+.matchDetailsDialog,
+.playerStatisticsDialog {
+  width: min(520px, calc(100vw - 32px));
+}
+
+.matchDetailHeader {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 12px;
+  font-size: 20px;
+}
+
+.matchDetailHeader strong:last-child {
+  text-align: right;
+}
+
+.matchDetailHeader span {
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.matchDetailSets {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.matchDetailSet {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+
+  padding: 12px 14px;
+  border-radius: 14px;
+
+  background: var(--surface-soft);
+}
+
+.headToHeadCard {
+  margin-top: 24px;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--surface-soft);
+}
+
+.headToHeadCard h3 {
+  margin: 0 0 12px;
+}
+
+/* -------------------------------------------------- */
+/* Statistics                                          */
+/* -------------------------------------------------- */
+
+.statisticsOverview {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.statisticsCard {
+  padding: 16px;
+  border-radius: 16px;
+
+  background: var(--surface-soft);
+  color: var(--text);
+
+  cursor: pointer;
+}
+
+.statisticsCard > strong {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 20px;
+}
+
+.statisticsSections {
+  display: grid;
+  gap: 16px;
+}
+
+.statisticsSection {
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--surface-soft);
+}
+
+.statisticsSection h3 {
+  margin: 0 0 12px;
+}
+
+.statisticsGrid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 16px;
+}
+
+.statisticsGrid span {
+  opacity: 0.7;
+}
+
+.statisticsGrid strong {
+  text-align: right;
+}
+
+/* -------------------------------------------------- */
+/* Player Statistics                                   */
+/* -------------------------------------------------- */
+
+.headToHeadList,
+.recentMatchesList {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.headToHeadList h3,
+.recentMatchesList h3 {
+  margin: 0 0 4px;
+}
+
+.headToHeadEntry,
+.recentMatchEntry {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+
+  padding: 12px 14px;
+  border-radius: 14px;
+
+  background: var(--surface-soft);
+}
+
+.recentMatchEntry div {
+  display: grid;
+  gap: 4px;
+}
+
+.recentMatchEntry time {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.recentMatchEntry span {
+  font-weight: 800;
 }

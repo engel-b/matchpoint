@@ -61,7 +61,9 @@
   "history": {
     "title": "Historie",
     "loading": "Historie wird geladen ...",
-    "empty": "Noch keine Spiele gespeichert."
+    "empty": "Noch keine Spiele gespeichert.",
+    "matchDetails": "Spieldetails",
+    "setNumber": "Satz {{number}}"
   },
   "controls": {
     "title": "Remote-Tasten",
@@ -71,5 +73,27 @@
     "clear": "Löschen",
     "pressKey": "Taste drücken ..."
   },
-  "statistics": {}
+  "statistics": {
+    "title": "Spielerstatistik",
+    "overview": "Überblick",
+    "setsAndPoints": "Sätze & Punkte",
+    "opponents": "Gegner",
+    "headToHead": "Direkte Bilanz",
+    "noHeadToHead": "Noch keine direkte Bilanz vorhanden",
+    "recentMatches": "Letzte Spiele",
+    "matches": "Spiele",
+    "wins": "Siege",
+    "losses": "Niederlagen",
+    "winRate": "Siegquote",
+    "currentStreak": "Aktuelle Serie",
+    "winStreak": "{{count}} Siege in Folge",
+    "lossStreak": "{{count}} Niederlagen in Folge",
+    "longestWinningStreak": "Längste Siegesserie",
+    "mostPlayedOpponent": "Häufigster Gegner",
+    "bestOpponent": "Bester Gegner",
+    "sets": "Sätze",
+    "setDifference": "Satzdifferenz",
+    "points": "Punkte",
+    "pointDifference": "Punktdifferenz"
+  }
 }
