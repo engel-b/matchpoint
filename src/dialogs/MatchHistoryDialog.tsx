@@ -29,7 +29,9 @@ export function MatchHistoryDialog({ isOpen, onClose }: Props) {
   return (
     <div className="dialogBackdrop" onClick={onClose}>
       <div className="dialog historyDialog" onClick={(event) => event.stopPropagation()}>
-        <h2>{t("history.title")}</h2>
+        <header className="dialogHeader">
+          <h2>{t("history.title")}</h2>
+        </header>
 
         <div className="dialogContent">
           {isLoading && <p>{t("history.loading")}</p>}
@@ -57,9 +59,11 @@ export function MatchHistoryDialog({ isOpen, onClose }: Props) {
           )}
         </div>
 
-        <button className="closeButton" onClick={onClose}>
-          {t("common.close")}
-        </button>
+        <footer className="dialogFooter">
+          <button className="closeButton" onClick={onClose}>
+            {t("common.close")}
+          </button>
+        </footer>
       </div>
 
       {selectedMatch && (

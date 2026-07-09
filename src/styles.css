@@ -318,7 +318,11 @@ select {
   box-shadow: 0 24px 80px var(--shadow);
 }
 
-.dialog h2 {
+.dialogHeader {
+  flex: 0 0 auto;
+}
+
+.dialogHeader h2 {
   margin: 0 0 24px;
 }
 
@@ -328,6 +332,10 @@ select {
   overflow-y: auto;
   margin-bottom: 24px;
   padding-right: 2px;
+}
+
+.dialogFooter {
+  flex: 0 0 auto;
 }
 
 .settingRow {

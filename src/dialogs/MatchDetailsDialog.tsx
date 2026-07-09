@@ -25,7 +25,9 @@ export function MatchDetailsDialog({ match, matches, onClose }: Props) {
   return (
     <div className="dialogBackdrop" onClick={onClose}>
       <div className="dialog matchDetailsDialog" onClick={(event) => event.stopPropagation()}>
-        <h2>{t("history.matchDetails")}</h2>
+        <header className="dialogHeader">
+          <h2>{t("history.matchDetails")}</h2>
+        </header>
 
         <div className="dialogContent">
           <div className="matchDetailHeader">
@@ -73,9 +75,11 @@ export function MatchDetailsDialog({ match, matches, onClose }: Props) {
           </div>
         </div>
 
-        <button className="closeButton" onClick={onClose}>
-          {t("common.close")}
-        </button>
+        <footer className="dialogFooter">
+          <button className="closeButton" onClick={onClose}>
+            {t("common.close")}
+          </button>
+        </footer>
       </div>
     </div>
   );
