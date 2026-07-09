@@ -2,14 +2,16 @@
   "common": {
     "close": "Close",
     "undo": "Undo",
-    "back": "Back"
+    "back": "Back",
+    "add": "Add"
   },
   "menu": {
     "title": "Menu",
     "newGame": "New game"
   },
   "about": {
-    "title": "About MatchPoint"
+    "title": "About MatchPoint",
+    "documentationLink": "Open documentation"
   },
   "fullscreen": {
     "open": "Open fullscreen",

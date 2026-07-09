@@ -29,7 +29,9 @@ export function PlayerStatisticsDialog({ player, onClose }: Props) {
         <div className="dialogContent">
           <div className="statisticsSections">
             <section className="statisticsSection">
-              <h3>{t("statistics.overview")}</h3>
+              <header className="dialogHeader">
+                <h2>{player.name}</h2>
+              </header>
               <div className="statisticsGrid">
                 <span>{t("statistics.matches")}</span>
                 <strong>{player.matches}</strong>
@@ -127,9 +129,11 @@ export function PlayerStatisticsDialog({ player, onClose }: Props) {
           </section>
         </div>
 
-        <button className="closeButton" onClick={onClose}>
-          {t("common.close")}
-        </button>
+        <footer className="dialogFooter">
+          <button className="closeButton" onClick={onClose}>
+            {t("common.close")}
+          </button>
+        </footer>
       </div>
     </div>
   );

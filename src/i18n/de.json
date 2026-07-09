@@ -2,14 +2,16 @@
   "common": {
     "close": "Schließen",
     "undo": "Rückgängig",
-    "back": "Zurück"
+    "back": "Zurück",
+    "add": "Hinzufügen"
   },
   "menu": {
     "title": "Menü",
     "newGame": "Neues Spiel"
   },
   "about": {
-    "title": "Über MatchPoint"
+    "title": "Über MatchPoint",
+    "documentationLink": "Dokumentation öffnen"
   },
   "fullscreen": {
     "open": "Vollbild öffnen",

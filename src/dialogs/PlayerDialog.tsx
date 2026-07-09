@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import type { PlayerId, PlayerProfile } from "../types/game";
 
@@ -19,6 +20,7 @@ export function PlayerDialog({
   onCreateProfile,
   onClose,
 }: Props) {
+  const { t } = useTranslation();
   const [newPlayerName, setNewPlayerName] = useState("");
 
   function handleCreateProfile() {
@@ -35,7 +37,9 @@ export function PlayerDialog({
   return (
     <div className="dialogBackdrop" onClick={onClose}>
       <div className="dialog" onClick={(event) => event.stopPropagation()}>
-        <h2>Spieler auswählen</h2>
+        <header className="dialogHeader">
+          <h2>{t("player.select")}</h2>
+        </header>
 
         <div className="profileList">
           {profiles.map((profile) => (
@@ -63,13 +67,15 @@ export function PlayerDialog({
           />
 
           <button className="closeButton" onClick={handleCreateProfile}>
-            Hinzufügen
+            {t("common.add")}
           </button>
         </div>
 
-        <button className="secondaryButton" onClick={onClose}>
-          Schließen
-        </button>
+        <footer className="dialogFooter">
+          <button type="button" className="closeButton" onClick={onClose}>
+            {t("common.close")}
+          </button>
+        </footer>
       </div>
     </div>
   );
