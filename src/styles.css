@@ -1025,6 +1025,10 @@ select {
   }
 }
 
+/* -------------------------------------------------- */
+/* App Menu                                            */
+/* -------------------------------------------------- */
+
 .appMenu {
   position: relative;
 }
@@ -1033,9 +1037,9 @@ select {
   position: absolute;
   top: 60px;
   right: 0;
+  z-index: 30;
 
   min-width: 230px;
-
   display: grid;
   gap: 6px;
 
@@ -1077,37 +1081,9 @@ select {
   height: 22px;
 }
 
-.statisticsOverview {
-  display: grid;
-  gap: 14px;
-  margin-bottom: 24px;
-}
-
-.statisticsCard {
-  padding: 16px;
-  border-radius: 16px;
-  background: var(--surface-soft);
-}
-
-.statisticsCard > strong {
-  display: block;
-  margin-bottom: 12px;
-  font-size: 20px;
-}
-
-.statisticsGrid {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 8px 16px;
-}
-
-.statisticsGrid span {
-  opacity: 0.7;
-}
-
-.statisticsGrid strong {
-  text-align: right;
-}
+/* -------------------------------------------------- */
+/* Match Details                                       */
+/* -------------------------------------------------- */
 
 .matchCard {
   cursor: pointer;
@@ -1117,7 +1093,8 @@ select {
   background: var(--surface);
 }
 
-.matchDetailsDialog {
+.matchDetailsDialog,
+.playerStatisticsDialog {
   width: min(520px, calc(100vw - 32px));
 }
 
@@ -1157,6 +1134,21 @@ select {
   background: var(--surface-soft);
 }
 
+.headToHeadCard {
+  margin-top: 24px;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--surface-soft);
+}
+
+.headToHeadCard h3 {
+  margin: 0 0 12px;
+}
+
+/* -------------------------------------------------- */
+/* Statistics                                          */
+/* -------------------------------------------------- */
+
 .statisticsOverview {
   display: grid;
   gap: 14px;
@@ -1166,13 +1158,32 @@ select {
 .statisticsCard {
   padding: 16px;
   border-radius: 16px;
+
   background: var(--surface-soft);
+  color: var(--text);
+
+  cursor: pointer;
 }
 
 .statisticsCard > strong {
   display: block;
   margin-bottom: 12px;
   font-size: 20px;
+}
+
+.statisticsSections {
+  display: grid;
+  gap: 16px;
+}
+
+.statisticsSection {
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--surface-soft);
+}
+
+.statisticsSection h3 {
+  margin: 0 0 12px;
 }
 
 .statisticsGrid {
@@ -1189,56 +1200,23 @@ select {
   text-align: right;
 }
 
-.headToHeadCard {
-  margin-top: 24px;
-  padding: 16px;
-  border-radius: 16px;
-  background: var(--surface-soft);
-}
+/* -------------------------------------------------- */
+/* Player Statistics                                   */
+/* -------------------------------------------------- */
 
-.headToHeadCard h3 {
-  margin: 0 0 12px;
-}
-
-.statisticsCard {
-  cursor: pointer;
-}
-
-.playerStatisticsDialog {
-  width: min(520px, calc(100vw - 32px));
-}
-
-.headToHeadList {
-  display: grid;
-  gap: 10px;
-  margin-top: 24px;
-}
-
-.headToHeadList h3 {
-  margin: 0 0 4px;
-}
-
-.headToHeadEntry {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-
-  padding: 12px 14px;
-  border-radius: 14px;
-
-  background: var(--surface-soft);
-}
-
+.headToHeadList,
 .recentMatchesList {
   display: grid;
   gap: 10px;
   margin-top: 24px;
 }
 
+.headToHeadList h3,
 .recentMatchesList h3 {
   margin: 0 0 4px;
 }
 
+.headToHeadEntry,
 .recentMatchEntry {
   display: flex;
   justify-content: space-between;

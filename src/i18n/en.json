@@ -75,6 +75,9 @@
   },
   "statistics": {
     "title": "Player statistics",
+    "overview": "Overview",
+    "setsAndPoints": "Sets & points",
+    "opponents": "Opponents",
     "headToHead": "Head to head",
     "noHeadToHead": "No head-to-head statistics yet",
     "recentMatches": "Recent matches",
@@ -83,6 +86,8 @@
     "losses": "Losses",
     "winRate": "Win rate",
     "currentStreak": "Current streak",
+    "winStreak": "{{count}} wins in a row",
+    "lossStreak": "{{count}} losses in a row",
     "longestWinningStreak": "Longest winning streak",
     "mostPlayedOpponent": "Most played opponent",
     "bestOpponent": "Best opponent",

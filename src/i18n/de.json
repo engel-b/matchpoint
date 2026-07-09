@@ -75,6 +75,9 @@
   },
   "statistics": {
     "title": "Spielerstatistik",
+    "overview": "Überblick",
+    "setsAndPoints": "Sätze & Punkte",
+    "opponents": "Gegner",
     "headToHead": "Direkte Bilanz",
     "noHeadToHead": "Noch keine direkte Bilanz vorhanden",
     "recentMatches": "Letzte Spiele",
@@ -83,6 +86,8 @@
     "losses": "Niederlagen",
     "winRate": "Siegquote",
     "currentStreak": "Aktuelle Serie",
+    "winStreak": "{{count}} Siege in Folge",
+    "lossStreak": "{{count}} Niederlagen in Folge",
     "longestWinningStreak": "Längste Siegesserie",
     "mostPlayedOpponent": "Häufigster Gegner",
     "bestOpponent": "Bester Gegner",

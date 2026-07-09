@@ -74,7 +74,7 @@ export class PlayerStatistics {
   }
 
   get recentMatches(): readonly MatchResult[] {
-    return this.recentMatchesList;
+    return this.recentMatchesList.slice(0, 5);
   }
 
   get recentResults(): RecentPlayerMatch[] {

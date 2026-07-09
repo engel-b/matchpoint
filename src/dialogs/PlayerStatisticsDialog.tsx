@@ -27,49 +27,60 @@ export function PlayerStatisticsDialog({ player, onClose }: Props) {
         <h2>{player.name}</h2>
 
         <div className="dialogContent">
-          <section className="statisticsCard">
-            <div className="statisticsGrid">
-              <span>{t("statistics.matches")}</span>
-              <strong>{player.matches}</strong>
+          <div className="statisticsSections">
+            <section className="statisticsSection">
+              <h3>{t("statistics.overview")}</h3>
+              <div className="statisticsGrid">
+                <span>{t("statistics.matches")}</span>
+                <strong>{player.matches}</strong>
 
-              <span>{t("statistics.wins")}</span>
-              <strong>{player.wins}</strong>
+                <span>{t("statistics.wins")}</span>
+                <strong>{player.wins}</strong>
 
-              <span>{t("statistics.losses")}</span>
-              <strong>{player.losses}</strong>
+                <span>{t("statistics.losses")}</span>
+                <strong>{player.losses}</strong>
 
-              <span>{t("statistics.winRate")}</span>
-              <strong>{percentFormatter.format(player.winRate)}</strong>
+                <span>{t("statistics.winRate")}</span>
+                <strong>{percentFormatter.format(player.winRate)}</strong>
 
-              <span>{t("statistics.currentStreak")}</span>
-              <strong>{formatStreak(player.currentStreak)}</strong>
+                <span>{t("statistics.currentStreak")}</span>
+                <strong>{formatStreak(player.currentStreak, t)}</strong>
 
-              <span>{t("statistics.longestWinningStreak")}</span>
-              <strong>{player.longestWinningStreak}</strong>
+                <span>{t("statistics.longestWinningStreak")}</span>
+                <strong>{player.longestWinningStreak}</strong>
+              </div>
+            </section>
+            <section className="statisticsSection">
+              <h3>{t("statistics.setsAndPoints")}</h3>
+              <div className="statisticsGrid">
+                <span>{t("statistics.sets")}</span>
+                <strong>
+                  {player.setsWon}:{player.setsLost}
+                </strong>
 
-              <span>{t("statistics.mostPlayedOpponent")}</span>
-              <strong>{player.mostPlayedOpponent?.opponentName ?? "-"}</strong>
+                <span>{t("statistics.setDifference")}</span>
+                <strong>{formatDifference(player.setDifference)}</strong>
 
-              <span>{t("statistics.bestOpponent")}</span>
-              <strong>{player.bestOpponent?.opponentName ?? "-"}</strong>
+                <span>{t("statistics.points")}</span>
+                <strong>
+                  {player.pointsWon}:{player.pointsLost}
+                </strong>
 
-              <span>{t("statistics.sets")}</span>
-              <strong>
-                {player.setsWon}:{player.setsLost}
-              </strong>
+                <span>{t("statistics.pointDifference")}</span>
+                <strong>{formatDifference(player.pointDifference)}</strong>
+              </div>
+            </section>
+            <section className="statisticsSection">
+              <h3>{t("statistics.opponents")}</h3>
+              <div className="statisticsGrid">
+                <span>{t("statistics.mostPlayedOpponent")}</span>
+                <strong>{player.mostPlayedOpponent?.opponentName ?? "-"}</strong>
 
-              <span>{t("statistics.setDifference")}</span>
-              <strong>{formatDifference(player.setDifference)}</strong>
-
-              <span>{t("statistics.points")}</span>
-              <strong>
-                {player.pointsWon}:{player.pointsLost}
-              </strong>
-
-              <span>{t("statistics.pointDifference")}</span>
-              <strong>{formatDifference(player.pointDifference)}</strong>
-            </div>
-          </section>
+                <span>{t("statistics.bestOpponent")}</span>
+                <strong>{player.bestOpponent?.opponentName ?? "-"}</strong>
+              </div>
+            </section>
+          </div>
 
           <section className="headToHeadList">
             <h3>{t("statistics.headToHead")}</h3>
@@ -124,10 +135,15 @@ export function PlayerStatisticsDialog({ player, onClose }: Props) {
   );
 }
 
-function formatStreak(streak: { type: "win" | "loss" | "none"; count: number }): string {
+function formatStreak(
+  streak: { type: "win" | "loss" | "none"; count: number },
+  t: (key: string, options?: Record<string, unknown>) => string
+): string {
   if (streak.type === "none") return "-";
 
-  const prefix = streak.type === "win" ? "+" : "-";
+  if (streak.type === "win") {
+    return t("statistics.winStreak", { count: streak.count });
+  }
 
-  return `${prefix}${streak.count}`;
+  return t("statistics.lossStreak", { count: streak.count });
 }
