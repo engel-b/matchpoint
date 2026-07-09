@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import {
   ensureDefaultProfiles,
+  deleteProfile,
   loadAppState,
   loadProfiles,
   saveAppState,
@@ -109,6 +110,22 @@ export function useAppStorage({
     void saveProfile(profile);
   }
 
+  function updateProfile(profile: PlayerProfile) {
+    setProfiles((currentProfiles) =>
+      currentProfiles.map((currentProfile) =>
+        currentProfile.id === profile.id ? profile : currentProfile
+      )
+    );
+
+    void saveProfile(profile);
+  }
+
+  function removeProfile(profileId: string) {
+    setProfiles((currentProfiles) => currentProfiles.filter((profile) => profile.id !== profileId));
+
+    void deleteProfile(profileId);
+  }
+
   return {
     theme,
     setTheme,
@@ -116,6 +133,8 @@ export function useAppStorage({
     setLanguage,
     profiles,
     addProfile,
+    updateProfile,
+    removeProfile,
     storedGameSettings,
     saveGameSettings,
     selectedProfileIds,

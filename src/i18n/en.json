@@ -49,9 +49,13 @@
   },
   "player": {
     "select": "Select player",
+    "name": "Player name",
     "new": "New player",
     "namePlaceholder": "Enter name",
-    "add": "Add"
+    "add": "Hinzufügen",
+    "delete": "Löschen",
+    "confirmDelete": "Spieler wirklich löschen?",
+    "minimumProfiles": "Es müssen mindestens zwei Spieler vorhanden bleiben."
   },
   "update": {
     "available": "New version available",

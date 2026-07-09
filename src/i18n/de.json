@@ -30,7 +30,7 @@
     "bestOf7": "Best of 7",
     "players": "Spielerverwaltung",
     "playersDescription": "Spielerprofile verwalten",
-    "playersHint": "Die Spielerverwaltung wird in einer späteren Version ergänzt. Die Spielerzuordnung erfolgt weiterhin direkt über die Spielernamen auf dem Scoreboard.",
+    "playersHint": "Hier verwaltest du Spielerprofile. Die Zuordnung zu Spieler 1 und Spieler 2 erfolgt weiterhin direkt über die Spielernamen auf dem Scoreboard.",
     "controlsDescription": "Tasten für externe Eingabegeräte zuordnen",
     "dangerZone": "Danger Zone",
     "dangerZoneDescription": "Spiel abbrechen oder lokale Daten zurücksetzen",
@@ -49,9 +49,13 @@
   },
   "player": {
     "select": "Spieler auswählen",
+    "name": "Spielername",
     "new": "Neuer Spieler",
     "namePlaceholder": "Name eingeben",
-    "add": "Hinzufügen"
+    "add": "Hinzufügen",
+    "delete": "Löschen",
+    "confirmDelete": "Spieler wirklich löschen?",
+    "minimumProfiles": "Es müssen mindestens zwei Spieler vorhanden bleiben."
   },
   "update": {
     "available": "Neue Version verfügbar",

@@ -6,6 +6,7 @@ export type PlayerProfile = {
   id: string;
   name: string;
   createdAt: string;
+  updatedAt?: string;
 };
 
 export type PlayerState = {
