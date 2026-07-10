@@ -62,11 +62,6 @@
     "minimumProfiles": "Es müssen mindestens zwei Spieler vorhanden bleiben.",
     "duplicateName": "Ein Spieler mit diesem Namen existiert bereits."
   },
-  "update": {
-    "available": "Neue Version verfügbar",
-    "description": "Aktualisieren, um die neueste Version zu verwenden.",
-    "button": "Aktualisieren"
-  },
   "history": {
     "title": "Historie",
     "loading": "Historie wird geladen ...",
@@ -84,7 +79,6 @@
   },
   "statistics": {
     "title": "Spielerstatistik",
-    "overview": "Überblick",
     "setsAndPoints": "Sätze & Punkte",
     "opponents": "Gegner",
     "headToHead": "Direkte Bilanz",
