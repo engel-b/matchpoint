@@ -3,7 +3,9 @@
     "close": "Schließen",
     "undo": "Rückgängig",
     "back": "Zurück",
-    "add": "Hinzufügen"
+    "cancel": "Abbrechen",
+    "ok": "OK",
+    "notice": "Hinweis"
   },
   "menu": {
     "title": "Menü",
@@ -57,7 +59,8 @@
     "add": "Hinzufügen",
     "delete": "Löschen",
     "confirmDelete": "Spieler wirklich löschen?",
-    "minimumProfiles": "Es müssen mindestens zwei Spieler vorhanden bleiben."
+    "minimumProfiles": "Es müssen mindestens zwei Spieler vorhanden bleiben.",
+    "duplicateName": "Ein Spieler mit diesem Namen existiert bereits."
   },
   "update": {
     "available": "Neue Version verfügbar",
