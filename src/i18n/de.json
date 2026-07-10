@@ -59,11 +59,6 @@
     "confirmDelete": "Spieler wirklich löschen?",
     "minimumProfiles": "Es müssen mindestens zwei Spieler vorhanden bleiben."
   },
-  "update": {
-    "available": "Neue Version verfügbar",
-    "description": "Aktualisieren, um die neueste Version zu verwenden.",
-    "button": "Aktualisieren"
-  },
   "history": {
     "title": "Historie",
     "loading": "Historie wird geladen ...",
@@ -81,7 +76,6 @@
   },
   "statistics": {
     "title": "Spielerstatistik",
-    "overview": "Überblick",
     "setsAndPoints": "Sätze & Punkte",
     "opponents": "Gegner",
     "headToHead": "Direkte Bilanz",
