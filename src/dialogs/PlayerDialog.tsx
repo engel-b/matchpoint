@@ -23,12 +23,12 @@ export function PlayerDialog({
   const { t } = useTranslation();
   const [newPlayerName, setNewPlayerName] = useState("");
 
-  function handleCreateProfile() {
+  function handleCreateProfile(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
     const name = newPlayerName.trim();
 
-    if (!name) {
-      return;
-    }
+    if (!name) return;
 
     onCreateProfile(playerId, name);
     setNewPlayerName("");
@@ -41,34 +41,37 @@ export function PlayerDialog({
           <h2>{t("player.select")}</h2>
         </header>
 
-        <div className="profileList">
-          {profiles.map((profile) => (
-            <button
-              key={profile.id}
-              className={`profileButton ${
-                profile.id === currentProfileId ? "profileButton--active" : ""
-              }`}
-              onClick={() => onSelectProfile(playerId, profile)}
-            >
-              {profile.name}
+        <div className="dialogContent">
+          <div className="profileList">
+            {profiles.map((profile) => (
+              <button
+                key={profile.id}
+                type="button"
+                className={`profileButton ${
+                  profile.id === currentProfileId ? "profileButton--active" : ""
+                }`}
+                onClick={() => onSelectProfile(playerId, profile)}
+              >
+                {profile.name}
+              </button>
+            ))}
+          </div>
+
+          <form className="newPlayerBox" onSubmit={handleCreateProfile}>
+            <label htmlFor="new-player-name">{t("player.new")}</label>
+
+            <input
+              id="new-player-name"
+              value={newPlayerName}
+              onChange={(event) => setNewPlayerName(event.target.value)}
+              placeholder={t("player.namePlaceholder")}
+              autoFocus
+            />
+
+            <button type="submit" className="closeButton">
+              {t("player.add")}
             </button>
-          ))}
-        </div>
-
-        <div className="newPlayerBox">
-          <label htmlFor="new-player-name">Neuer Spieler</label>
-
-          <input
-            id="new-player-name"
-            value={newPlayerName}
-            onChange={(event) => setNewPlayerName(event.target.value)}
-            placeholder="Name eingeben"
-            autoFocus
-          />
-
-          <button className="closeButton" onClick={handleCreateProfile}>
-            {t("common.add")}
-          </button>
+          </form>
         </div>
 
         <footer className="dialogFooter">

@@ -3,7 +3,9 @@
     "close": "Close",
     "undo": "Undo",
     "back": "Back",
-    "add": "Add"
+    "cancel": "Cancel",
+    "ok": "OK",
+    "notice": "Notice"
   },
   "menu": {
     "title": "Menu",
@@ -54,10 +56,11 @@
     "name": "Player name",
     "new": "New player",
     "namePlaceholder": "Enter name",
-    "add": "Hinzufügen",
-    "delete": "Löschen",
-    "confirmDelete": "Spieler wirklich löschen?",
-    "minimumProfiles": "Es müssen mindestens zwei Spieler vorhanden bleiben."
+    "add": "Add",
+    "delete": "Delete",
+    "confirmDelete": "Really delete that player?",
+    "minimumProfiles": "There must be at least 2 players.",
+    "duplicateName": "A player with this name already exists."
   },
   "history": {
     "title": "History",
