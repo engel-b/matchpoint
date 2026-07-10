@@ -1,9 +1,9 @@
 import { join } from "node:path";
 
-import { readSourceFiles } from "../test/sourceFiles";
+import { readSourceFiles } from "./sourceFiles";
 
-import de from "./de.json";
-import en from "./en.json";
+import de from "../../i18n/de.json";
+import en from "../../i18n/en.json";
 
 type TranslationTree = Record<string, unknown>;
 
