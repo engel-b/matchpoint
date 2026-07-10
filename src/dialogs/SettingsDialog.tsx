@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useDialog } from "../hooks/useDialog";
+import { isDuplicatePlayerName } from "../players/playerProfileUtils";
+
+import { ConfirmDialog } from "./ConfirmDialog";
+
 import type { Language, Theme } from "../hooks/useAppStorage";
 import type { ControlAction, KeyBindings } from "../types/controls";
 import type { PlayerProfile, GameSettings } from "../types/game";
@@ -48,14 +53,20 @@ export function SettingsDialog({
 }: Props) {
   const { t } = useTranslation();
   const [view, setView] = useState<SettingsView>("overview");
+  const { dialog, showMessage, showConfirmation, closeDialog, confirmDialog } = useDialog();
 
   function handleResetGame() {
-    const confirmed = window.confirm(t("settings.confirmCancelGame"));
-
-    if (!confirmed) return;
-
-    onResetGame();
-    onClose();
+    showConfirmation({
+      title: t("settings.cancelGame"),
+      message: t("settings.confirmCancelGame"),
+      confirmLabel: t("settings.cancelGame"),
+      cancelLabel: t("common.cancel"),
+      danger: true,
+      onConfirm: () => {
+        onResetGame();
+        onClose();
+      },
+    });
   }
 
   return (
@@ -105,7 +116,6 @@ export function SettingsDialog({
         {view === "general" && (
           <>
             <SettingsHeader title={t("settings.general")} onBack={() => setView("overview")} />
-
             <div className="dialogContent">
               <label className="settingRow">
                 <span>{t("settings.language")}</span>
@@ -150,36 +160,43 @@ export function SettingsDialog({
                 </select>
               </label>
             </div>
-
-            <button className="secondaryButton" onClick={() => setView("overview")}>
-              {t("common.back")}
-            </button>
+            <footer className="dialogFooter">
+              <button type="button" className="secondaryButton" onClick={() => setView("overview")}>
+                {t("common.back")}
+              </button>
+            </footer>{" "}
           </>
         )}
 
         {view === "players" && (
           <>
             <SettingsHeader title={t("settings.players")} onBack={() => setView("overview")} />
-
             <div className="dialogContent">
               <PlayerManagement
                 profiles={profiles}
                 onCreateProfile={onCreateProfile}
                 onRenameProfile={onRenameProfile}
                 onDeleteProfile={onDeleteProfile}
+                showDuplicateNameMessage={() =>
+                  showMessage({
+                    title: t("common.notice"),
+                    message: t("player.duplicateName"),
+                    confirmLabel: t("common.ok"),
+                  })
+                }
               />
             </div>
-
-            <button className="secondaryButton" onClick={() => setView("overview")}>
-              {t("common.back")}
-            </button>
+            <footer className="dialogFooter">
+              <button type="button" className="secondaryButton" onClick={() => setView("overview")}>
+                {t("common.back")}
+              </button>
+            </footer>{" "}
           </>
         )}
 
         {view === "controls" && (
           <>
             <SettingsHeader title={t("controls.title")} onBack={() => setView("overview")} />
-
             <div className="dialogContent">
               <KeyBindingRow
                 label={t("controls.player1Point")}
@@ -214,17 +231,17 @@ export function SettingsDialog({
                 capturingLabel={t("controls.pressKey")}
               />
             </div>
-
-            <button className="secondaryButton" onClick={() => setView("overview")}>
-              {t("common.back")}
-            </button>
+            <footer className="dialogFooter">
+              <button type="button" className="secondaryButton" onClick={() => setView("overview")}>
+                {t("common.back")}
+              </button>
+            </footer>{" "}
           </>
         )}
 
         {view === "danger" && (
           <>
             <SettingsHeader title={t("settings.dangerZone")} onBack={() => setView("overview")} />
-
             <div className="dialogContent">
               <div className="dangerZone">
                 <div>
@@ -248,13 +265,15 @@ export function SettingsDialog({
                 </button>
               </div>
             </div>
-
-            <button className="secondaryButton" onClick={() => setView("overview")}>
-              {t("common.back")}
-            </button>
+            <footer className="dialogFooter">
+              <button type="button" className="secondaryButton" onClick={() => setView("overview")}>
+                {t("common.back")}
+              </button>
+            </footer>
           </>
         )}
       </div>
+      {dialog && <ConfirmDialog {...dialog} onConfirm={confirmDialog} onCancel={closeDialog} />}
     </div>
   );
 }
@@ -346,11 +365,13 @@ function PlayerManagement({
   onCreateProfile,
   onRenameProfile,
   onDeleteProfile,
+  showDuplicateNameMessage,
 }: {
   profiles: PlayerProfile[];
   onCreateProfile: (name: string) => void;
   onRenameProfile: (profileId: string, name: string) => void;
   onDeleteProfile: (profileId: string) => void;
+  showDuplicateNameMessage: () => void;
 }) {
   const { t } = useTranslation();
   const [newPlayerName, setNewPlayerName] = useState("");
@@ -358,7 +379,16 @@ function PlayerManagement({
   function handleCreateProfile() {
     const name = newPlayerName.trim();
 
-    if (!name) return;
+    if (!name) {
+      return;
+    }
+
+    const exists = isDuplicatePlayerName(profiles, name);
+
+    if (exists) {
+      showDuplicateNameMessage();
+      return;
+    }
 
     onCreateProfile(name);
     setNewPlayerName("");
@@ -373,8 +403,10 @@ function PlayerManagement({
           <ManagedPlayerRow
             key={profile.id}
             profile={profile}
+            profiles={profiles}
             onRenameProfile={onRenameProfile}
             onDeleteProfile={onDeleteProfile}
+            showDuplicateNameMessage={showDuplicateNameMessage}
           />
         ))}
       </div>
@@ -399,12 +431,16 @@ function PlayerManagement({
 
 function ManagedPlayerRow({
   profile,
+  profiles,
   onRenameProfile,
   onDeleteProfile,
+  showDuplicateNameMessage,
 }: {
   profile: PlayerProfile;
+  profiles: PlayerProfile[];
   onRenameProfile: (profileId: string, name: string) => void;
   onDeleteProfile: (profileId: string) => void;
+  showDuplicateNameMessage: () => void;
 }) {
   const { t } = useTranslation();
   const [name, setName] = useState(profile.name);
@@ -412,7 +448,19 @@ function ManagedPlayerRow({
   function handleBlur() {
     const nextName = name.trim();
 
-    if (!nextName || nextName === profile.name) {
+    if (!nextName) {
+      setName(profile.name);
+      return;
+    }
+
+    if (nextName === profile.name) {
+      return;
+    }
+
+    const duplicate = isDuplicatePlayerName(profiles, nextName, profile.id);
+
+    if (duplicate) {
+      showDuplicateNameMessage();
       setName(profile.name);
       return;
     }

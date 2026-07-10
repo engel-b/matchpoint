@@ -6,13 +6,16 @@ import { FullscreenButton } from "./components/FullscreenButton";
 import { ScorePanel } from "./components/ScorePanel";
 import { UpdatePrompt } from "./components/UpdatePrompt";
 import { AboutDialog } from "./dialogs/AboutDialog";
+import { ConfirmDialog } from "./dialogs/ConfirmDialog";
 import { MatchHistoryDialog } from "./dialogs/MatchHistoryDialog";
 import { PlayerDialog } from "./dialogs/PlayerDialog";
 import { SettingsDialog } from "./dialogs/SettingsDialog";
 import { useAppStorage } from "./hooks/useAppStorage";
+import { useDialog } from "./hooks/useDialog";
 import { useGame } from "./hooks/useGame";
 import { useKeyboardControls } from "./hooks/useKeyboardControls";
 import { useKeyCapture } from "./hooks/useKeyCapture";
+import { createPlayerProfile, isDuplicatePlayerName } from "./players/playerProfileUtils";
 import { deleteAllLocalData } from "./storage/appStorage";
 import { saveMatch } from "./storage/matchStorage";
 
@@ -69,6 +72,8 @@ export default function App() {
     },
   });
 
+  const { dialog, showMessage, showConfirmation, closeDialog, confirmDialog } = useDialog();
+
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -116,10 +121,14 @@ export default function App() {
   }, [language, i18n]);
 
   function handleNewGame() {
-    const confirmed = window.confirm(t("settings.confirmCancelGame"));
-    if (!confirmed) return;
-
-    resetGame();
+    showConfirmation({
+      title: t("settings.cancelGame"),
+      message: t("settings.confirmCancelGame"),
+      confirmLabel: t("settings.cancelGame"),
+      cancelLabel: t("common.cancel"),
+      danger: true,
+      onConfirm: resetGame,
+    });
   }
 
   function handleSelectProfile(playerId: PlayerId, profile: PlayerProfile) {
@@ -134,11 +143,20 @@ export default function App() {
   }
 
   function handleCreateProfile(playerId: PlayerId, name: string) {
-    const profile: PlayerProfile = {
-      id: crypto.randomUUID(),
-      name,
-      createdAt: new Date().toISOString(),
-    };
+    const trimmedName = name.trim();
+
+    if (!trimmedName) return;
+
+    const existingProfile = profiles.find(
+      (profile) => profile.name.trim().toLocaleLowerCase() === trimmedName.toLocaleLowerCase()
+    );
+
+    if (existingProfile) {
+      handleSelectProfile(playerId, existingProfile);
+      return;
+    }
+
+    const profile = createPlayerProfile(trimmedName);
 
     addProfile(profile);
     createProfile(playerId, profile);
@@ -152,55 +170,83 @@ export default function App() {
   }
 
   function handleCreateManagedProfile(name: string) {
-    const now = new Date().toISOString();
+    const trimmedName = name.trim();
 
-    addProfile({
-      id: crypto.randomUUID(),
-      name,
-      createdAt: now,
-      updatedAt: now,
-    });
+    if (!trimmedName) return;
+
+    if (isDuplicatePlayerName(profiles, trimmedName)) {
+      showMessage({
+        title: t("common.notice"),
+        message: t("player.duplicateName"),
+        confirmLabel: t("common.ok"),
+      });
+      return;
+    }
+
+    addProfile(createPlayerProfile(trimmedName));
   }
 
   function handleRenameProfile(profileId: string, name: string) {
+    const trimmedName = name.trim();
+
+    if (!trimmedName) return;
+
     const profile = profiles.find((currentProfile) => currentProfile.id === profileId);
 
     if (!profile) return;
 
+    if (isDuplicatePlayerName(profiles, trimmedName, profileId)) {
+      showMessage({
+        title: t("common.notice"),
+        message: t("player.duplicateName"),
+        confirmLabel: t("common.ok"),
+      });
+      return;
+    }
+
     updateProfile({
       ...profile,
-      name,
+      name: trimmedName,
       updatedAt: new Date().toISOString(),
     });
   }
 
   function handleDeleteProfile(profileId: string) {
     if (profiles.length <= 2) {
-      window.alert(t("player.minimumProfiles"));
+      showMessage({
+        title: t("common.notice"),
+        message: t("player.minimumProfiles"),
+        confirmLabel: t("common.ok"),
+      });
       return;
     }
 
-    const confirmed = window.confirm(t("player.confirmDelete"));
+    showConfirmation({
+      title: t("player.delete"),
+      message: t("player.confirmDelete"),
+      confirmLabel: t("player.delete"),
+      cancelLabel: t("common.cancel"),
+      danger: true,
+      onConfirm: () => {
+        const remainingProfiles = profiles.filter((profile) => profile.id !== profileId);
+        const fallbackProfile = remainingProfiles[0];
 
-    if (!confirmed) return;
+        removeProfile(profileId);
 
-    const remainingProfiles = profiles.filter((profile) => profile.id !== profileId);
-    const fallbackProfile = remainingProfiles[0];
-
-    removeProfile(profileId);
-
-    if (selectedProfileIds.player1 === profileId || selectedProfileIds.player2 === profileId) {
-      saveSelectedProfileIds({
-        player1:
-          selectedProfileIds.player1 === profileId
-            ? fallbackProfile.id
-            : selectedProfileIds.player1,
-        player2:
-          selectedProfileIds.player2 === profileId
-            ? fallbackProfile.id
-            : selectedProfileIds.player2,
-      });
-    }
+        if (selectedProfileIds.player1 === profileId || selectedProfileIds.player2 === profileId) {
+          saveSelectedProfileIds({
+            player1:
+              selectedProfileIds.player1 === profileId
+                ? fallbackProfile.id
+                : selectedProfileIds.player1,
+            player2:
+              selectedProfileIds.player2 === profileId
+                ? fallbackProfile.id
+                : selectedProfileIds.player2,
+          });
+        }
+      },
+    });
   }
 
   function handleGameSettingsChange(nextSettings: GameSettings) {
@@ -216,13 +262,17 @@ export default function App() {
   }
 
   async function handleDeleteLocalData() {
-    const confirmed = window.confirm(t("settings.confirmResetLocalData"));
-
-    if (!confirmed) return;
-
-    await deleteAllLocalData();
-
-    window.location.reload();
+    showConfirmation({
+      title: t("settings.resetLocalData"),
+      message: t("settings.confirmResetLocalData"),
+      confirmLabel: t("settings.resetLocalData"),
+      cancelLabel: t("common.cancel"),
+      danger: true,
+      onConfirm: async () => {
+        await deleteAllLocalData();
+        window.location.reload();
+      },
+    });
   }
 
   const profileDialogPlayerState =
@@ -305,6 +355,8 @@ export default function App() {
       )}
 
       {aboutOpen && <AboutDialog onClose={() => setAboutOpen(false)} />}
+
+      {dialog && <ConfirmDialog {...dialog} onConfirm={confirmDialog} onCancel={closeDialog} />}
 
       <UpdatePrompt />
     </main>

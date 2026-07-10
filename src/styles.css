@@ -308,13 +308,12 @@ select {
   display: flex;
   flex-direction: column;
 
-  border-radius: 22px;
+  overflow: hidden;
 
+  border-radius: 22px;
   background: var(--surface);
   color: var(--text);
-
   padding: 28px;
-
   box-shadow: 0 24px 80px var(--shadow);
 }
 
@@ -327,15 +326,15 @@ select {
 }
 
 .dialogContent {
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
-  margin-bottom: 24px;
   padding-right: 2px;
 }
 
 .dialogFooter {
   flex: 0 0 auto;
+  margin-top: 24px;
 }
 
 .settingRow {
@@ -1285,5 +1284,23 @@ select {
 
 .managedPlayerRow .dangerButton {
   width: auto;
+  margin: 0;
+}
+
+.confirmDialog {
+  width: min(420px, calc(100vw - 32px));
+}
+
+.confirmDialogMessage {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.confirmDialogActions {
+  display: grid;
+  gap: 12px;
+}
+
+.confirmDialogActions .dangerButton {
   margin: 0;
 }
