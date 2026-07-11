@@ -59,7 +59,6 @@
     "add": "Add",
     "rename": "Rename",
     "delete": "Delete",
-    "disable": "Disable",
     "enable": "Enable",
     "disabled": "Disabled players",
     "confirmDelete": "Really delete that player?",
