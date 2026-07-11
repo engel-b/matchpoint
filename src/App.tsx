@@ -339,6 +339,7 @@ export default function App() {
   }
 
   function handleOpenProfileHistory(_profileId: string) {
+    _profileId.trim(); // to avoid lint-error
     setSettingsOpen(false);
     setReturnToPlayerManagement(true);
     setHistoryOpen(true);
