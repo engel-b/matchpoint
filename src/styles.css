@@ -1304,3 +1304,70 @@ select {
 .confirmDialogActions .dangerButton {
   margin: 0;
 }
+
+.managedPlayerRow--disabled {
+  opacity: 0.55;
+}
+
+.managedPlayerRow--disabled input {
+  cursor: not-allowed;
+}
+
+.managedPlayerActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.managedPlayerActions .secondaryButton,
+.managedPlayerActions .dangerButton {
+  width: auto;
+  margin: 0;
+  padding: 10px 12px;
+}
+
+.managedPlayerNameButton {
+  min-width: 0;
+
+  border: 0;
+  background: transparent;
+  color: inherit;
+
+  cursor: pointer;
+  text-align: left;
+  font-weight: 700;
+}
+
+.managedPlayerNameButton:hover {
+  text-decoration: underline;
+}
+
+.managedPlayerIconButton {
+  width: 40px;
+  height: 40px;
+
+  display: grid;
+  place-items: center;
+
+  border: 0;
+  border-radius: 12px;
+
+  background: var(--surface);
+  color: var(--text);
+
+  cursor: pointer;
+}
+
+.managedPlayerIconButton:hover {
+  background: var(--surface);
+  filter: brightness(1.08);
+}
+
+.managedPlayerIconButton--danger {
+  color: var(--danger);
+}
+
+.managedPlayerIconButton svg {
+  width: 20px;
+  height: 20px;
+}

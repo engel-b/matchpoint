@@ -17,8 +17,9 @@ import { useKeyboardControls } from "./hooks/useKeyboardControls";
 import { useKeyCapture } from "./hooks/useKeyCapture";
 import { createPlayerProfile, isDuplicatePlayerName } from "./players/playerProfileUtils";
 import { deleteAllLocalData } from "./storage/appStorage";
-import { saveMatch } from "./storage/matchStorage";
+import { loadMatches, saveMatch } from "./storage/matchStorage";
 
+import type { SettingsView } from "./dialogs/SettingsDialog";
 import type { ControlAction, KeyBindings } from "./types/controls";
 import type { GameSettings, PlayerId, PlayerProfile } from "./types/game";
 
@@ -79,6 +80,10 @@ export default function App() {
   const [aboutOpen, setAboutOpen] = useState(false);
   const [profileDialogPlayer, setProfileDialogPlayer] = useState<PlayerId | null>(null);
 
+  const [settingsInitialView, setSettingsInitialView] = useState<SettingsView>("overview");
+
+  const [returnToPlayerManagement, setReturnToPlayerManagement] = useState(false);
+
   const { capturingAction, startCapture } = useKeyCapture((action, key) => {
     const nextKeyBindings: KeyBindings = {
       ...keyBindings,
@@ -132,6 +137,12 @@ export default function App() {
   }
 
   function handleSelectProfile(playerId: PlayerId, profile: PlayerProfile) {
+    const otherProfileId = playerId === "player1" ? game.player2.profileId : game.player1.profileId;
+
+    if (profile.id === otherProfileId || profile.disabledAt) {
+      return;
+    }
+
     selectProfile(playerId, profile);
 
     saveSelectedProfileIds({
@@ -211,8 +222,41 @@ export default function App() {
     });
   }
 
+  function replaceSelectedProfile(profileId: string, nextProfiles: PlayerProfile[]) {
+    const activeProfiles = nextProfiles.filter((profile) => !profile.disabledAt);
+
+    const currentPlayer1Id = selectedProfileIds.player1;
+    const currentPlayer2Id = selectedProfileIds.player2;
+
+    let nextPlayer1Id = currentPlayer1Id;
+    let nextPlayer2Id = currentPlayer2Id;
+
+    if (currentPlayer1Id === profileId) {
+      const replacement = activeProfiles.find((profile) => profile.id !== nextPlayer2Id);
+
+      if (replacement) {
+        nextPlayer1Id = replacement.id;
+      }
+    }
+
+    if (currentPlayer2Id === profileId) {
+      const replacement = activeProfiles.find((profile) => profile.id !== nextPlayer1Id);
+
+      if (replacement) {
+        nextPlayer2Id = replacement.id;
+      }
+    }
+
+    saveSelectedProfileIds({
+      player1: nextPlayer1Id,
+      player2: nextPlayer2Id,
+    });
+  }
+
   function handleDeleteProfile(profileId: string) {
-    if (profiles.length <= 2) {
+    const activeProfiles = profiles.filter((profile) => !profile.disabledAt);
+
+    if (activeProfiles.length <= 2) {
       showMessage({
         title: t("common.notice"),
         message: t("player.minimumProfiles"),
@@ -227,26 +271,78 @@ export default function App() {
       confirmLabel: t("player.delete"),
       cancelLabel: t("common.cancel"),
       danger: true,
-      onConfirm: () => {
-        const remainingProfiles = profiles.filter((profile) => profile.id !== profileId);
-        const fallbackProfile = remainingProfiles[0];
+      onConfirm: async () => {
+        const profile = profiles.find((currentProfile) => currentProfile.id === profileId);
+
+        if (!profile) return;
+
+        const matches = await loadMatches();
+        const hasHistory = matches.some(
+          (match) => match.player1Id === profileId || match.player2Id === profileId
+        );
+
+        if (hasHistory) {
+          const now = new Date().toISOString();
+
+          const disabledProfile: PlayerProfile = {
+            ...profile,
+            disabledAt: now,
+            updatedAt: now,
+          };
+
+          const nextProfiles = profiles.map((currentProfile) =>
+            currentProfile.id === profileId ? disabledProfile : currentProfile
+          );
+
+          updateProfile(disabledProfile);
+          replaceSelectedProfile(profileId, nextProfiles);
+
+          showMessage({
+            title: t("common.notice"),
+            message: t("player.disabledBecauseOfHistory"),
+            confirmLabel: t("common.ok"),
+          });
+
+          return;
+        }
+
+        const nextProfiles = profiles.filter((currentProfile) => currentProfile.id !== profileId);
 
         removeProfile(profileId);
-
-        if (selectedProfileIds.player1 === profileId || selectedProfileIds.player2 === profileId) {
-          saveSelectedProfileIds({
-            player1:
-              selectedProfileIds.player1 === profileId
-                ? fallbackProfile.id
-                : selectedProfileIds.player1,
-            player2:
-              selectedProfileIds.player2 === profileId
-                ? fallbackProfile.id
-                : selectedProfileIds.player2,
-          });
-        }
+        replaceSelectedProfile(profileId, nextProfiles);
       },
     });
+  }
+
+  function handleDisableProfile(profileId: string) {
+    const profile = profiles.find((currentProfile) => currentProfile.id === profileId);
+
+    if (!profile) return;
+
+    updateProfile({
+      ...profile,
+      disabledAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
+  }
+
+  function handleEnableProfile(profileId: string) {
+    const profile = profiles.find((currentProfile) => currentProfile.id === profileId);
+
+    if (!profile) return;
+
+    updateProfile({
+      ...profile,
+      disabledAt: undefined,
+      updatedAt: new Date().toISOString(),
+    });
+  }
+
+  function handleOpenProfileHistory(_profileId: string) {
+    _profileId.trim(); // to avoid lint-error
+    setSettingsOpen(false);
+    setReturnToPlayerManagement(true);
+    setHistoryOpen(true);
   }
 
   function handleGameSettingsChange(nextSettings: GameSettings) {
@@ -282,14 +378,34 @@ export default function App() {
         ? game.player2
         : null;
 
+  const selectableProfiles = profiles.filter((profile) => {
+    if (profile.disabledAt) return false;
+
+    if (profileDialogPlayer === "player1") {
+      return profile.id !== game.player2.profileId;
+    }
+
+    if (profileDialogPlayer === "player2") {
+      return profile.id !== game.player1.profileId;
+    }
+
+    return false;
+  });
+
   return (
     <main className={`app app--${theme}`}>
       <div className="topbar">
         <FullscreenButton />
         <AppMenu
           onUndo={undo}
-          onOpenHistory={() => setHistoryOpen(true)}
-          onOpenSettings={() => setSettingsOpen(true)}
+          onOpenHistory={() => {
+            setReturnToPlayerManagement(false);
+            setHistoryOpen(true);
+          }}
+          onOpenSettings={() => {
+            setSettingsInitialView("overview");
+            setSettingsOpen(true);
+          }}
           onNewGame={handleNewGame}
           onOpenAbout={() => setAboutOpen(true)}
         />
@@ -321,6 +437,7 @@ export default function App() {
       )}
       {settingsOpen && (
         <SettingsDialog
+          initialView={settingsInitialView}
           theme={theme}
           language={language}
           gameSettings={game.settings}
@@ -330,6 +447,9 @@ export default function App() {
           onCreateProfile={handleCreateManagedProfile}
           onRenameProfile={handleRenameProfile}
           onDeleteProfile={handleDeleteProfile}
+          onDisableProfile={handleDisableProfile}
+          onEnableProfile={handleEnableProfile}
+          onOpenProfileHistory={handleOpenProfileHistory}
           onThemeChange={setTheme}
           onLanguageChange={setLanguage}
           onGameSettingsChange={handleGameSettingsChange}
@@ -337,16 +457,31 @@ export default function App() {
           onClearKeyBinding={clearKeyBinding}
           onResetGame={resetGame}
           onDeleteLocalData={handleDeleteLocalData}
-          onClose={() => setSettingsOpen(false)}
+          onClose={() => {
+            setSettingsOpen(false);
+            setSettingsInitialView("overview");
+          }}
         />
       )}
 
-      <MatchHistoryDialog isOpen={historyOpen} onClose={() => setHistoryOpen(false)} />
+      <MatchHistoryDialog
+        isOpen={historyOpen}
+        onClose={() => {
+          setHistoryOpen(false);
+
+          if (returnToPlayerManagement) {
+            setSettingsInitialView("players");
+            setSettingsOpen(true);
+          }
+
+          setReturnToPlayerManagement(false);
+        }}
+      />
 
       {profileDialogPlayer && profileDialogPlayerState && (
         <PlayerDialog
           playerId={profileDialogPlayer}
-          profiles={profiles}
+          profiles={selectableProfiles}
           currentProfileId={profileDialogPlayerState.profileId}
           onSelectProfile={handleSelectProfile}
           onCreateProfile={handleCreateProfile}
