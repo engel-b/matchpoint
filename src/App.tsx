@@ -137,6 +137,12 @@ export default function App() {
   }
 
   function handleSelectProfile(playerId: PlayerId, profile: PlayerProfile) {
+    const otherProfileId = playerId === "player1" ? game.player2.profileId : game.player1.profileId;
+
+    if (profile.id === otherProfileId || profile.disabledAt) {
+      return;
+    }
+
     selectProfile(playerId, profile);
 
     saveSelectedProfileIds({
@@ -216,6 +222,37 @@ export default function App() {
     });
   }
 
+  function replaceSelectedProfile(profileId: string, nextProfiles: PlayerProfile[]) {
+    const activeProfiles = nextProfiles.filter((profile) => !profile.disabledAt);
+
+    const currentPlayer1Id = selectedProfileIds.player1;
+    const currentPlayer2Id = selectedProfileIds.player2;
+
+    let nextPlayer1Id = currentPlayer1Id;
+    let nextPlayer2Id = currentPlayer2Id;
+
+    if (currentPlayer1Id === profileId) {
+      const replacement = activeProfiles.find((profile) => profile.id !== nextPlayer2Id);
+
+      if (replacement) {
+        nextPlayer1Id = replacement.id;
+      }
+    }
+
+    if (currentPlayer2Id === profileId) {
+      const replacement = activeProfiles.find((profile) => profile.id !== nextPlayer1Id);
+
+      if (replacement) {
+        nextPlayer2Id = replacement.id;
+      }
+    }
+
+    saveSelectedProfileIds({
+      player1: nextPlayer1Id,
+      player2: nextPlayer2Id,
+    });
+  }
+
   function handleDeleteProfile(profileId: string) {
     const activeProfiles = profiles.filter((profile) => !profile.disabledAt);
 
@@ -247,11 +284,18 @@ export default function App() {
         if (hasHistory) {
           const now = new Date().toISOString();
 
-          updateProfile({
+          const disabledProfile: PlayerProfile = {
             ...profile,
             disabledAt: now,
             updatedAt: now,
-          });
+          };
+
+          const nextProfiles = profiles.map((currentProfile) =>
+            currentProfile.id === profileId ? disabledProfile : currentProfile
+          );
+
+          updateProfile(disabledProfile);
+          replaceSelectedProfile(profileId, nextProfiles);
 
           showMessage({
             title: t("common.notice"),
@@ -262,7 +306,10 @@ export default function App() {
           return;
         }
 
+        const nextProfiles = profiles.filter((currentProfile) => currentProfile.id !== profileId);
+
         removeProfile(profileId);
+        replaceSelectedProfile(profileId, nextProfiles);
       },
     });
   }
@@ -329,6 +376,20 @@ export default function App() {
       : profileDialogPlayer === "player2"
         ? game.player2
         : null;
+
+  const selectableProfiles = profiles.filter((profile) => {
+    if (profile.disabledAt) return false;
+
+    if (profileDialogPlayer === "player1") {
+      return profile.id !== game.player2.profileId;
+    }
+
+    if (profileDialogPlayer === "player2") {
+      return profile.id !== game.player1.profileId;
+    }
+
+    return false;
+  });
 
   return (
     <main className={`app app--${theme}`}>
@@ -419,7 +480,7 @@ export default function App() {
       {profileDialogPlayer && profileDialogPlayerState && (
         <PlayerDialog
           playerId={profileDialogPlayer}
-          profiles={profiles}
+          profiles={selectableProfiles}
           currentProfileId={profileDialogPlayerState.profileId}
           onSelectProfile={handleSelectProfile}
           onCreateProfile={handleCreateProfile}
