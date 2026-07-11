@@ -17,8 +17,9 @@ import { useKeyboardControls } from "./hooks/useKeyboardControls";
 import { useKeyCapture } from "./hooks/useKeyCapture";
 import { createPlayerProfile, isDuplicatePlayerName } from "./players/playerProfileUtils";
 import { deleteAllLocalData } from "./storage/appStorage";
-import { saveMatch } from "./storage/matchStorage";
+import { loadMatches, saveMatch } from "./storage/matchStorage";
 
+import type { SettingsView } from "./dialogs/SettingsDialog";
 import type { ControlAction, KeyBindings } from "./types/controls";
 import type { GameSettings, PlayerId, PlayerProfile } from "./types/game";
 
@@ -78,6 +79,10 @@ export default function App() {
   const [historyOpen, setHistoryOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [profileDialogPlayer, setProfileDialogPlayer] = useState<PlayerId | null>(null);
+
+  const [settingsInitialView, setSettingsInitialView] = useState<SettingsView>("overview");
+
+  const [returnToPlayerManagement, setReturnToPlayerManagement] = useState(false);
 
   const { capturingAction, startCapture } = useKeyCapture((action, key) => {
     const nextKeyBindings: KeyBindings = {
@@ -212,7 +217,9 @@ export default function App() {
   }
 
   function handleDeleteProfile(profileId: string) {
-    if (profiles.length <= 2) {
+    const activeProfiles = profiles.filter((profile) => !profile.disabledAt);
+
+    if (activeProfiles.length <= 2) {
       showMessage({
         title: t("common.notice"),
         message: t("player.minimumProfiles"),
@@ -227,26 +234,67 @@ export default function App() {
       confirmLabel: t("player.delete"),
       cancelLabel: t("common.cancel"),
       danger: true,
-      onConfirm: () => {
-        const remainingProfiles = profiles.filter((profile) => profile.id !== profileId);
-        const fallbackProfile = remainingProfiles[0];
+      onConfirm: async () => {
+        const profile = profiles.find((currentProfile) => currentProfile.id === profileId);
+
+        if (!profile) return;
+
+        const matches = await loadMatches();
+        const hasHistory = matches.some(
+          (match) => match.player1Id === profileId || match.player2Id === profileId
+        );
+
+        if (hasHistory) {
+          const now = new Date().toISOString();
+
+          updateProfile({
+            ...profile,
+            disabledAt: now,
+            updatedAt: now,
+          });
+
+          showMessage({
+            title: t("common.notice"),
+            message: t("player.disabledBecauseOfHistory"),
+            confirmLabel: t("common.ok"),
+          });
+
+          return;
+        }
 
         removeProfile(profileId);
-
-        if (selectedProfileIds.player1 === profileId || selectedProfileIds.player2 === profileId) {
-          saveSelectedProfileIds({
-            player1:
-              selectedProfileIds.player1 === profileId
-                ? fallbackProfile.id
-                : selectedProfileIds.player1,
-            player2:
-              selectedProfileIds.player2 === profileId
-                ? fallbackProfile.id
-                : selectedProfileIds.player2,
-          });
-        }
       },
     });
+  }
+
+  function handleDisableProfile(profileId: string) {
+    const profile = profiles.find((currentProfile) => currentProfile.id === profileId);
+
+    if (!profile) return;
+
+    updateProfile({
+      ...profile,
+      disabledAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
+  }
+
+  function handleEnableProfile(profileId: string) {
+    const profile = profiles.find((currentProfile) => currentProfile.id === profileId);
+
+    if (!profile) return;
+
+    updateProfile({
+      ...profile,
+      disabledAt: undefined,
+      updatedAt: new Date().toISOString(),
+    });
+  }
+
+  function handleOpenProfileHistory(_profileId: string) {
+    setSettingsOpen(false);
+    setReturnToPlayerManagement(true);
+    setHistoryOpen(true);
   }
 
   function handleGameSettingsChange(nextSettings: GameSettings) {
@@ -288,8 +336,14 @@ export default function App() {
         <FullscreenButton />
         <AppMenu
           onUndo={undo}
-          onOpenHistory={() => setHistoryOpen(true)}
-          onOpenSettings={() => setSettingsOpen(true)}
+          onOpenHistory={() => {
+            setReturnToPlayerManagement(false);
+            setHistoryOpen(true);
+          }}
+          onOpenSettings={() => {
+            setSettingsInitialView("overview");
+            setSettingsOpen(true);
+          }}
           onNewGame={handleNewGame}
           onOpenAbout={() => setAboutOpen(true)}
         />
@@ -321,6 +375,7 @@ export default function App() {
       )}
       {settingsOpen && (
         <SettingsDialog
+          initialView={settingsInitialView}
           theme={theme}
           language={language}
           gameSettings={game.settings}
@@ -330,6 +385,9 @@ export default function App() {
           onCreateProfile={handleCreateManagedProfile}
           onRenameProfile={handleRenameProfile}
           onDeleteProfile={handleDeleteProfile}
+          onDisableProfile={handleDisableProfile}
+          onEnableProfile={handleEnableProfile}
+          onOpenProfileHistory={handleOpenProfileHistory}
           onThemeChange={setTheme}
           onLanguageChange={setLanguage}
           onGameSettingsChange={handleGameSettingsChange}
@@ -337,11 +395,26 @@ export default function App() {
           onClearKeyBinding={clearKeyBinding}
           onResetGame={resetGame}
           onDeleteLocalData={handleDeleteLocalData}
-          onClose={() => setSettingsOpen(false)}
+          onClose={() => {
+            setSettingsOpen(false);
+            setSettingsInitialView("overview");
+          }}
         />
       )}
 
-      <MatchHistoryDialog isOpen={historyOpen} onClose={() => setHistoryOpen(false)} />
+      <MatchHistoryDialog
+        isOpen={historyOpen}
+        onClose={() => {
+          setHistoryOpen(false);
+
+          if (returnToPlayerManagement) {
+            setSettingsInitialView("players");
+            setSettingsOpen(true);
+          }
+
+          setReturnToPlayerManagement(false);
+        }}
+      />
 
       {profileDialogPlayer && profileDialogPlayerState && (
         <PlayerDialog

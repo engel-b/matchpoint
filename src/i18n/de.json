@@ -57,10 +57,15 @@
     "new": "Neuer Spieler",
     "namePlaceholder": "Name eingeben",
     "add": "Hinzufügen",
+    "rename": "Umbenennen",
     "delete": "Löschen",
+    "disable": "Deaktivieren",
+    "enable": "Aktivieren",
+    "disabled": "Deaktivierte Spieler",
     "confirmDelete": "Spieler wirklich löschen?",
     "minimumProfiles": "Es müssen mindestens zwei Spieler vorhanden bleiben.",
-    "duplicateName": "Ein Spieler mit diesem Namen existiert bereits."
+    "duplicateName": "Ein Spieler mit diesem Namen existiert bereits.",
+    "disabledBecauseOfHistory": "Dieser Spieler wurde bereits in der Historie verwendet und wird deshalb deaktiviert statt gelöscht."
   },
   "history": {
     "title": "Historie",

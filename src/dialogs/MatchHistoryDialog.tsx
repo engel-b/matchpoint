@@ -13,9 +13,10 @@ import type { MatchResult } from "../types/match";
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  onReturn?: () => void;
 };
 
-export function MatchHistoryDialog({ isOpen, onClose }: Props) {
+export function MatchHistoryDialog({ isOpen, onClose, onReturn }: Props) {
   const { t, i18n } = useTranslation();
   const { matches, isLoading } = useMatchHistory(isOpen);
   const [selectedMatch, setSelectedMatch] = useState<MatchResult | null>(null);
@@ -24,10 +25,15 @@ export function MatchHistoryDialog({ isOpen, onClose }: Props) {
   const statistics = new MatchStatistics(matches);
   const selectedPlayer = selectedPlayerId ? statistics.getPlayer(selectedPlayerId) : null;
 
+  function handleClose() {
+    onClose();
+    onReturn?.();
+  }
+
   if (!isOpen) return null;
 
   return (
-    <div className="dialogBackdrop" onClick={onClose}>
+    <div className="dialogBackdrop" onClick={handleClose}>
       <div className="dialog historyDialog" onClick={(event) => event.stopPropagation()}>
         <header className="dialogHeader">
           <h2>{t("history.title")}</h2>
@@ -60,7 +66,7 @@ export function MatchHistoryDialog({ isOpen, onClose }: Props) {
         </div>
 
         <footer className="dialogFooter">
-          <button className="closeButton" onClick={onClose}>
+          <button className="closeButton" onClick={handleClose}>
             {t("common.close")}
           </button>
         </footer>

@@ -1,3 +1,4 @@
+import { Pencil, Trash2, UserCheck } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -10,9 +11,10 @@ import type { Language, Theme } from "../hooks/useAppStorage";
 import type { ControlAction, KeyBindings } from "../types/controls";
 import type { PlayerProfile, GameSettings } from "../types/game";
 
-type SettingsView = "overview" | "general" | "players" | "controls" | "danger";
+export type SettingsView = "overview" | "general" | "players" | "controls" | "danger";
 
 type Props = {
+  initialView?: SettingsView;
   theme: Theme;
   language: Language;
   gameSettings: GameSettings;
@@ -22,6 +24,9 @@ type Props = {
   onCreateProfile: (name: string) => void;
   onRenameProfile: (profileId: string, name: string) => void;
   onDeleteProfile: (profileId: string) => void;
+  onDisableProfile: (profileId: string) => void;
+  onEnableProfile: (profileId: string) => void;
+  onOpenProfileHistory: (profileId: string) => void;
   onThemeChange: (theme: Theme) => void;
   onLanguageChange: (language: Language) => void;
   onGameSettingsChange: (settings: GameSettings) => void;
@@ -33,6 +38,7 @@ type Props = {
 };
 
 export function SettingsDialog({
+  initialView = "overview",
   theme,
   language,
   gameSettings,
@@ -42,6 +48,8 @@ export function SettingsDialog({
   onCreateProfile,
   onRenameProfile,
   onDeleteProfile,
+  onEnableProfile,
+  onOpenProfileHistory,
   onThemeChange,
   onLanguageChange,
   onGameSettingsChange,
@@ -52,7 +60,7 @@ export function SettingsDialog({
   onClose,
 }: Props) {
   const { t } = useTranslation();
-  const [view, setView] = useState<SettingsView>("overview");
+  const [view, setView] = useState<SettingsView>(initialView);
   const { dialog, showMessage, showConfirmation, closeDialog, confirmDialog } = useDialog();
 
   function handleResetGame() {
@@ -177,6 +185,8 @@ export function SettingsDialog({
                 onCreateProfile={onCreateProfile}
                 onRenameProfile={onRenameProfile}
                 onDeleteProfile={onDeleteProfile}
+                onEnableProfile={onEnableProfile}
+                onOpenProfileHistory={onOpenProfileHistory}
                 showDuplicateNameMessage={() =>
                   showMessage({
                     title: t("common.notice"),
@@ -365,16 +375,28 @@ function PlayerManagement({
   onCreateProfile,
   onRenameProfile,
   onDeleteProfile,
+  onEnableProfile,
+  onOpenProfileHistory,
   showDuplicateNameMessage,
 }: {
   profiles: PlayerProfile[];
   onCreateProfile: (name: string) => void;
   onRenameProfile: (profileId: string, name: string) => void;
   onDeleteProfile: (profileId: string) => void;
+  onEnableProfile: (profileId: string) => void;
+  onOpenProfileHistory: (profileId: string) => void;
   showDuplicateNameMessage: () => void;
 }) {
   const { t } = useTranslation();
   const [newPlayerName, setNewPlayerName] = useState("");
+
+  const activeProfiles = [...profiles]
+    .filter((profile) => !profile.disabledAt)
+    .sort(compareProfilesByName);
+
+  const disabledProfiles = [...profiles]
+    .filter((profile) => profile.disabledAt)
+    .sort(compareProfilesByName);
 
   function handleCreateProfile() {
     const name = newPlayerName.trim();
@@ -399,17 +421,40 @@ function PlayerManagement({
       <p className="settingsHint">{t("settings.playersHint")}</p>
 
       <div className="managedPlayerList">
-        {profiles.map((profile) => (
+        {activeProfiles.map((profile) => (
           <ManagedPlayerRow
             key={profile.id}
             profile={profile}
             profiles={profiles}
             onRenameProfile={onRenameProfile}
             onDeleteProfile={onDeleteProfile}
+            onEnableProfile={onEnableProfile}
+            onOpenProfileHistory={onOpenProfileHistory}
             showDuplicateNameMessage={showDuplicateNameMessage}
           />
         ))}
       </div>
+
+      {disabledProfiles.length > 0 && (
+        <>
+          <h3>{t("player.disabled")}</h3>
+
+          <div className="managedPlayerList">
+            {disabledProfiles.map((profile) => (
+              <ManagedPlayerRow
+                key={profile.id}
+                profile={profile}
+                profiles={profiles}
+                onRenameProfile={onRenameProfile}
+                onDeleteProfile={onDeleteProfile}
+                onEnableProfile={onEnableProfile}
+                onOpenProfileHistory={onOpenProfileHistory}
+                showDuplicateNameMessage={showDuplicateNameMessage}
+              />
+            ))}
+          </div>
+        </>
+      )}
 
       <div className="newPlayerBox">
         <label htmlFor="managed-new-player-name">{t("player.new")}</label>
@@ -434,17 +479,21 @@ function ManagedPlayerRow({
   profiles,
   onRenameProfile,
   onDeleteProfile,
+  onEnableProfile,
+  onOpenProfileHistory,
   showDuplicateNameMessage,
 }: {
   profile: PlayerProfile;
   profiles: PlayerProfile[];
   onRenameProfile: (profileId: string, name: string) => void;
   onDeleteProfile: (profileId: string) => void;
+  onEnableProfile: (profileId: string) => void;
+  onOpenProfileHistory: (profileId: string) => void;
   showDuplicateNameMessage: () => void;
 }) {
   const { t } = useTranslation();
   const [name, setName] = useState(profile.name);
-
+  const [isEditing, setIsEditing] = useState(false);
   function handleBlur() {
     const nextName = name.trim();
 
@@ -466,20 +515,78 @@ function ManagedPlayerRow({
     }
 
     onRenameProfile(profile.id, nextName);
+    setIsEditing(false);
   }
 
   return (
-    <div className="managedPlayerRow">
-      <input
-        value={name}
-        aria-label={t("player.name")}
-        onChange={(event) => setName(event.target.value)}
-        onBlur={handleBlur}
-      />
+    <div className={`managedPlayerRow${profile.disabledAt ? " managedPlayerRow--disabled" : ""}`}>
+      {isEditing ? (
+        <input
+          value={name}
+          aria-label={t("player.name")}
+          autoFocus
+          onChange={(event) => setName(event.target.value)}
+          onBlur={handleBlur}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              event.currentTarget.blur();
+            }
 
-      <button type="button" className="dangerButton" onClick={() => onDeleteProfile(profile.id)}>
-        {t("player.delete")}
-      </button>
+            if (event.key === "Escape") {
+              setName(profile.name);
+              setIsEditing(false);
+            }
+          }}
+        />
+      ) : (
+        <button
+          type="button"
+          className="managedPlayerNameButton"
+          onClick={() => onOpenProfileHistory(profile.id)}
+        >
+          {profile.name}
+        </button>
+      )}
+
+      <div className="managedPlayerActions">
+        {profile.disabledAt ? (
+          <button
+            type="button"
+            className="managedPlayerIconButton"
+            aria-label={t("player.enable")}
+            title={t("player.enable")}
+            onClick={() => onEnableProfile(profile.id)}
+          >
+            <UserCheck />
+          </button>
+        ) : (
+          <>
+            <button
+              type="button"
+              className="managedPlayerIconButton"
+              aria-label={t("player.rename")}
+              title={t("player.rename")}
+              onClick={() => setIsEditing(true)}
+            >
+              <Pencil />
+            </button>
+
+            <button
+              type="button"
+              className="managedPlayerIconButton managedPlayerIconButton--danger"
+              aria-label={t("player.delete")}
+              title={t("player.delete")}
+              onClick={() => onDeleteProfile(profile.id)}
+            >
+              <Trash2 />
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
+}
+
+function compareProfilesByName(left: PlayerProfile, right: PlayerProfile): number {
+  return left.name.localeCompare(right.name);
 }

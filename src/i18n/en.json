@@ -57,10 +57,15 @@
     "new": "New player",
     "namePlaceholder": "Enter name",
     "add": "Add",
+    "rename": "Rename",
     "delete": "Delete",
+    "disable": "Disable",
+    "enable": "Enable",
+    "disabled": "Disabled players",
     "confirmDelete": "Really delete that player?",
     "minimumProfiles": "There must be at least 2 players.",
-    "duplicateName": "A player with this name already exists."
+    "duplicateName": "A player with this name already exists.",
+    "disabledBecauseOfHistory": "This player is already used in the history and will be disabled instead of deleted."
   },
   "history": {
     "title": "History",
